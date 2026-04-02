@@ -31,6 +31,7 @@ const sharedStyles = `
     margin-top: 56px;
     padding-bottom: 100px;
     flex: 1;
+    overflow-y: auto;
     box-sizing: border-box;
   }
 
@@ -826,6 +827,7 @@ function renderQuestionPage1() {
       margin-top: 56px;
       padding-bottom: 100px;
       flex: 1;
+      overflow-y: auto;
       box-sizing: border-box;
     }
 

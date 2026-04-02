@@ -539,7 +539,7 @@ function renderOnboardingPage3() {
     <div class="onboarding-page-3">
       <!-- Fullscreen Background Image -->
       <main class="background-main">
-        <img alt="Vibrant artistic collage" class="background-image" src="./images/33331.png">
+        <img alt="Vibrant artistic collage" class="background-image" src="./images/33331.webp">
         <!-- Gradient Overlay for smooth transition to bottom content area -->
         <div class="gradient-overlay"></div>
       </main>
@@ -3085,6 +3085,35 @@ function renderSubscriptionPage() {
   const style = document.createElement('style');
   style.id = 'subscription-page-styles';
   style.textContent = `
+    .subscription-page {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .subscription-page > main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .subscription-page .subscription-content-container {
+      flex-shrink: 0;
+    }
+
+    .subscription-page .button-container,
+    .subscription-page footer.bottom-action {
+      flex-shrink: 0;
+      position: relative;
+      bottom: auto;
+      left: auto;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
     @keyframes fadeInUp {
       from {
         transform: translateY(20px);

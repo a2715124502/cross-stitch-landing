@@ -1,6 +1,7 @@
 {
   "name": "cross-stitch-onboarding",
   "version": "1.0.0",
+  "type": "module",
   "description": "Cross Stitch onboarding pages",
   "main": "index.html",
   "scripts": {

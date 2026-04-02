@@ -1318,7 +1318,7 @@ function renderQuestionPage3() {
         <div class="style-grid" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
           <!-- Card 1: Animals -->
           <div class="style-card" onclick="toggleOption('style', 'animals')">
-            <img class="card-image" src="./clip/图片/066e989deaf84f8049c78964200ddc54.jpg" alt="动物">
+            <img class="card-image" src="./clip/图片/066e989deaf84f8049c78964200ddc54.jpg" alt="动物" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
               <span class="label-text">动物</span>
@@ -1331,7 +1331,7 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 2: Comic -->
           <div class="style-card" onclick="toggleOption('style', 'comics')">
-            <img class="card-image" src="./clip/图片/ac7ba83687f9c31480e70e23b4e504fb.jpg" alt="艺术">
+            <img class="card-image" src="./clip/图片/ac7ba83687f9c31480e70e23b4e504fb.jpg" alt="艺术" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
               <span class="label-text">艺术</span>
@@ -1344,7 +1344,7 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 3: People -->
           <div class="style-card" onclick="toggleOption('style', 'people')">
-            <img class="card-image" src="./clip/图片/4322aab16149485ce68b0468f48ea2a3.jpg" alt="花朵">
+            <img class="card-image" src="./clip/图片/4322aab16149485ce68b0468f48ea2a3.jpg" alt="花朵" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
               <span class="label-text">花朵</span>
@@ -1357,7 +1357,7 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 4: Cute -->
           <div class="style-card" onclick="toggleOption('style', 'cute')">
-            <img class="card-image" src="./clip/图片/883bb99b4fa272288c87760b52809443.jpg" alt="自然">
+            <img class="card-image" src="./clip/图片/883bb99b4fa272288c87760b52809443.jpg" alt="自然" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
               <span class="label-text">自然</span>
@@ -1370,7 +1370,7 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 5: Food -->
           <div class="style-card" onclick="toggleOption('style', 'food')">
-            <img class="card-image" src="./clip/图片/572879658e58ccb130aa3a6b9501392b.jpg" alt="宠物">
+            <img class="card-image" src="./clip/图片/572879658e58ccb130aa3a6b9501392b.jpg" alt="宠物" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
               <span class="label-text">宠物</span>
@@ -1383,7 +1383,7 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 6: Mandala -->
           <div class="style-card" onclick="toggleOption('style', 'mandala')">
-            <img class="card-image" src="./clip/图片/163f774efff4493497edd2504b5d6224.jpg" alt="庆祝">
+            <img class="card-image" src="./clip/图片/163f774efff4493497edd2504b5d6224.jpg" alt="庆祝" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
               <span class="label-text">庆祝</span>
@@ -1396,7 +1396,7 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 7: Flower -->
           <div class="style-card" onclick="toggleOption('style', 'flowers')">
-            <img class="card-image" src="./clip/图片/fefe89a79b554f068d18b994058ecbdf.jpg" alt="食物">
+            <img class="card-image" src="./clip/图片/fefe89a79b554f068d18b994058ecbdf.jpg" alt="食物" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
               <span class="label-text">食物</span>
@@ -1409,7 +1409,7 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 8: Simple -->
           <div class="style-card" onclick="toggleOption('style', 'simple')">
-            <img class="card-image" src="./clip/图片/cf0c4dfd283c24ee59824136205f8c73.jpg" alt="超级尺寸">
+            <img class="card-image" src="./clip/图片/cf0c4dfd283c24ee59824136205f8c73.jpg" alt="超级尺寸" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
               <span class="label-text">超级尺寸</span>
@@ -3216,6 +3216,12 @@ function renderSubscriptionPage() {
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .subscription-card-left > span:first-child {
+      font-size: 18px;
+      font-weight: bold;
+      font-family: 'PingFang SC', sans-serif;
     }
     
     .subscription-check {

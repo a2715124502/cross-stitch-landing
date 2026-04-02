@@ -1,6 +1,6 @@
 # 问题页面滚动优化 - The Implementation Plan (Decomposed and Prioritized Task List)
 
-## [ ] Task 1: 分析四个问题页面的当前布局结构
+## [x] Task 1: 分析四个问题页面的当前布局结构
 - **Priority**: P0
 - **Depends On**: None
 - **Description**: 
@@ -13,7 +13,7 @@
   - `human-judgement` TR-1.2: 识别需要固定的元素（导航栏、底部按钮）
 - **Notes**: 重点关注flex布局的使用
 
-## [ ] Task 2: 为问题1页面添加滚动功能
+## [x] Task 2: 为问题1页面添加滚动功能
 - **Priority**: P0
 - **Depends On**: Task 1
 - **Description**: 
@@ -28,7 +28,7 @@
   - `human-judgement` TR-2.3: 所有选项都可以通过滚动查看
 - **Notes**: 问题1页面目前有3个选项卡片
 
-## [ ] Task 3: 为问题2页面添加滚动功能
+## [x] Task 3: 为问题2页面添加滚动功能
 - **Priority**: P0
 - **Depends On**: Task 2
 - **Description**: 
@@ -42,7 +42,7 @@
   - `human-judgement` TR-3.3: 所有选项都可以通过滚动查看
 - **Notes**: 保持与问题1页面一致的实现模式
 
-## [ ] Task 4: 为问题3页面添加滚动功能
+## [x] Task 4: 为问题3页面添加滚动功能
 - **Priority**: P0
 - **Depends On**: Task 3
 - **Description**: 
@@ -57,7 +57,7 @@
   - `human-judgement` TR-4.4: 所有风格卡片都可以通过滚动查看
 - **Notes**: 问题3有底部"下一步"按钮
 
-## [ ] Task 5: 为问题4页面添加滚动功能
+## [x] Task 5: 为问题4页面添加滚动功能
 - **Priority**: P0
 - **Depends On**: Task 4
 - **Description**: 
@@ -71,7 +71,7 @@
   - `human-judgement` TR-5.3: 所有选项都可以通过滚动查看
 - **Notes**: 问题4有多个选项按钮
 
-## [ ] Task 6: 测试和验证所有页面
+## [x] Task 6: 测试和验证所有页面
 - **Priority**: P1
 - **Depends On**: Task 2, Task 3, Task 4, Task 5
 - **Description**: 

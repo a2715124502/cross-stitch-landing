@@ -417,7 +417,7 @@ function renderOnboardingPage2() {
     <div class="onboarding-page-2">
       <!-- Background Illustration Layer (Full Screen) -->
       <div class="background-layer">
-        <img alt="Professional photograph of a person using an Apple Pencil to color a detailed mandala on an iPad screen" class="background-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSIBOL_7B0WV-wpVEzY-UjyTO14ruxJZPXJtypoTFR-687pxAWQ1ilmYH_o_gvo26cI3jDhFbps_fwR6mQbLs5IfgoqaMNtdkfpoz0Rjsesoo54gmYVRFl4GA_lBZgbm5h3TscYD8ZvFy0o2hnPgiCD5lQYMRZwzaZCuVm8EJ3n9Etv6QTsDjZO2q0DqTuiRbLAR4ffQXQIT6wZj24fMi3TciyeBt1wY7GK9XzWYJClYz0yzR62451IwbPN12wc4ux9EOqpKnJVDgT">
+        <img alt="Professional photograph of a person using an Apple Pencil to color a detailed mandala on an iPad screen" class="background-image" src="./images/onboarding2.webp">
         <div class="overlay"></div>
       </div>
       <!-- Fixed Bottom Action Area -->
@@ -3021,7 +3021,7 @@ function renderSubscriptionPage() {
       </header>
       
       <!-- Main Content -->
-      <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; padding-bottom: 240px; overflow-y: auto;">
+      <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; padding-bottom: 10px; overflow-y: auto;">
         <!-- Hero Section -->
         <div class="hero-section">
           <img class="hero-image" src="./clip/pic/31013c4f30c499704b74a387b332a2ce.jpg" alt="十字绣涂色艺术">
@@ -3101,6 +3101,7 @@ function renderSubscriptionPage() {
 
     .subscription-page .subscription-content-container {
       flex-shrink: 0;
+      margin-bottom: 0;
     }
 
     .subscription-page .button-container,

@@ -3360,11 +3360,16 @@ function renderSubscriptionPage() {
 
     /* iPad specific styles */
     @media only screen and (min-width: 768px) and (max-width: 1024px) {
+      .subscription-page > main {
+        justify-content: center;
+        padding-bottom: 80px;
+      }
+
       .hero-section {
         min-height: 200px;
         max-height: 280px;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
         padding-bottom: 0;
       }
@@ -3375,7 +3380,7 @@ function renderSubscriptionPage() {
         height: auto;
         max-width: 100%;
         object-fit: contain;
-        margin-top: -30px;
+        margin-top: 0;
       }
 
       .subscription-content-container {
@@ -3385,11 +3390,16 @@ function renderSubscriptionPage() {
 
     /* iPad Pro specific styles */
     @media only screen and (min-width: 1024px) and (max-width: 1366px) {
+      .subscription-page > main {
+        justify-content: center;
+        padding-bottom: 80px;
+      }
+
       .hero-section {
         min-height: 250px;
         max-height: 320px;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
         padding-bottom: 0;
       }
@@ -3400,7 +3410,7 @@ function renderSubscriptionPage() {
         height: auto;
         max-width: 100%;
         object-fit: contain;
-        margin-top: -40px;
+        margin-top: 0;
       }
 
       .subscription-content-container {

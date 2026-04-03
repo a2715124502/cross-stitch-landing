@@ -4,29 +4,143 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Cross Stitch - Welcome</title>
+  <link rel="preload" href="./images/onboarding2.webp" as="image" type="image/webp">
+  <link rel="preload" href="./images/33331.webp" as="image" type="image/webp">
+  <link rel="preload" href="./images/59e77b30045b29e227002c5f0ba8d837.webp" as="image" type="image/webp">
+  <link href="https://fonts.bunny.net/css2?family=material-symbols-outlined:wght@100..700" rel="stylesheet">
+  <link href="https://fonts.bunny.net/css2?family=noto-sans-sc:wght@400;500;700" rel="stylesheet">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
       background-color: #FFFFFF;
       color: #000000;
       overflow: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .mesh-gradient-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .mesh-gradient-bg::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #FFFFFF;
+    }
+
+    .gradient-element {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.6;
+      transition: transform 0.8s ease-in-out;
+    }
+
+    .gradient-element-1 {
+      width: 350px;
+      height: 350px;
+      background-color: #DFF5E3;
+      bottom: 20%;
+      left: -20%;
+      transform: translateX(0);
+    }
+
+    .gradient-element-2 {
+      width: 350px;
+      height: 350px;
+      background-color: #FFF4C2;
+      top: 20%;
+      right: -20%;
+      transform: translateX(0);
+    }
+
+    .mesh-gradient-bg.animating .gradient-element-1 {
+      transform: translateX(40vw);
+    }
+
+    .mesh-gradient-bg.animating .gradient-element-2 {
+      transform: translateX(-40vw);
     }
     
     .container {
       width: 100%;
-      min-height: 100vh;
+      height: 100vh;
+      height: 100dvh;
       padding: 8px 20px 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       position: relative;
+    }
+    
+    #app {
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+    
+    /* 页面过渡动画 */
+    .page-transition-enter {
+      animation: pageFadeIn 0.4s ease-out forwards;
+    }
+    
+    .page-transition-exit {
+      animation: pageFadeOut 0.3s ease-in forwards;
+    }
+    
+    @keyframes pageFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(1.02);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes pageFadeOut {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.98);
+      }
     }
     
     .button {
@@ -51,6 +165,82 @@
     }
     
     .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* 统一底部按钮样式 */
+    .bottom-action {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      padding: 0 20px;
+      padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
+      background-color: transparent;
+    }
+    
+    .bottom-action-area {
+      position: fixed;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      z-index: 20;
+      padding: 0 20px;
+      padding-bottom: calc(env(safe-area-inset-bottom) + 10px);
+    }
+    
+    .button-container {
+      padding-bottom: 14px;
+    }
+    
+    .bottom-button {
+      width: 100%;
+      background-color: #FED11F;
+      color: #000000;
+      font-family: 'PingFang SC', 'SF Pro Display', sans-serif;
+      font-weight: bold;
+      padding: 16px 0;
+      border-radius: 12px;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .bottom-button:active {
+      transform: scale(0.98);
+    }
+    
+    .bottom-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* 统一底部按钮样式 - 确保所有按钮使用相同的样式 */
+    .next-button,
+    .continue-button {
+      width: 100%;
+      background-color: #FED11F;
+      color: #000000;
+      font-family: 'PingFang SC', 'SF Pro Display', sans-serif;
+      font-weight: bold;
+      padding: 16px 0;
+      border-radius: 12px;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .next-button:active,
+    .continue-button:active {
+      transform: scale(0.98);
+    }
+    
+    .next-button:disabled,
+    .continue-button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
@@ -353,9 +543,13 @@
       line-height: 1.4;
     }
   </style>
-  <script type="module" crossorigin src="./assets/index-DvkUZ3iz.js"></script>
+  <script type="module" src="./assets/main.js"></script>
 </head>
 <body>
+  <div class="mesh-gradient-bg" id="meshGradientBg">
+    <div class="gradient-element gradient-element-1"></div>
+    <div class="gradient-element gradient-element-2"></div>
+  </div>
   <div id="app"></div>
 </body>
 </html>

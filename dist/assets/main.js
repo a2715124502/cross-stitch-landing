@@ -3026,7 +3026,7 @@ function renderSubscriptionPage() {
       <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; padding-bottom: 10px; overflow-y: auto;">
         <!-- Hero Section -->
         <div class="hero-section">
-          <img class="hero-image" src="./clip/pic/31013c4f30c499704b74a387b332a2ce.webp" alt="十字绣涂色艺术" onerror="this.onerror=null; this.src='./clip/pic/31013c4f30c499704b74a387b332a2ce.jpg'; this.classList.add('fallback-jpg');">
+          <img class="hero-image" src="./clip/pic/31013c4f30c499704b74a387b332a2ce.webp" alt="十字绣涂色艺术">
           <div class="hero-gradient"></div>
         </div>
         
@@ -3137,7 +3137,6 @@ function renderSubscriptionPage() {
       animation: fadeInUp 0.2s ease forwards;
       animation-delay: 0.1s;
       opacity: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
     
     .hero-image {

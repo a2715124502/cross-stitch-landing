@@ -63,11 +63,34 @@
       }
     },
     "q5": {
-      "title": "¿Qué paletas resuenan más contigo?"
+      "title": "Se trata de color y pinceles",
+      "subtitle": "Encuentra las herramientas para tu historia",
+      "continue": "Continuar"
     },
     "q6": {
-      "title": "Elige tus pinceles"
+      "title": "Elige tus pinceles",
+      "continue": "Continuar"
     }
+  },
+  "palettes": {
+    "basic": "Básico",
+    "skin": "Piel",
+    "makeup": "Maquillaje",
+    "galaxy": "Galaxia",
+    "fabric": "Tela",
+    "lips": "Labios",
+    "rainbow": "Arcoíris",
+    "sky": "Cielo"
+  },
+  "brushes": {
+    "small": "Pincel Pequeño",
+    "big": "Pincel Grande",
+    "spray": "Spray",
+    "watercolor": "Acuarela",
+    "ballpoint": "Bolígrafo",
+    "pencil": "Lápiz",
+    "pastel": "Pastel",
+    "splash": "Salpicadura"
   },
   "subscription": {
     "choose_plan": "Elige tu plan",

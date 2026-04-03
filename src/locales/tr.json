@@ -63,11 +63,34 @@
       }
     },
     "q5": {
-      "title": "Hangi paletler sizinle daha çok rezonansa giriyor?"
+      "title": "Hepsi renk ve fırçalarla ilgili",
+      "subtitle": "Hikayeniz için araçları bulun",
+      "continue": "Devam"
     },
     "q6": {
-      "title": "Fırçalarınızı seçin"
+      "title": "Fırçalarınızı seçin",
+      "continue": "Devam"
     }
+  },
+  "palettes": {
+    "basic": "Temel",
+    "skin": "Cilt",
+    "makeup": "Makyaj",
+    "galaxy": "Galaksi",
+    "fabric": "Kumaş",
+    "lips": "Dudak",
+    "rainbow": "Gökkuşağı",
+    "sky": "Gökyüzü"
+  },
+  "brushes": {
+    "small": "Küçük Fırça",
+    "big": "Büyük Fırça",
+    "spray": "Sprey",
+    "watercolor": "Suluboya",
+    "ballpoint": "Tükenmez Kalem",
+    "pencil": "Kurşun Kalem",
+    "pastel": "Pastel",
+    "splash": "Sıçrama"
   },
   "subscription": {
     "choose_plan": "Planınızı Seçin",

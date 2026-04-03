@@ -63,11 +63,34 @@
       }
     },
     "q5": {
-      "title": "哪些調色板最能引起你的共鳴？"
+      "title": "這全是關於顏色和畫筆的",
+      "subtitle": "找到你故事的工具",
+      "continue": "繼續"
     },
     "q6": {
-      "title": "選擇你的畫筆"
+      "title": "選擇你的畫筆",
+      "continue": "繼續"
     }
+  },
+  "palettes": {
+    "basic": "基礎",
+    "skin": "膚色",
+    "makeup": "化妝",
+    "galaxy": "銀河",
+    "fabric": "織物",
+    "lips": "嘴唇",
+    "rainbow": "彩虹",
+    "sky": "天空"
+  },
+  "brushes": {
+    "small": "小刷子",
+    "big": "大刷子",
+    "spray": "噴霧",
+    "watercolor": "水彩畫",
+    "ballpoint": "圓珠筆",
+    "pencil": "鉛筆",
+    "pastel": "粉彩",
+    "splash": "飛濺"
   },
   "subscription": {
     "choose_plan": "選擇你的計劃",

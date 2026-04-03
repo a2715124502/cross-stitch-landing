@@ -63,11 +63,34 @@
       }
     },
     "q5": {
-      "title": "Palet mana yang paling beresonansi dengan Anda?"
+      "title": "Ini semua tentang warna dan kuas",
+      "subtitle": "Temukan alat untuk cerita Anda",
+      "continue": "Lanjutkan"
     },
     "q6": {
-      "title": "Pilih kuas Anda"
+      "title": "Pilih kuas Anda",
+      "continue": "Lanjutkan"
     }
+  },
+  "palettes": {
+    "basic": "Dasar",
+    "skin": "Kulit",
+    "makeup": "Makeup",
+    "galaxy": "Galaksi",
+    "fabric": "Kain",
+    "lips": "Bibir",
+    "rainbow": "Pelangi",
+    "sky": "Langit"
+  },
+  "brushes": {
+    "small": "Sikat Kecil",
+    "big": "Sikat Besar",
+    "spray": "Semprotan",
+    "watercolor": "Cat Air",
+    "ballpoint": "Bolpoin",
+    "pencil": "Pensil",
+    "pastel": "Pastel",
+    "splash": "Percikan"
   },
   "subscription": {
     "choose_plan": "Pilih Paket Anda",

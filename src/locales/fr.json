@@ -63,11 +63,34 @@
       }
     },
     "q5": {
-      "title": "Quelles palettes vous parlent le plus ?"
+      "title": "C'est tout une question de couleur et de pinceaux",
+      "subtitle": "Trouvez les outils pour votre histoire",
+      "continue": "Continuer"
     },
     "q6": {
-      "title": "Choisissez vos pinceaux"
+      "title": "Choisissez vos pinceaux",
+      "continue": "Continuer"
     }
+  },
+  "palettes": {
+    "basic": "Basique",
+    "skin": "Peau",
+    "makeup": "Maquillage",
+    "galaxy": "Galaxie",
+    "fabric": "Tissu",
+    "lips": "Lèvres",
+    "rainbow": "Arc-en-ciel",
+    "sky": "Ciel"
+  },
+  "brushes": {
+    "small": "Petit Pinceau",
+    "big": "Grand Pinceau",
+    "spray": "Spray",
+    "watercolor": "Aquarelle",
+    "ballpoint": "Bille",
+    "pencil": "Crayon",
+    "pastel": "Pastel",
+    "splash": "Éclaboussure"
   },
   "subscription": {
     "choose_plan": "Choisissez votre plan",

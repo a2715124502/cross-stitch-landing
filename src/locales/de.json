@@ -63,11 +63,34 @@
       }
     },
     "q5": {
-      "title": "Welche Paletten sprechen Sie am meisten an?"
+      "title": "Es geht um Farbe und Pinsel",
+      "subtitle": "Finden Sie die Werkzeuge für Ihre Geschichte",
+      "continue": "Weiter"
     },
     "q6": {
-      "title": "Wählen Sie Ihre Pinsel"
+      "title": "Wählen Sie Ihre Pinsel",
+      "continue": "Weiter"
     }
+  },
+  "palettes": {
+    "basic": "Basisch",
+    "skin": "Haut",
+    "makeup": "Make-up",
+    "galaxy": "Galaxie",
+    "fabric": "Stoff",
+    "lips": "Lippen",
+    "rainbow": "Regenbogen",
+    "sky": "Himmel"
+  },
+  "brushes": {
+    "small": "Kleiner Pinsel",
+    "big": "Großer Pinsel",
+    "spray": "Spray",
+    "watercolor": "Aquarell",
+    "ballpoint": "Kugelschreiber",
+    "pencil": "Bleistift",
+    "pastel": "Pastell",
+    "splash": "Spritzer"
   },
   "subscription": {
     "choose_plan": "Wählen Sie Ihren Plan",

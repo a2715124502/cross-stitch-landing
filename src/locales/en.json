@@ -63,11 +63,34 @@
       }
     },
     "q5": {
-      "title": "Which palettes resonate with you most?"
+      "title": "This is all about color and brushes",
+      "subtitle": "Find the tools for your story",
+      "continue": "Continue"
     },
     "q6": {
-      "title": "Choose your brushes"
+      "title": "Choose your brushes",
+      "continue": "Continue"
     }
+  },
+  "palettes": {
+    "basic": "Basic",
+    "skin": "Skin",
+    "makeup": "Makeup",
+    "galaxy": "Galaxy",
+    "fabric": "Fabric",
+    "lips": "Lips",
+    "rainbow": "Rainbow",
+    "sky": "Sky"
+  },
+  "brushes": {
+    "small": "Small Brush",
+    "big": "Big Brush",
+    "spray": "Spray",
+    "watercolor": "Watercolor",
+    "ballpoint": "Ballpoint",
+    "pencil": "Pencil",
+    "pastel": "Pastel",
+    "splash": "Splash"
   },
   "subscription": {
     "choose_plan": "Choose your plan",

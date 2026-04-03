@@ -63,11 +63,34 @@
       }
     },
     "q5": {
-      "title": "どのパレットがあなたと最も共鳴しますか？"
+      "title": "色とブラシについてです",
+      "subtitle": "あなたのストーリーの道具を見つけよう",
+      "continue": "続ける"
     },
     "q6": {
-      "title": "ブラシを選択"
+      "title": "ブラシを選択",
+      "continue": "続ける"
     }
+  },
+  "palettes": {
+    "basic": "基本",
+    "skin": "肌",
+    "makeup": "メイク",
+    "galaxy": "銀河",
+    "fabric": "布",
+    "lips": "唇",
+    "rainbow": "虹",
+    "sky": "空"
+  },
+  "brushes": {
+    "small": "小さなブラシ",
+    "big": "大きなブラシ",
+    "spray": "スプレ",
+    "watercolor": "水彩",
+    "ballpoint": "ボールペン",
+    "pencil": "鉛筆",
+    "pastel": "パステル",
+    "splash": "はね"
   },
   "subscription": {
     "choose_plan": "プランを選択",

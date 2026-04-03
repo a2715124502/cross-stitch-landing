@@ -185,40 +185,40 @@ function updateProgressBar(questionNumber) {
   }
 }
 
-// 风格选项
+// 风格选项 (使用翻译key)
 const styleOptions = [
-  { id: 'animals', label: '动物', image: generateImageUrl('cute animals cross stitch pattern') },
-  { id: 'comics', label: '漫画', image: generateImageUrl('comic book cross stitch pattern') },
-  { id: 'people', label: '人们', image: generateImageUrl('people cross stitch pattern') },
-  { id: 'cute', label: '可爱', image: generateImageUrl('cute cartoon cross stitch pattern') },
-  { id: 'food', label: '食物', image: generateImageUrl('food cross stitch pattern') },
-  { id: 'mandala', label: '曼茶罗', image: generateImageUrl('mandala cross stitch pattern') },
-  { id: 'flowers', label: '花', image: generateImageUrl('flower cross stitch pattern') },
-  { id: 'simple', label: '简单', image: generateImageUrl('simple cross stitch pattern') }
+  { id: 'animals', labelKey: 'questions.q3.option.animals', image: generateImageUrl('cute animals cross stitch pattern') },
+  { id: 'comics', labelKey: 'questions.q3.option.comics', image: generateImageUrl('comic book cross stitch pattern') },
+  { id: 'people', labelKey: 'questions.q3.option.people', image: generateImageUrl('people cross stitch pattern') },
+  { id: 'cute', labelKey: 'questions.q3.option.cute', image: generateImageUrl('cute cartoon cross stitch pattern') },
+  { id: 'food', labelKey: 'questions.q3.option.food', image: generateImageUrl('food cross stitch pattern') },
+  { id: 'mandala', labelKey: 'questions.q3.option.mandala', image: generateImageUrl('mandala cross stitch pattern') },
+  { id: 'flowers', labelKey: 'questions.q3.option.flowers', image: generateImageUrl('flower cross stitch pattern') },
+  { id: 'simple', labelKey: 'questions.q3.option.simple', image: generateImageUrl('simple cross stitch pattern') }
 ];
 
-// 调色板选项
+// 调色板选项 (使用翻译key)
 const paletteOptions = [
-  { id: 'basic', label: '基础', image: generateImageUrl('basic color palette for cross stitch') },
-  { id: 'skin', label: '肤色', image: generateImageUrl('skin tone color palette for cross stitch') },
-  { id: 'makeup', label: '化妆', image: generateImageUrl('makeup color palette for cross stitch') },
-  { id: 'galaxy', label: '银河', image: generateImageUrl('galaxy color palette for cross stitch') },
-  { id: 'fabric', label: '织物', image: generateImageUrl('fabric color palette for cross stitch') },
-  { id: 'lips', label: '嘴唇', image: generateImageUrl('lip color palette for cross stitch') },
-  { id: 'rainbow', label: '彩虹', image: generateImageUrl('rainbow color palette for cross stitch') },
-  { id: 'sky', label: '天空', image: generateImageUrl('sky color palette for cross stitch') }
+  { id: 'basic', labelKey: 'palettes.basic', image: generateImageUrl('basic color palette for cross stitch') },
+  { id: 'skin', labelKey: 'palettes.skin', image: generateImageUrl('skin tone color palette for cross stitch') },
+  { id: 'makeup', labelKey: 'palettes.makeup', image: generateImageUrl('makeup color palette for cross stitch') },
+  { id: 'galaxy', labelKey: 'palettes.galaxy', image: generateImageUrl('galaxy color palette for cross stitch') },
+  { id: 'fabric', labelKey: 'palettes.fabric', image: generateImageUrl('fabric color palette for cross stitch') },
+  { id: 'lips', labelKey: 'palettes.lips', image: generateImageUrl('lip color palette for cross stitch') },
+  { id: 'rainbow', labelKey: 'palettes.rainbow', image: generateImageUrl('rainbow color palette for cross stitch') },
+  { id: 'sky', labelKey: 'palettes.sky', image: generateImageUrl('sky color palette for cross stitch') }
 ];
 
-// 笔刷选项
+// 笔刷选项 (使用翻译key)
 const brushOptions = [
-  { id: 'small', label: '小刷子', image: generateImageUrl('small brush for cross stitch') },
-  { id: 'big', label: '大刷子', image: generateImageUrl('big brush for cross stitch') },
-  { id: 'spray', label: '喷雾', image: generateImageUrl('spray brush for cross stitch') },
-  { id: 'watercolor', label: '水彩画', image: generateImageUrl('watercolor brush for cross stitch') },
-  { id: 'ballpoint', label: '圆珠笔', image: generateImageUrl('ballpoint pen for cross stitch') },
-  { id: 'pencil', label: '铅笔', image: generateImageUrl('pencil for cross stitch') },
-  { id: 'pastel', label: '粉彩', image: generateImageUrl('pastel for cross stitch') },
-  { id: 'splash', label: '飞溅', image: generateImageUrl('splash brush for cross stitch') }
+  { id: 'small', labelKey: 'brushes.small', image: generateImageUrl('small brush for cross stitch') },
+  { id: 'big', labelKey: 'brushes.big', image: generateImageUrl('big brush for cross stitch') },
+  { id: 'spray', labelKey: 'brushes.spray', image: generateImageUrl('spray brush for cross stitch') },
+  { id: 'watercolor', labelKey: 'brushes.watercolor', image: generateImageUrl('watercolor brush for cross stitch') },
+  { id: 'ballpoint', labelKey: 'brushes.ballpoint', image: generateImageUrl('ballpoint pen for cross stitch') },
+  { id: 'pencil', labelKey: 'brushes.pencil', image: generateImageUrl('pencil for cross stitch') },
+  { id: 'pastel', labelKey: 'brushes.pastel', image: generateImageUrl('pastel for cross stitch') },
+  { id: 'splash', labelKey: 'brushes.splash', image: generateImageUrl('splash brush for cross stitch') }
 ];
 
 // 页面过渡动画 CSS
@@ -2088,15 +2088,15 @@ function renderOnboardingPage4() {
       <footer class="bottom-action">
         <div class="text-center space-y-2 mb-8">
           <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; font-weight: bold; color: #000000; line-height: 1.2; text-align: center; font-family: 'PingFang SC', sans-serif;">
-            这全是关于颜色和<br>画笔的
+            ${t('questions.q5.title')}
           </h1>
           <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px; color: #888888; font-weight: normal; text-align: center; font-family: 'PingFang SC', sans-serif;">
-            找到你故事的工具
+            ${t('questions.q5.subtitle')}
           </p>
         </div>
         <div class="button-container">
           <button style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;" class="continue-button bottom-button" onclick="nextPage()">
-            继续
+            ${t('questions.q5.continue')}
           </button>
         </div>
       </footer>
@@ -2152,7 +2152,7 @@ function renderQuestionPage5() {
               <div style="background-color: #FFDBAC;"></div>
               <div style="background-color: #F1C27D;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">肤色</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('palettes.skin')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2186,7 +2186,7 @@ function renderQuestionPage5() {
               <div style="background-color: #000000;"></div>
               <div style="background-color: #303F9F;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">银河</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('palettes.galaxy')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2237,7 +2237,7 @@ function renderQuestionPage5() {
               <div style="background-color: #9C27B0;"></div>
               <div style="background-color: #FF9800;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">彩虹</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('palettes.rainbow')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2267,7 +2267,7 @@ function renderQuestionPage5() {
       <footer class="bottom-action" id="palette-bottom-action" style="opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">
         <div class="button-container">
           <button class="bottom-button" onclick="nextPage()">
-            下一步
+            ${t('common.next')}
           </button>
         </div>
       </footer>
@@ -2440,7 +2440,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('small')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="whimsical illustration of a tiny delicate paintbrush" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLZgvpduIoeZlsTYWY2YRoXatKKSJgNBT99vzMxj5onYKCUlok8_cbzlK_VdgS7UL3-HYM8MCNpVAZ-Lkr7viEB_aLktJ9k7p9BW2WJ3jTjdbAjnQ76KrwYHpNGRGIZNH1_lU-ezXCQxKHgFphyZmKYDyLAl2SNgzRcouNNI5Je2I_PSyT6NlTHfGz9ckb2gCBnn5MaaNg7648SJVLTDnRmgFXZ1jrc7Zw9lyiBcqo74eepHvV7yvglNzO7GOt-y8pMSd1LQMdyeAV">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">小刷子</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('brushes.small')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2462,7 +2462,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('spray')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="colorful spray paint can" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-QYiA69yqPcwAoDJGF4bU2yBIU2-tIvZkbqWEZXX_tTZW1MPKfskfV8o-I6GrQcyPze4_DXAjrvQzTTqsN8dUNkML_7mpXizNA9OOjXw2QkDbulrUZYvUVNhnWpWQdVnvrkKcJSHm3b6SeGPg7Ga3fV-EmheojDvarBbTUxoykaa_Yhl115QvEeMpiqa9lN-COkSZwQJ1DEHNbOzmDViDZOfWMA6l-atwSR58fMFdo8ATeZ9F-25OE0o5JD4WzoIrTZbwoHk5toDr">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">喷雾</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('brushes.spray')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2484,7 +2484,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('ballpoint')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="sleek blue ballpoint pen" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJwEHDaNVZdodf-lrbhSETEYX417n13bS01fHhgt-f5XvT1tZ2v3OrEzc-vHeW3SxEsGQPid5WND7x9qrdteud1GcEGDWvVMsAZS1QRKc-HoiQy673NBoAwTS8wK-Pia2Y_av5qrVT8EC2k2I5vzquo4HeCnHh0ew4BGqf51M47MCt23AUbAMUsBQms2eBcrnzwhvrZV_d8_7hauVl-LIWIpOLfq-sabKQuXdFNZ459J8lMKONf7uq-7cH-FjcdDeG_xXolbfHeeLf">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">圆珠笔</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('brushes.ballpoint')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2495,7 +2495,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('pencil')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="classic graphite pencil" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfimSDKKlRrGmnnOX1jjAkwkmrxamOFm4nqKpXBGhNYrE8beaODA8QvSGPPlhxW9jyJqDsyR0fQTQYb4TaR44M-zfaq3HNL4ZzXen8pEzuXDSrHhqXk7p1BXl8OBywq6WErd1F5dZ-WVFeT_G2iqqIZq256KeTN7MlczuDKskYznIp6RB5zOrkkeV_4H2zGxwapkElh-VK7KJxNsfaJmAjXsgmdKIGcnNDwx9bzBBIIgAuJk5w3hfT4MTl36C4A1Gtg7tFMl4GGB7n">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">铅笔</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('brushes.pencil')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2517,7 +2517,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('splash')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="dynamic ink splatter effect" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1chEn-9fp1MJr1bipTUflAqZq3GZeVQaNvZUJs3Ui8L1DB-Nl7xA33cqYoD7b_QLdfufQLG1Vi5t39LLeu7ps4zAX6DHcIQqFN76uRforMi46_Lcbh_oyHSNKJinBLOdT5VtBt_D6Vc17sPTOjz7nvT2zMtu9h0nSRB3NP2G8Y1NIPiNNAQn0ML6OE-WNtBUOYIxXZypVRkq9DF7_jgvA0EP5u8iFq9GTCql6jjHQOFgEpObdqobs2DjljWcfBnxwtVFuEA533Es8">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">飞溅</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('brushes.splash')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2530,7 +2530,7 @@ function renderQuestionPage6() {
       <footer class="bottom-action" id="brush-bottom-action" style="opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">
         <div class="button-container">
           <button class="bottom-button" onclick="nextPage()">
-            继续
+            ${t('questions.q6.continue')}
           </button>
         </div>
       </footer>

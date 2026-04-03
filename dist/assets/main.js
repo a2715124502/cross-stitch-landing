@@ -1,16 +1,59 @@
 // 页面状态管理
-let currentPage = 0; // 从引导页1开始
-const totalPages = 9; // 总页面数（移除了引导页4、问题5、问题6）
-let isTransitioning = false; // 防止动画期间重复触发
+let currentPage = 0;
+const totalPages = 9;
+let isTransitioning = false;
 
-// 进度条状态管理
-let completedQuestions = 0; // 已完成问题数量
-const totalQuestions = 4; // 总问题数（移除了问题5和问题6）
+let completedQuestions = 0;
+const totalQuestions = 4;
+
+const progressStore = {
+  completedQuestions: 0,
+  totalQuestions: 4,
+  save() {
+    try {
+      localStorage.setItem('crossstitch_progress', JSON.stringify({
+        completedQuestions: this.completedQuestions
+      }));
+    } catch (e) {
+      console.warn('Failed to save progress:', e);
+    }
+  },
+  load() {
+    try {
+      const saved = localStorage.getItem('crossstitch_progress');
+      if (saved) {
+        const data = JSON.parse(saved);
+        this.completedQuestions = data.completedQuestions || 0;
+      }
+    } catch (e) {
+      console.warn('Failed to load progress:', e);
+    }
+  }
+};
+
+// 图片URL缓存
+const imageUrlCache = new Map();
+const MAX_CACHE_SIZE = 50;
 
 // 生成图片URL的函数
 function generateImageUrl(prompt, size = 'square') {
+  const cacheKey = `${prompt}-${size}`;
+
+  if (imageUrlCache.has(cacheKey)) {
+    return imageUrlCache.get(cacheKey);
+  }
+
   const encodedPrompt = encodeURIComponent(prompt);
-  return `https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=${encodedPrompt}&image_size=${size}`;
+  const encodedSize = encodeURIComponent(size);
+  const url = `https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=${encodedPrompt}&image_size=${encodedSize}`;
+
+  if (imageUrlCache.size >= MAX_CACHE_SIZE) {
+    const firstKey = imageUrlCache.keys().next().value;
+    imageUrlCache.delete(firstKey);
+  }
+  imageUrlCache.set(cacheKey, url);
+
+  return url;
 }
 
 // 共享CSS样式 - 统一类定义
@@ -82,6 +125,17 @@ const sharedStyles = `
     }
   }
 
+  @-webkit-keyframes fadeInUp {
+    from {
+      -webkit-transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      -webkit-transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   @keyframes fadeOutUp {
     from {
       transform: translateY(0);
@@ -89,6 +143,17 @@ const sharedStyles = `
     }
     to {
       transform: translateY(-50px);
+      opacity: 0;
+    }
+  }
+
+  @-webkit-keyframes fadeOutUp {
+    from {
+      -webkit-transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      -webkit-transform: translateY(-50px);
       opacity: 0;
     }
   }
@@ -121,6 +186,8 @@ const sharedStyles = `
 `;
 
 // 注入共享样式
+const injectedPageStyles = new Set();
+
 function injectSharedStyles() {
   const styleId = 'shared-unified-styles';
   if (!document.getElementById(styleId)) {
@@ -129,6 +196,28 @@ function injectSharedStyles() {
     style.textContent = sharedStyles;
     document.head.appendChild(style);
   }
+}
+
+function injectPageStyle(styleId, styleContent) {
+  const existingStyle = document.getElementById(styleId);
+  if (existingStyle) {
+    existingStyle.remove();
+  }
+  const style = document.createElement('style');
+  style.id = styleId;
+  style.textContent = styleContent;
+  document.head.appendChild(style);
+  injectedPageStyles.add(styleId);
+}
+
+function cleanupPageStyles() {
+  injectedPageStyles.forEach(styleId => {
+    const style = document.getElementById(styleId);
+    if (style) {
+      style.remove();
+    }
+  });
+  injectedPageStyles.clear();
 }
 
 // 页面加载时注入共享样式
@@ -287,6 +376,7 @@ function renderPage(animate = true) {
   const app = document.getElementById('app');
   const meshBg = document.getElementById('meshGradientBg');
 
+  cleanupPageStyles();
   app.innerHTML = '';
   
   switch(currentPage) {
@@ -334,8 +424,18 @@ function addPageEnterAnimation() {
   }
 }
 
+// 文字动画序列定时器ID存储
+let animationTimerIds = [];
+
+function clearAnimationTimers() {
+  animationTimerIds.forEach(timerId => clearTimeout(timerId));
+  animationTimerIds = [];
+}
+
 // 引导页1 - 产品介绍
 function renderOnboardingPage1() {
+  clearAnimationTimers();
+
   const app = document.getElementById('app');
   
   app.innerHTML = `
@@ -373,41 +473,41 @@ function renderOnboardingPage1() {
   `;
   
   // 文字动画序列
-  setTimeout(() => {
+  animationTimerIds.push(setTimeout(() => {
     const text1 = document.getElementById('text1');
     const text2 = document.getElementById('text2');
-    
+
     if (text1 && text2) {
       text1.style.animation = 'fadeOutUp 0.8s ease forwards';
-      setTimeout(() => {
+      animationTimerIds.push(setTimeout(() => {
         text2.style.animation = 'fadeInUp 0.8s ease forwards';
-      }, 400); // 等待渐出动画完成一半后开始渐入
+      }, 400));
     }
-  }, 2000); // 文字1显示2秒
-  
-  setTimeout(() => {
+  }, 2000));
+
+  animationTimerIds.push(setTimeout(() => {
     const text2 = document.getElementById('text2');
     const text3 = document.getElementById('text3');
-    
+
     if (text2 && text3) {
       text2.style.animation = 'fadeOutUp 0.8s ease forwards';
-      setTimeout(() => {
+      animationTimerIds.push(setTimeout(() => {
         text3.style.animation = 'fadeInUp 0.8s ease forwards';
-      }, 400); // 等待渐出动画完成一半后开始渐入
+      }, 400));
     }
-  }, 4000); // 文字2显示2秒
-  
-  setTimeout(() => {
+  }, 4000));
+
+  animationTimerIds.push(setTimeout(() => {
     const text3 = document.getElementById('text3');
-    
+
     if (text3) {
       text3.style.animation = 'fadeOutUp 0.8s ease forwards';
-      setTimeout(() => {
+      animationTimerIds.push(setTimeout(() => {
         currentPage = 1;
         renderPage();
-      }, 800); // 等待渐出动画完成后跳转
+      }, 800));
     }
-  }, 6000); // 文字3显示2秒
+  }, 6000));
 }
 
 // 引导页2 - 核心功能展示
@@ -951,36 +1051,26 @@ function renderQuestionPage1() {
   document.head.appendChild(style);
   
   // 监听选项选择，启用下一步按钮
-  let isTransitioning = false;
   window.selectOption = function(value) {
-    // 如果正在过渡中，禁止再次选择
-    if (isTransitioning) {
-      return;
-    }
-    
-    // 设置过渡标志
-    isTransitioning = true;
-    
-    // 移除其他选项的选中状态
-    const options = document.querySelectorAll('.option-card');
-    options.forEach(option => {
-      option.classList.remove('selected');
-      option.style.pointerEvents = 'none';
-    });
-    
-    // 添加当前选项的选中状态
-    event.target.closest('.option-card').classList.add('selected');
-    
-    // 更新进度条（从0%更新到17%）
-    updateProgressBar(1);
-    
-    // 延迟0.5秒进入下一页，让用户看到选中效果
-    setTimeout(() => {
-      nextPage();
-      isTransitioning = false;
-    }, 500);
-  };
-}
+      if (isTransitioning) {
+        return;
+      }
+
+      const options = document.querySelectorAll('.option-card');
+      options.forEach(option => {
+        option.classList.remove('selected');
+        option.style.pointerEvents = 'none';
+      });
+
+      event.target.closest('.option-card').classList.add('selected');
+
+      updateProgressBar(1);
+
+      setTimeout(() => {
+        nextPage();
+      }, 500);
+    };
+  }
 
 // 问题页2 - 年龄组选择
 function renderQuestionPage2() {
@@ -1267,33 +1357,23 @@ function renderQuestionPage2() {
   document.head.appendChild(style);
   
   // 监听选项选择
-  let isTransitioning = false;
   window.selectOption = function(value) {
-    // 如果正在过渡中，禁止再次选择
     if (isTransitioning) {
       return;
     }
-    
-    // 设置过渡标志
-    isTransitioning = true;
-    
-    // 移除其他选项的选中状态
+
     const options = document.querySelectorAll('.option-card');
     options.forEach(option => {
       option.classList.remove('selected');
       option.style.pointerEvents = 'none';
     });
-    
-    // 添加当前选项的选中状态
+
     event.target.closest('.option-card').classList.add('selected');
-    
-    // 更新进度条（从17%更新到33%）
+
     updateProgressBar(2);
-    
-    // 延迟0.5秒进入下一页，让用户看到选中效果
+
     setTimeout(() => {
       nextPage();
-      isTransitioning = false;
     }, 500);
   };
 }
@@ -1976,17 +2056,11 @@ function renderQuestionPage4() {
   document.head.appendChild(style);
   
   // 监听选项选择
-  let isTransitioning = false;
   window.selectOption = function(value) {
-    // 如果正在过渡中，禁止再次选择
     if (isTransitioning) {
       return;
     }
-    
-    // 设置过渡标志
-    isTransitioning = true;
-    
-    // 移除其他选项的选中状态
+
     const options = document.querySelectorAll('.option-item');
     options.forEach(option => {
       option.classList.remove('selected');
@@ -2004,8 +2078,7 @@ function renderQuestionPage4() {
         icon.style.fontVariationSettings = '';
       }
     });
-    
-    // 添加当前选项的选中状态
+
     const selectedOption = event.target.closest('.option-item');
     if (selectedOption) {
       selectedOption.classList.add('selected');
@@ -2022,14 +2095,11 @@ function renderQuestionPage4() {
         icon.style.fontVariationSettings = "'FILL' 1";
       }
     }
-    
-    // 更新进度条（从75%更新到100%）
+
     updateProgressBar(4);
-    
-    // 延迟0.5秒进入下一页，让用户看到选中效果
+
     setTimeout(() => {
       nextPage();
-      isTransitioning = false;
     }, 500);
   };
 }
@@ -3137,14 +3207,18 @@ function renderSubscriptionPage() {
       animation: fadeInUp 0.2s ease forwards;
       animation-delay: 0.1s;
       opacity: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    
+
     .hero-image {
-      width: 100%;
-      height: 100%;
+      width: auto;
+      height: auto;
+      max-width: 100%;
       max-height: 40vh;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
     }
     
@@ -3283,26 +3357,75 @@ function renderSubscriptionPage() {
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    
+
     /* iPad specific styles */
     @media only screen and (min-width: 768px) and (max-width: 1024px) {
       .hero-section {
-        min-height: 250px;
-        max-height: 35vh;
+        min-height: 200px;
+        max-height: 280px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 0;
       }
-      
+
+      .hero-image {
+        max-height: 280px;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+        margin-top: -30px;
+      }
+
       .subscription-content-container {
         max-width: 500px;
       }
     }
-    
+
+    /* iPad Pro specific styles */
+    @media only screen and (min-width: 1024px) and (max-width: 1366px) {
+      .hero-section {
+        min-height: 250px;
+        max-height: 320px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 0;
+      }
+
+      .hero-image {
+        max-height: 320px;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+        margin-top: -40px;
+      }
+
+      .subscription-content-container {
+        max-width: 500px;
+      }
+    }
+
     /* Desktop styles */
-    @media only screen and (min-width: 1025px) {
+    @media only screen and (min-width: 1367px) {
       .hero-section {
         min-height: 300px;
-        max-height: 30vh;
+        max-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      
+
+      .hero-image {
+        max-height: 400px;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+      }
+
       .subscription-content-container {
         max-width: 500px;
       }

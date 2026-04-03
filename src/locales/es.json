@@ -1,0 +1,87 @@
+{
+  "common": {
+    "skip": "Omitir",
+    "continue": "Continuar",
+    "next": "Siguiente",
+    "back": "Volver",
+    "start": "Empezar",
+    "subscribe_now": "Suscribirse"
+  },
+  "onboarding": {
+    "welcome": "Bienvenido a Cross Stitch",
+    "subtitle": "Relájate y libera tu creatividad a través del coloreado",
+    "feature_count": "100M",
+    "feature_desc": "Artistas Felices",
+    "testimonial": "Esta es mi mejor manera de relajarme cada día. Cross Stitch hace mi vida más plena"
+  },
+  "questions": {
+    "q1": {
+      "title": "¿Cuál es tu género?",
+      "subtitle": "Esto nos ayuda a personalizar tu experiencia.",
+      "option": {
+        "female": "Femenino",
+        "male": "Masculino",
+        "other": "Otro"
+      }
+    },
+    "q2": {
+      "title": "¿Cuál es tu grupo de edad?",
+      "subtitle": "Esto nos ayuda a recomendar estilos relevantes.",
+      "option": {
+        "under14": "Menos de 14",
+        "range1": "14-20",
+        "range2": "20-25",
+        "range3": "26-35",
+        "range4": "36-50",
+        "over50": "Más de 50"
+      }
+    },
+    "q3": {
+      "title": "¿Qué estilo te inspira más?",
+      "subtitle": "Descubre tus fortalezas creativas a través de cuatro preguntas",
+      "option": {
+        "animals": "Animales",
+        "art": "Arte",
+        "flowers": "Flores",
+        "nature": "Naturaleza",
+        "pets": "Mascotas",
+        "celebration": "Celebración",
+        "food": "Comida",
+        "super_size": "Súper Tamaño"
+      }
+    },
+    "q4": {
+      "title": "¿Cuáles son tus objetivos?",
+      "subtitle": "Esto nos ayuda a personalizar tu experiencia.",
+      "option": {
+        "relax": "Relajarme",
+        "fun": "Divertirme",
+        "creativity": "Expresar mi creatividad",
+        "disconnect": "Desconectar mi cerebro",
+        "skills": "Desarrollar mis habilidades de coloración",
+        "other": "Otro"
+      }
+    },
+    "q5": {
+      "title": "¿Qué paletas resuenan más contigo?"
+    },
+    "q6": {
+      "title": "Elige tus pinceles"
+    }
+  },
+  "subscription": {
+    "choose_plan": "Elige tu plan",
+    "unlimited_access": "Acceso ilimitado a todas las categorías e imágenes, importación ilimitada de imágenes",
+    "weekly": "Semanal",
+    "yearly": "Anual",
+    "best_value": "Mejor Valor",
+    "terms": "Todas las opciones de suscripción son suscripciones con renovación automática. La tarifa de suscripción se cargará a tu cuenta Apple cuando confirmes tu compra o cuando finalice tu período de prueba. Si no deseas renovar, recuerda cancelar al menos 24 horas antes del vencimiento de la suscripción o del período de prueba gratuito. Puedes gestionar tus suscripciones en cualquier momento en la configuración de tu cuenta Apple.",
+    "terms_of_service": "Términos de Servicio",
+    "privacy_policy": "Política de Privacidad",
+    "restore_purchase": "Restaurar Compra"
+  },
+  "language": {
+    "select_language": "Seleccionar Idioma",
+    "current_language": "Idioma Actual"
+  }
+}

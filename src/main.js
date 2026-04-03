@@ -1,3 +1,6 @@
+// i18n 导入
+import { t, setLanguage, getCurrentLanguage, initLanguage, availableLanguages } from './i18n/translator.js';
+
 // 页面状态管理
 let currentPage = 0; // 从引导页1开始
 const totalPages = 9; // 总页面数（移除了引导页4、问题5、问题6）
@@ -6,6 +9,25 @@ let isTransitioning = false; // 防止动画期间重复触发
 // 进度条状态管理
 let completedQuestions = 0; // 已完成问题数量
 const totalQuestions = 4; // 总问题数（移除了问题5和问题6）
+
+// 初始化语言设置
+const currentLang = initLanguage();
+
+// 语言切换处理函数
+window.handleLanguageChange = function(lang) {
+  setLanguage(lang);
+  // 重新渲染当前页面
+  if (currentPage === 0) renderOnboardingPage1();
+  else if (currentPage === 1) renderOnboardingPage2();
+  else if (currentPage === 2) renderOnboardingPage3();
+  else if (currentPage === 3) renderQuestionPage1();
+  else if (currentPage === 4) renderQuestionPage2();
+  else if (currentPage === 5) renderQuestionPage3();
+  else if (currentPage === 6) renderQuestionPage4();
+  else if (currentPage === 7) renderQuestionPage5();
+  else if (currentPage === 8) renderQuestionPage6();
+  else if (currentPage === 9) renderSubscriptionPage();
+};
 
 // 生成图片URL的函数
 function generateImageUrl(prompt, size = 'square') {
@@ -340,12 +362,12 @@ function renderOnboardingPage1() {
   
   app.innerHTML = `
     <div class="container" style="position: relative; display: flex; align-items: center; justify-content: center;">
-      <div 
+      <div
         id="text1"
         style="animation: fadeInUp 0.8s ease forwards; position: absolute; text-align: center; width: 100%; max-width: 335px;"
       >
-        <h1 style="font-size: 32px; white-space: nowrap; margin-bottom: 8px;" class="title">欢迎来到Cross Stitch</h1>
-        <p style="margin-top: 8px;" class="subtitle">在这里，你可以通过填色来放松心情，释放创造力，成为真正的艺术家</p>
+        <h1 style="font-size: 32px; white-space: nowrap; margin-bottom: 8px;" class="title">${t('onboarding.welcome')}</h1>
+        <p style="margin-top: 8px;" class="subtitle">${t('onboarding.subtitle')}</p>
       </div>
       
       <div 
@@ -355,19 +377,19 @@ function renderOnboardingPage1() {
         <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin: 0 auto;">
           <svg t="1774519416064" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1694" width="48" height="48"><path d="M554.92 162.9c10.18 10.44 32.76 7.23 59.24-8.41 26.48-15.64 52.83-41.34 69.14-67.42 16.3-26.08 20.07-48.57 9.89-59.01-10.18-10.44-32.76-7.23-59.24 8.41-26.48 15.65-52.83 41.35-69.14 67.43-16.3 26.08-20.07 48.57-9.89 59z m0 0M494.33 262.41c2.97 14.28 23.73 23.71 54.47 24.76 30.74 1.05 66.78-6.45 94.55-19.67 27.77-13.22 43.04-30.16 40.07-44.44-2.97-14.27-23.73-23.71-54.47-24.76-30.74-1.05-66.78 6.45-94.55 19.67-27.77 13.23-43.04 30.17-40.07 44.44z m0 0M424.36 150.64c2.56 34.4 12.68 65.62 26.55 81.89 13.87 16.27 29.38 15.11 40.69-3.03 11.31-18.14 16.7-50.51 14.14-84.92-2.56-34.41-12.68-65.62-26.55-81.89-13.87-16.27-29.38-15.11-40.69 3.03-11.31 18.14-16.7 50.51-14.14 84.92z m0 0M426.3 401.09c5.03 13.68 26.95 19.98 57.51 16.51 30.56-3.46 65.11-16.17 90.64-33.32s38.16-36.14 33.12-49.82c-5.03-13.69-26.95-19.98-57.51-16.51-30.56 3.46-65.12 16.17-90.64 33.32-25.52 17.14-38.15 36.13-33.12 49.82z m0 0M341.03 302.08c11.71 52.03 39.03 90.2 61.01 85.26 21.98-4.95 30.31-51.14 18.6-103.17-11.71-52.03-39.03-90.2-61.01-85.25-21.98 4.94-30.31 51.13-18.6 103.16z m0 0M425.92 566.28c9.45 11.09 32.2 9.41 59.67-4.43s55.48-37.71 73.49-62.65c18.01-24.93 23.28-47.12 13.82-58.21-9.46-11.1-32.2-9.41-59.67 4.42s-55.48 37.72-73.49 62.65c-18.01 24.93-23.28 47.13-13.82 58.22z m0 0M311.48 502.97c29.01 44.75 67.85 71.1 86.76 58.84 18.91-12.26 10.72-58.47-18.28-103.23-29.01-44.76-67.85-71.1-86.76-58.84-18.92 12.26-10.73 58.48 18.28 103.23z m0 0M475.69 723.78c12.67 7.21 33.48-2.12 54.59-24.48 21.11-22.36 39.32-54.36 47.76-83.93 8.44-29.57 5.84-52.23-6.83-59.44-12.67-7.21-33.48 2.12-54.59 24.48-21.11 22.36-39.32 54.36-47.76 83.93-8.45 29.58-5.84 52.24 6.83 59.44z m0 0M346.24 702.24c42.51 32.21 88.01 43.75 101.61 25.79 13.61-17.96-9.82-58.63-52.34-90.83-42.51-32.21-88.01-43.75-101.61-25.78-13.61 17.95 9.82 58.62 52.34 90.82z m0 0M584.76 856.77c22.39 2.57 45.48-38.29 51.57-91.27 6.09-52.98-7.11-98.02-29.5-100.6-22.39-2.57-45.48 38.29-51.57 91.27-6.09 52.99 7.11 98.02 29.5 100.6z m0 0M457.99 889.39c51.73 12.96 98.11 5.74 103.58-16.12 5.48-21.86-32.02-50.08-83.76-63.04s-98.11-5.74-103.59 16.12c-5.46 21.86 32.04 50.08 83.77 63.04z m0 0M658.45 851.41c6.05 52.99 29.1 93.87 51.49 91.32 22.39-2.55 35.64-47.59 29.59-100.57-6.05-52.99-29.1-93.87-51.49-91.31-22.39 2.55-35.64 47.57-29.59 100.56z m0 0M593.72 1001.97c34.5 0.59 66.51-6.63 83.98-18.96 17.47-12.32 17.73-27.88 0.7-40.8-17.03-12.92-48.78-21.25-83.28-21.84-34.5-0.59-66.51 6.63-83.98 18.96-17.47 12.32-17.73 27.88-0.7 40.8 17.04 12.92 48.78 21.24 83.28 21.84z m0 0" fill="#B5B5B5" p-id="1695"></path></svg>
           <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-            <h2 style="font-size: 28px; font-weight: bold; color: #000000; line-height: 1.2;" class="title">100M</h2>
-            <p class="subtitle">快乐的艺术家</p>
+            <h2 style="font-size: 28px; font-weight: bold; color: #000000; line-height: 1.2;" class="title">${t('onboarding.feature_count')}</h2>
+            <p class="subtitle">${t('onboarding.feature_desc')}</p>
           </div>
           <svg t="1774519452716" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1836" width="48" height="48"><path d="M371.99 124.79c38.21 37.27 81.95 54.39 97.7 38.24 15.74-16.14-2.46-59.45-40.68-96.71-38.21-37.27-81.96-54.39-97.7-38.25-15.75 16.16 2.47 59.46 40.68 96.72z m0 0M429.03 281.36c52.25 10.88 98.34 1.79 102.94-20.29 4.59-22.08-34.05-48.8-86.3-59.67-52.26-10.87-98.35-1.79-102.94 20.29-4.6 22.08 34.04 48.79 86.3 59.67z m0 0M551.57 243.35c22.49 1.67 43.94-40.12 47.89-93.35 3.96-53.23-11.06-97.73-33.55-99.41-22.49-1.67-43.94 40.12-47.89 93.35-3.96 53.23 11.06 97.73 33.55 99.41z m0 0M494.35 406.27c50.1 18.42 97.02 16.18 104.8-4.98 7.78-21.17-26.52-53.26-76.62-71.68-50.1-18.42-97.02-16.18-104.8 4.99-7.79 21.17 26.52 53.25 76.62 71.67z m0 0M623.46 387.55c14.23 3.21 31.43-11.8 45.12-39.37 13.68-27.57 21.78-63.52 21.23-94.29-0.55-30.78-9.66-51.71-23.9-54.91-14.23-3.2-31.43 11.81-45.12 39.38-13.68 27.57-21.77 63.52-21.22 94.29 0.55 30.77 9.65 51.7 23.89 54.9z m0 0M498.87 533.64c40.62 34.63 85.41 48.78 100.04 31.62 14.63-17.16-6.44-59.15-47.06-93.78-40.62-34.62-85.41-48.78-100.04-31.62-14.63 17.17 6.44 59.15 47.06 93.78z m0 0M626.62 560.34c12.24 7.94 33.57-0.19 55.96-21.31 22.39-21.13 42.43-52.05 52.57-81.11 10.14-29.06 8.84-51.85-3.4-59.79-12.24-7.94-33.57 0.19-55.96 21.31-22.39 21.13-42.43 52.04-52.57 81.11-10.15 29.07-8.85 51.86 3.4 59.79z m0 0M465.46 660.22c26.41 46.39 63.7 74.95 83.3 63.8 19.6-11.16 14.09-57.81-12.31-104.2s-63.69-74.95-83.29-63.8c-19.62 11.16-14.11 57.81 12.3 104.2z m0 0M576.22 728.09c8.81 11.63 31.63 11.26 59.87-0.98s57.61-34.49 77.05-58.36c19.43-23.87 25.98-45.74 17.16-57.37-8.81-11.63-31.63-11.26-59.88 0.98-28.24 12.24-57.61 34.49-77.04 58.36-19.43 23.87-25.97 45.74-17.16 57.37z m0 0M387.03 765.67c6.1 53.03 29.21 93.92 51.62 91.35 22.41-2.58 35.63-47.66 29.52-100.68-6.1-53.03-29.21-93.92-51.62-91.35-22.41 2.57-35.62 47.65-29.52 100.68z m0 0M463.17 872.94c3.54 14.15 24.69 22.75 55.47 22.56 30.78-0.19 66.52-9.15 93.75-23.5 27.24-14.35 41.82-31.9 38.28-46.05-3.55-14.16-24.69-22.75-55.47-22.56-30.78 0.19-66.52 9.15-93.75 23.5-27.24 14.34-41.83 31.89-38.28 46.05z m0 0M313.14 942.95c14.49 1.66 29.98-15.12 40.62-44 10.64-28.88 14.82-65.49 10.96-96.03-3.86-30.54-15.16-50.37-29.66-52.02-14.5-1.65-29.98 15.12-40.62 44-10.64 28.88-14.82 65.49-10.96 96.03 3.86 30.54 15.16 50.37 29.66 52.02z m0 0M332.44 962.8c0.25 14.59 18.91 27.75 48.93 34.53 30.03 6.78 66.87 6.14 96.64-1.67 29.78-7.81 47.96-21.61 47.71-36.2-0.25-14.59-18.9-27.75-48.93-34.52-30.03-6.78-66.87-6.14-96.64 1.67-29.78 7.8-47.97 21.6-47.71 36.19z m0 0" fill="#B5B5B5" p-id="1837"></path></svg>
         </div>
       </div>
       
-      <div 
+      <div
         id="text3"
         style="opacity: 0; position: absolute; text-align: center; width: 100%; max-width: 335px;"
       >
-        <h2 class="title">"这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"</h2>
-        <p class="subtitle" style="margin-top: 16px;">- Sarah, 资深用户</p>
+        <h2 class="title">"${t('onboarding.testimonial')}"</h2>
+        <p class="subtitle" style="margin-top: 16px;">- Sarah, Cross Stitch User</p>
       </div>
     </div>
   `;
@@ -424,16 +446,16 @@ function renderOnboardingPage2() {
       <!-- Fixed Bottom Action Area -->
       <footer class="bottom-action">
         <div class="text-container">
-          <h1 style="animation: fadeInUp 0.6s ease forwards; font-size: 32px; white-space: nowrap;" class="title">欢迎来到Cross Stitch</h1>
-          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.1s; opacity: 0; font-size: 16px;" class="subtitle">创造、上色和享受乐趣</p>
+          <h1 style="animation: fadeInUp 0.6s ease forwards; font-size: 32px; white-space: nowrap;" class="title">${t('onboarding.welcome')}</h1>
+          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.1s; opacity: 0; font-size: 16px;" class="subtitle">${t('onboarding.subtitle')}</p>
         </div>
         <div class="button-container">
-          <button 
+          <button
             style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;"
             class="bottom-button"
             onclick="nextPage()"
           >
-            开始吧
+            ${t('common.start')}
           </button>
         </div>
       </footer>
@@ -547,16 +569,16 @@ function renderOnboardingPage3() {
       <!-- Fixed Content at Bottom -->
       <footer class="bottom-action">
         <div class="text-center space-y-2 mb-8">
-          <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; white-space: nowrap;" class="main-title">你的上色风格是什么？</h1>
-          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px;" class="subtitle">揭示你创造力优势的四个问题</p>
+          <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; white-space: nowrap;" class="main-title">${t('questions.q3.title')}</h1>
+          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px;" class="subtitle">${t('questions.q3.subtitle')}</p>
         </div>
         <div class="button-container">
-          <button 
+          <button
             style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;"
             class="bottom-button"
             onclick="nextPage()"
           >
-            继续
+            ${t('common.continue')}
           </button>
         </div>
       </footer>
@@ -690,14 +712,14 @@ function renderQuestionPage1() {
       <nav class="top-nav">
         <div class="placeholder" style="width: 24px;"></div>
         ${generateProgressBar(1)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
         <!-- Headline Section -->
         <div class="headline-section" style="animation: fadeInUp 0.6s ease forwards;">
-          <h2 class="main-title">你的性别是什么？</h2>
-          <p class="subtitle">这帮助我们个性化您的体验。</p>
+          <h2 class="main-title">${t('questions.q1.title')}</h2>
+          <p class="subtitle">${t('questions.q1.subtitle')}</p>
         </div>
         <!-- Selection Cards -->
         <div class="selection-cards" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
@@ -705,7 +727,7 @@ function renderQuestionPage1() {
           <div class="option-card" onclick="selectOption('female')">
             <div class="option-content">
               <span class="option-icon">👩</span>
-              <span class="option-text">女性</span>
+              <span class="option-text">${t('questions.q1.option.female')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -717,7 +739,7 @@ function renderQuestionPage1() {
           <div class="option-card" onclick="selectOption('male')">
             <div class="option-content">
               <span class="option-icon">👨</span>
-              <span class="option-text">男性</span>
+              <span class="option-text">${t('questions.q1.option.male')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -729,7 +751,7 @@ function renderQuestionPage1() {
           <div class="option-card" onclick="selectOption('other')">
             <div class="option-content">
               <span class="option-icon">🧒</span>
-              <span class="option-text">其他</span>
+              <span class="option-text">${t('questions.q1.option.other')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -994,21 +1016,21 @@ function renderQuestionPage2() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(2)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
         <!-- Header Section -->
         <header class="header-section">
-          <h2 class="main-title">你的年龄组是什么？</h2>
-          <p class="subtitle">这帮助我们建议相关的风格。</p>
+          <h2 class="main-title">${t('questions.q2.title')}</h2>
+          <p class="subtitle">${t('questions.q2.subtitle')}</p>
         </header>
         <!-- Options List -->
         <div class="options-list" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
           <!-- Option Card 1 -->
           <button class="option-card" onclick="selectOption('under14')">
             <span class="option-icon">✏️</span>
-            <span class="option-text">14岁以下</span>
+            <span class="option-text">${t('questions.q2.option.under14')}</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1018,7 +1040,7 @@ function renderQuestionPage2() {
           <!-- Option Card 2 -->
           <button class="option-card" onclick="selectOption('14-20')">
             <span class="option-icon">🎓</span>
-            <span class="option-text">14-20</span>
+            <span class="option-text">${t('questions.q2.option.range1')}</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1028,7 +1050,7 @@ function renderQuestionPage2() {
           <!-- Option Card 3 -->
           <button class="option-card" onclick="selectOption('20-25')">
             <span class="option-icon">✒️</span>
-            <span class="option-text">20-25</span>
+            <span class="option-text">${t('questions.q2.option.range2')}</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1038,7 +1060,7 @@ function renderQuestionPage2() {
           <!-- Option Card 4 -->
           <button class="option-card" onclick="selectOption('26-35')">
             <span class="option-icon">💼</span>
-            <span class="option-text">26-35</span>
+            <span class="option-text">${t('questions.q2.option.range3')}</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1048,7 +1070,7 @@ function renderQuestionPage2() {
           <!-- Option Card 5 -->
           <button class="option-card" onclick="selectOption('36-50')">
             <span class="option-icon">🌳</span>
-            <span class="option-text">36-50</span>
+            <span class="option-text">${t('questions.q2.option.range4')}</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1058,7 +1080,7 @@ function renderQuestionPage2() {
           <!-- Option Card 6 -->
           <button class="option-card" onclick="selectOption('50+')">
             <span class="option-icon">💎</span>
-            <span class="option-text">大于50</span>
+            <span class="option-text">${t('questions.q2.option.over50')}</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1301,7 +1323,7 @@ function renderQuestionPage2() {
 // 问题页3 - 风格偏好
 function renderQuestionPage3() {
   const app = document.getElementById('app');
-  
+
   app.innerHTML = `
     <div class="question-page-3 page-container">
       <!-- Top Navigation Bar -->
@@ -1310,20 +1332,20 @@ function renderQuestionPage3() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(3)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
         <!-- Headline -->
-        <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">哪种风格最能激励你？</h2>
+        <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">${t('questions.q3.title')}</h2>
         <!-- Style Selection Grid -->
         <div class="style-grid" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
           <!-- Card 1: Animals -->
           <div class="style-card" onclick="toggleOption('style', 'animals')">
-            <img class="card-image" src="./clip/图片/066e989deaf84f8049c78964200ddc54.webp" alt="动物" loading="lazy">
+            <img class="card-image" src="./clip/图片/066e989deaf84f8049c78964200ddc54.webp" alt="Animals" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
-              <span class="label-text">动物</span>
+              <span class="label-text">${t('questions.q3.option.animals')}</span>
             </div>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1333,10 +1355,10 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 2: Comic -->
           <div class="style-card" onclick="toggleOption('style', 'comics')">
-            <img class="card-image" src="./clip/图片/ac7ba83687f9c31480e70e23b4e504fb.webp" alt="艺术" loading="lazy">
+            <img class="card-image" src="./clip/图片/ac7ba83687f9c31480e70e23b4e504fb.webp" alt="Art" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
-              <span class="label-text">艺术</span>
+              <span class="label-text">${t('questions.q3.option.art')}</span>
             </div>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1346,10 +1368,10 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 3: People -->
           <div class="style-card" onclick="toggleOption('style', 'people')">
-            <img class="card-image" src="./clip/图片/4322aab16149485ce68b0468f48ea2a3.webp" alt="花朵" loading="lazy">
+            <img class="card-image" src="./clip/图片/4322aab16149485ce68b0468f48ea2a3.webp" alt="Flowers" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
-              <span class="label-text">花朵</span>
+              <span class="label-text">${t('questions.q3.option.flowers')}</span>
             </div>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1359,10 +1381,10 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 4: Cute -->
           <div class="style-card" onclick="toggleOption('style', 'cute')">
-            <img class="card-image" src="./clip/图片/883bb99b4fa272288c87760b52809443.webp" alt="自然" loading="lazy">
+            <img class="card-image" src="./clip/图片/883bb99b4fa272288c87760b52809443.webp" alt="Nature" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
-              <span class="label-text">自然</span>
+              <span class="label-text">${t('questions.q3.option.nature')}</span>
             </div>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1372,10 +1394,10 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 5: Food -->
           <div class="style-card" onclick="toggleOption('style', 'food')">
-            <img class="card-image" src="./clip/图片/572879658e58ccb130aa3a6b9501392b.webp" alt="宠物" loading="lazy">
+            <img class="card-image" src="./clip/图片/572879658e58ccb130aa3a6b9501392b.webp" alt="Pets" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
-              <span class="label-text">宠物</span>
+              <span class="label-text">${t('questions.q3.option.pets')}</span>
             </div>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1385,10 +1407,10 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 6: Mandala -->
           <div class="style-card" onclick="toggleOption('style', 'mandala')">
-            <img class="card-image" src="./clip/图片/163f774efff4493497edd2504b5d6224.webp" alt="庆祝" loading="lazy">
+            <img class="card-image" src="./clip/图片/163f774efff4493497edd2504b5d6224.webp" alt="Celebration" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
-              <span class="label-text">庆祝</span>
+              <span class="label-text">${t('questions.q3.option.celebration')}</span>
             </div>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1398,10 +1420,10 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 7: Flower -->
           <div class="style-card" onclick="toggleOption('style', 'flowers')">
-            <img class="card-image" src="./clip/图片/fefe89a79b554f068d18b994058ecbdf.webp" alt="食物" loading="lazy">
+            <img class="card-image" src="./clip/图片/fefe89a79b554f068d18b994058ecbdf.webp" alt="Food" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
-              <span class="label-text">食物</span>
+              <span class="label-text">${t('questions.q3.option.food')}</span>
             </div>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1411,10 +1433,10 @@ function renderQuestionPage3() {
           </div>
           <!-- Card 8: Simple -->
           <div class="style-card" onclick="toggleOption('style', 'simple')">
-            <img class="card-image" src="./clip/图片/cf0c4dfd283c24ee59824136205f8c73.webp" alt="超级尺寸" loading="lazy">
+            <img class="card-image" src="./clip/图片/cf0c4dfd283c24ee59824136205f8c73.webp" alt="Super Size" loading="lazy">
             <div class="card-overlay"></div>
             <div class="card-label">
-              <span class="label-text">超级尺寸</span>
+              <span class="label-text">${t('questions.q3.option.super_size')}</span>
             </div>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1428,7 +1450,7 @@ function renderQuestionPage3() {
       <footer class="bottom-action" id="style-bottom-action">
         <div class="button-container">
           <button class="next-button bottom-button" id="continueButton" disabled onclick="goToNextFromStylePage()" style="opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">
-            下一步
+            ${t('common.next')}
           </button>
         </div>
       </footer>
@@ -1678,14 +1700,14 @@ function renderQuestionPage4() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(4)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
         <!-- Header Titles -->
         <div class="header-section">
-          <h2 class="main-title">你的目标是什么？</h2>
-          <p class="subtitle">这帮助我们个性化您的体验。</p>
+          <h2 class="main-title">${t('questions.q4.title')}</h2>
+          <p class="subtitle">${t('questions.q4.subtitle')}</p>
         </div>
         <!-- Selection List -->
         <div class="options-list" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
@@ -1693,7 +1715,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('relax')">
             <div class="option-content">
               <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 20C2 32.1503 8 42 20 42C32 42 38 32.1503 38 20H2Z" fill="none" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 14V6" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 14V10" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14V10" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.1904 30.6229C37.1802 28.039 37.764 25.1374 37.9417 22.0511C38.2868 22.0174 38.6402 22 39 22C42.866 22 46 24.0147 46 26.5C46 28.9853 42.866 31 39 31C38.0007 31 37.0504 30.8654 36.1904 30.6229Z" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span class="option-text">放松自己</span>
+              <span class="option-text">${t('questions.q4.option.relax')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1705,7 +1727,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('fun')">
             <div class="option-content">
               <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 18H16C9.37258 18 4 23.3726 4 30C4 36.6274 9.37258 42 16 42H32C38.6274 42 44 36.6274 44 30C44 23.3726 38.6274 18 32 18Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M16 26V34" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 30H20" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 16V9.71429H32V4" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 34C34.2091 34 36 32.2091 36 30C36 27.7909 34.2091 26 32 26C29.7909 26 28 27.7909 28 30C28 32.2091 29.7909 34 32 34Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/></svg>
-              <span class="option-text">玩得开心</span>
+              <span class="option-text">${t('questions.q4.option.fun')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1717,7 +1739,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('creativity')">
             <div class="option-content">
               <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.036 44.0002C18.0561 40.8046 16.5778 38.4223 14.6011 36.8533C11.636 34.4998 6.92483 35.9625 5.18458 33.535C3.44433 31.1074 6.40382 26.6432 7.44234 24.0091C8.48086 21.3751 3.46179 20.4437 4.04776 19.6959C4.43842 19.1974 6.97471 17.7588 11.6567 15.3802C12.987 7.79356 17.9008 4.00024 26.3982 4.00024C39.1441 4.00024 44 14.8062 44 21.6791C44 28.5521 38.1201 35.9564 29.7441 37.5529C28.9951 38.6437 30.0754 40.7928 32.9848 44.0002" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M19.4997 14.5001C18.8464 17.0344 19.0408 18.8139 20.0829 19.8386C21.125 20.8634 22.9011 21.5335 25.4112 21.849C24.8417 25.1177 25.5361 26.6512 27.4942 26.4494C29.4524 26.2476 30.6289 25.434 31.0239 24.0084C34.0842 24.8685 35.7428 24.1487 35.9997 21.849C36.3852 18.3994 34.525 15.6476 33.7624 15.6476C32.9997 15.6476 31.0239 15.5548 31.0239 14.5001C31.0239 13.4453 28.7159 12.8494 26.6329 12.8494C24.5499 12.8494 25.8035 11.4453 22.9432 12.0001C21.0363 12.3699 19.8885 13.2032 19.4997 14.5001Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M30.5002 25.5002C29.4833 26.1313 28.0878 27.1805 27.5002 28.0002C26.0313 30.0497 24.8398 31.2976 24.5791 32.6083" stroke="#999" stroke-width="4" stroke-linecap="round"/></svg>
-              <span class="option-text">表达我的创造力</span>
+              <span class="option-text">${t('questions.q4.option.creativity')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1729,7 +1751,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('disconnect')">
             <div class="option-content">
               <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 15H42C43.1046 15 44 15.8954 44 17V31C44 32.1046 43.1046 33 42 33H32" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 15H6C4.89543 15 4 15.8954 4 17V31C4 32.1046 4.89543 33 6 33H17" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 6V42" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 24H16" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 24H36" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span class="option-text">断开我的大脑</span>
+              <span class="option-text">${t('questions.q4.option.disconnect')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1741,7 +1763,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('skills')">
             <div class="option-content">
               <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M16 21C17.6569 21 19 19.6569 19 18C19 16.3431 17.6569 15 16 15C14.3431 15 13 16.3431 13 18C13 19.6569 14.3431 21 16 21Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M17 34C18.6569 34 20 32.6569 20 31C20 29.3431 18.6569 28 17 28C15.3431 28 14 29.3431 14 31C14 32.6569 15.3431 34 17 34Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/></svg>
-              <span class="option-text">发展我的着色技巧</span>
+              <span class="option-text">${t('questions.q4.option.skills')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1753,7 +1775,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('other')">
             <div class="option-content">
               <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="34.5" cy="13.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="34.5" cy="34.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="13.5" cy="13.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="13.5" cy="34.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/></svg>
-              <span class="option-text">其他</span>
+              <span class="option-text">${t('questions.q4.option.other')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2094,12 +2116,12 @@ function renderQuestionPage5() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(5)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <main class="main-content">
         <!-- Headline -->
         <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">
-          哪些调色板最能引起你的共鸣？
+          ${t('questions.q5.title')}
         </h2>
         <!-- Palette Grid -->
         <div class="palette-grid" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
@@ -2404,13 +2426,13 @@ function renderQuestionPage6() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(6)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Content Area -->
       <main class="main-content">
         <!-- Headline -->
         <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">
-          你最期待尝试哪些刷子？
+          ${t('questions.q6.title')}
         </h2>
         <!-- Grid Layout -->
         <div class="brush-grid" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
@@ -3032,14 +3054,14 @@ function renderSubscriptionPage() {
         
         <!-- Content Canvas - 统一容器 -->
         <div class="subscription-content-container">
-          <h2>Choose your plan</h2>
-          <p>无限制访问所有分类和图片，无限制导入图片</p>
-          
+          <h2>${t('subscription.choose_plan')}</h2>
+          <p>${t('subscription.unlimited_access')}</p>
+
           <!-- Subscription Cards Cluster -->
           <div class="subscription-cards">
             <!-- Weekly Plan -->
             <div class="subscription-card" onclick="toggleSubscription('weekly')" id="weekly-plan">
-              <span>Weekly</span>
+              <span>${t('subscription.weekly')}</span>
               <div class="subscription-card-right">
                 <span>¥68.00</span>
                 <div class="subscription-check" id="weekly-check"></div>
@@ -3049,8 +3071,8 @@ function renderSubscriptionPage() {
             <!-- Yearly Plan (Selected) -->
             <div class="subscription-card subscription-card-selected" onclick="toggleSubscription('yearly')" id="yearly-plan">
               <div class="subscription-card-left">
-                <span>Yearly</span>
-                <span class="best-value-badge">Best Value</span>
+                <span>${t('subscription.yearly')}</span>
+                <span class="best-value-badge">${t('subscription.best_value')}</span>
               </div>
               <div class="subscription-card-right">
                 <span>¥408.00</span>
@@ -3067,15 +3089,33 @@ function renderSubscriptionPage() {
       <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
         <div class="button-container" style="padding-top: 12px;">
           <div style="font-size: 12px; color: #999999; text-align: center; margin-bottom: 10px;">
-            以上订阅选项均为自动续订订阅，订阅费用会在您确认购买或者试用期结束的时候通过你的苹果账户扣除。如果不需要续订，记得在订阅到期或免费试用到期之前至少24小时取消掉订阅，你可随时在自己的苹果账户的设置中可以找到订阅管理，若您在试用期未结束之前购买月度和年度订阅，则剩余未使用试用期时长自动作废。
+            ${t('subscription.terms')}
           </div>
-          <button class="bottom-button">立即订阅</button>
+          <button class="bottom-button">${t('common.subscribe_now')}</button>
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; border-top: 1px solid #F1F1F1; padding-top: 12px; padding-bottom: 12px;">
           <div style="display: flex; gap: 12px;">
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">Terms of Service</a>
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">Privacy Policy</a>
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">Restore Purchase</a>
+            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('subscription.terms_of_service')}</a>
+            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('subscription.privacy_policy')}</a>
+            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('subscription.restore_purchase')}</a>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 11px; color: #888888;">${t('language.select_language')}:</span>
+            <select id="language-switcher" onchange="handleLanguageChange(this.value)" style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 11px; color: #888888; background: transparent; border: 1px solid #ddd; border-radius: 4px; padding: 2px 4px; cursor: pointer;">
+              <option value="en" ${getCurrentLanguage() === 'en' ? 'selected' : ''}>English</option>
+              <option value="zh-TW" ${getCurrentLanguage() === 'zh-TW' ? 'selected' : ''}>繁體中文</option>
+              <option value="zh-CN" ${getCurrentLanguage() === 'zh-CN' ? 'selected' : ''}>简体中文</option>
+              <option value="fr" ${getCurrentLanguage() === 'fr' ? 'selected' : ''}>Français</option>
+              <option value="de" ${getCurrentLanguage() === 'de' ? 'selected' : ''}>Deutsch</option>
+              <option value="it" ${getCurrentLanguage() === 'it' ? 'selected' : ''}>Italiano</option>
+              <option value="pt" ${getCurrentLanguage() === 'pt' ? 'selected' : ''}>Português</option>
+              <option value="es" ${getCurrentLanguage() === 'es' ? 'selected' : ''}>Español</option>
+              <option value="ru" ${getCurrentLanguage() === 'ru' ? 'selected' : ''}>Русский</option>
+              <option value="tr" ${getCurrentLanguage() === 'tr' ? 'selected' : ''}>Türkçe</option>
+              <option value="ja" ${getCurrentLanguage() === 'ja' ? 'selected' : ''}>日本語</option>
+              <option value="ko" ${getCurrentLanguage() === 'ko' ? 'selected' : ''}>한국어</option>
+              <option value="id" ${getCurrentLanguage() === 'id' ? 'selected' : ''}>Bahasa Indonesia</option>
+            </select>
           </div>
           <p style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888;">© 2024 Cross Stitch. All rights reserved.</p>
         </div>

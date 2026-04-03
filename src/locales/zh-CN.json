@@ -1,0 +1,87 @@
+{
+  "common": {
+    "skip": "跳过",
+    "continue": "继续",
+    "next": "下一步",
+    "back": "返回",
+    "start": "开始吧",
+    "subscribe_now": "立即订阅"
+  },
+  "onboarding": {
+    "welcome": "欢迎来到 Cross Stitch",
+    "subtitle": "在这里，你可以通过填色来放松心情，释放创造力，成为真正的艺术家",
+    "feature_count": "1亿",
+    "feature_desc": "快乐的艺术家",
+    "testimonial": "这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"
+  },
+  "questions": {
+    "q1": {
+      "title": "你的性别是什么？",
+      "subtitle": "这帮助我们个性化您的体验。",
+      "option": {
+        "female": "女性",
+        "male": "男性",
+        "other": "其他"
+      }
+    },
+    "q2": {
+      "title": "你的年龄组是什么？",
+      "subtitle": "这帮助我们建议相关的风格。",
+      "option": {
+        "under14": "14岁以下",
+        "range1": "14-20",
+        "range2": "20-25",
+        "range3": "26-35",
+        "range4": "36-50",
+        "over50": "大于50"
+      }
+    },
+    "q3": {
+      "title": "哪种风格最能激励你？",
+      "subtitle": "通过四个问题发现你的创造力优势",
+      "option": {
+        "animals": "动物",
+        "art": "艺术",
+        "flowers": "花朵",
+        "nature": "自然",
+        "pets": "宠物",
+        "celebration": "庆祝",
+        "food": "食物",
+        "super_size": "超级尺寸"
+      }
+    },
+    "q4": {
+      "title": "你的目标是什么？",
+      "subtitle": "这帮助我们个性化您的体验。",
+      "option": {
+        "relax": "放松自己",
+        "fun": "玩得开心",
+        "creativity": "表达我的创造力",
+        "disconnect": "断开我的大脑",
+        "skills": "发展我的着色技巧",
+        "other": "其他"
+      }
+    },
+    "q5": {
+      "title": "哪些调色板最能引起你的共鸣？"
+    },
+    "q6": {
+      "title": "选择你的画笔"
+    }
+  },
+  "subscription": {
+    "choose_plan": "选择你的计划",
+    "unlimited_access": "无限制访问所有分类和图片，无限制导入图片",
+    "weekly": "每周",
+    "yearly": "每年",
+    "best_value": "最佳价值",
+    "terms": "以上订阅选项均为自动续订订阅，订阅费用会在您确认购买或者试用期结束的时候通过你的苹果账户扣除。如果不需要续订，记得在订阅到期或免费试用到期之前至少24小时取消掉订阅，你可随时在自己的苹果账户的设置中找到订阅管理，若您在试用期未结束之前购买月度和年度订阅，则剩余未使用试用期时长自动作废。",
+    "terms_of_service": "服务条款",
+    "privacy_policy": "隐私政策",
+    "restore_purchase": "恢复购买"
+  },
+  "language": {
+    "select_language": "选择语言",
+    "current_language": "当前语言"
+  }
+}

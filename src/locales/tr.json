@@ -1,0 +1,87 @@
+{
+  "common": {
+    "skip": "Atla",
+    "continue": "Devam",
+    "next": "İleri",
+    "back": "Geri",
+    "start": "Başla",
+    "subscribe_now": "Abone Ol"
+  },
+  "onboarding": {
+    "welcome": "Cross Stitch'e Hoş Geldiniz",
+    "subtitle": "Renklendirme yoluyla rahatlayın ve yaratıcılığınızı serbest bırakın",
+    "feature_count": "100M",
+    "feature_desc": "Mutlu Sanatçılar",
+    "testimonial": "Her gün rahatlamak için en iyi yolum bu. Cross Stitch hayatımı daha dolu hale getiriyor"
+  },
+  "questions": {
+    "q1": {
+      "title": "Cinsiyetiniz nedir?",
+      "subtitle": "Bu, deneyiminizi kişiselleştirmemize yardımcı olur.",
+      "option": {
+        "female": "Kadın",
+        "male": "Erkek",
+        "other": "Diğer"
+      }
+    },
+    "q2": {
+      "title": "Yaş grubunuz nedir?",
+      "subtitle": "Bu, ilgili stilleri önermemize yardımcı olur.",
+      "option": {
+        "under14": "14 Altı",
+        "range1": "14-20",
+        "range2": "20-25",
+        "range3": "26-35",
+        "range4": "36-50",
+        "over50": "50 Üzeri"
+      }
+    },
+    "q3": {
+      "title": "Sizi en çok hangi stil motive ediyor?",
+      "subtitle": "Dört soru aracılığıyla yaratıcı güçlü yanlarınızı keşfedin",
+      "option": {
+        "animals": "Hayvanlar",
+        "art": "Sanat",
+        "flowers": "Çiçekler",
+        "nature": "Doğa",
+        "pets": "Evcil Hayvanlar",
+        "celebration": "Kutlama",
+        "food": "Yiyecek",
+        "super_size": "Süper Boyut"
+      }
+    },
+    "q4": {
+      "title": "Hedefleriniz nelerdir?",
+      "subtitle": "Bu, deneyiminizi kişiselleştirmemize yardımcı olur.",
+      "option": {
+        "relax": "Kendimi gevşetmek",
+        "fun": "Eğlenmek",
+        "creativity": "Yaratıcılığımı ifade etmek",
+        "disconnect": "Beynimi kapatmak",
+        "skills": "Boyama becerilerimi geliştirmek",
+        "other": "Diğer"
+      }
+    },
+    "q5": {
+      "title": "Hangi paletler sizinle daha çok rezonansa giriyor?"
+    },
+    "q6": {
+      "title": "Fırçalarınızı seçin"
+    }
+  },
+  "subscription": {
+    "choose_plan": "Planınızı Seçin",
+    "unlimited_access": "Tüm kategorlere ve görsellere sınırsız erişim, sınırsız görsel içe aktarma",
+    "weekly": "Haftalık",
+    "yearly": "Yıllık",
+    "best_value": "En İyi Değer",
+    "terms": "Tüm abonelik seçenekleri otomatik yenileme abonelikleridir. Abonelik ücreti, satın alma işleminizi onayladığınızda veya deneme süreniz sona erdiğinde Apple hesabınızdan tahsil edilecektir. Yenilemek istemiyorsanız, abonelik veya ücretsiz deneme süresi sona ermeden en az 24 saat önce iptal etmeyi unutmayın. Aboneliklerinizi istediğiniz zaman Apple hesap ayarlarınızdan yönetebilirsiniz.",
+    "terms_of_service": "Kullanım Şartları",
+    "privacy_policy": "Gizlilik Politikası",
+    "restore_purchase": "Satın Almaları Geri Yükle"
+  },
+  "language": {
+    "select_language": "Dil Seçin",
+    "current_language": "Mevcut Dil"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "common": {
+    "skip": "Salta",
+    "continue": "Continua",
+    "next": "Avanti",
+    "back": "Indietro",
+    "start": "Inizia",
+    "subscribe_now": "Abbonati Ora"
+  },
+  "onboarding": {
+    "welcome": "Benvenuto in Cross Stitch",
+    "subtitle": "Rilassati e libera la tua creatività attraverso la colorazione",
+    "feature_count": "100M",
+    "feature_desc": "Artisti Felici",
+    "testimonial": "Questo è il mio modo migliore per rilassarmi ogni giorno. Cross Stitch rende la mia vita più appagante"
+  },
+  "questions": {
+    "q1": {
+      "title": "Qual è il tuo sesso?",
+      "subtitle": "Questo ci aiuta a personalizzare la tua esperienza.",
+      "option": {
+        "female": "Femmina",
+        "male": "Maschio",
+        "other": "Altro"
+      }
+    },
+    "q2": {
+      "title": "Qual è la tua fascia d'età?",
+      "subtitle": "Questo ci aiuta a consigliare stili pertinenti.",
+      "option": {
+        "under14": "Meno di 14",
+        "range1": "14-20",
+        "range2": "20-25",
+        "range3": "26-35",
+        "range4": "36-50",
+        "over50": "Oltre 50"
+      }
+    },
+    "q3": {
+      "title": "Quale stile ti ispira di più?",
+      "subtitle": "Scopri i tuoi punti di forza creativi attraverso quattro domande",
+      "option": {
+        "animals": "Animali",
+        "art": "Arte",
+        "flowers": "Fiori",
+        "nature": "Natura",
+        "pets": "Animali",
+        "celebration": "Celebrazione",
+        "food": "Cibo",
+        "super_size": "Super Formato"
+      }
+    },
+    "q4": {
+      "title": "Quali sono i tuoi obiettivi?",
+      "subtitle": "Questo ci aiuta a personalizzare la tua esperienza.",
+      "option": {
+        "relax": "Rilassarmi",
+        "fun": "Divertirmi",
+        "creativity": "Esprimere la mia creatività",
+        "disconnect": "Sconnettere il mio cervello",
+        "skills": "Sviluppare le mie capacità di colorazione",
+        "other": "Altro"
+      }
+    },
+    "q5": {
+      "title": "Quali palette ti risuonano di più?"
+    },
+    "q6": {
+      "title": "Scegli i tuoi pennelli"
+    }
+  },
+  "subscription": {
+    "choose_plan": "Scegli il tuo piano",
+    "unlimited_access": "Accesso illimitato a tutte le categorie e immagini, importazione illimitata di immagini",
+    "weekly": "Settimanale",
+    "yearly": "Annuale",
+    "best_value": "Miglior Valore",
+    "terms": "Tutte le opzioni di abbonamento sono abbonamenti con rinnovo automatico. La quota di abbonamento verrà addebitata sul tuo account Apple quando confermi l'acquisto o quando termina il periodo di prova. Se non desideri rinnovare, ricorda di cancellare almeno 24 ore prima della scadenza dell'abbonamento o della prova gratuita. Puoi gestire i tuoi abbonamenti in qualsiasi momento nelle impostazioni del tuo account Apple.",
+    "terms_of_service": "Termini di Servizio",
+    "privacy_policy": "Informativa sulla Privacy",
+    "restore_purchase": "Ripristina Acquisto"
+  },
+  "language": {
+    "select_language": "Seleziona Lingua",
+    "current_language": "Lingua Attuale"
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "common": {
+    "skip": "スキップ",
+    "continue": "続ける",
+    "next": "次へ",
+    "back": "戻る",
+    "start": "始める",
+    "subscribe_now": "今すぐ購読"
+  },
+  "onboarding": {
+    "welcome": "Cross Stitchへようこそ",
+    "subtitle": "塗り絵を通じてリラックスし、創造性を解き放ちましょう",
+    "feature_count": "1億",
+    "feature_desc": "幸せなアーティスト",
+    "testimonial": "これが毎日リラックスする私の最高の方法です。Cross Stitchで的生活がより豊かになります"
+  },
+  "questions": {
+    "q1": {
+      "title": "性別は何ですか？",
+      "subtitle": "これは体験をパーソナライズするのに役立ちます。",
+      "option": {
+        "female": "女性",
+        "male": "男性",
+        "other": "その他"
+      }
+    },
+    "q2": {
+      "title": "年齢層はどのですか？",
+      "subtitle": "これは関連するスタイルを提案するのに役立ちます。",
+      "option": {
+        "under14": "14歳未満",
+        "range1": "14-20",
+        "range2": "20-25",
+        "range3": "26-35",
+        "range4": "36-50",
+        "over50": "50歳以上"
+      }
+    },
+    "q3": {
+      "title": "どのスタイルがあなたを最も鼓舞しますか？",
+      "subtitle": "4つの質問を通じて創造性の強みを発見",
+      "option": {
+        "animals": "動物",
+        "art": "アート",
+        "flowers": "花",
+        "nature": "自然",
+        "pets": "ペット",
+        "celebration": "お祝い",
+        "food": "食べ物",
+        "super_size": "スーパースタイル"
+      }
+    },
+    "q4": {
+      "title": "あなたの目標は何ですか？",
+      "subtitle": "これは体験をパーソナライズするのに役立ちます。",
+      "option": {
+        "relax": "自分自身をリラックスさせる",
+        "fun": "楽しむ",
+        "creativity": "私の創造性を表現する",
+        "disconnect": "脳をオフにする",
+        "skills": "色を塗る技術を向上させる",
+        "other": "その他"
+      }
+    },
+    "q5": {
+      "title": "どのパレットがあなたと最も共鳴しますか？"
+    },
+    "q6": {
+      "title": "ブラシを選択"
+    }
+  },
+  "subscription": {
+    "choose_plan": "プランを選択",
+    "unlimited_access": "すべてのカテゴリと画像への無制限アクセス、無制限の画像インポート",
+    "weekly": "毎週",
+    "yearly": "毎年",
+    "best_value": "最佳価値",
+    "terms": "すべてのサブスクリプションオプションは自動更新サブスクリプションです。サブスクリプション費用は、購入を確認した時または試用期間終了時にAppleアカウントから請求されます。更新したくない場合は、コース期間または無料試用期間の終了少なくとも24時間前にキャンセルすることを忘れないでください。Appleアカウントの設定でサブスクリプションを管理できます。",
+    "terms_of_service": "利用規約",
+    "privacy_policy": "プライバシーポリシー",
+    "restore_purchase": "購入を復元"
+  },
+  "language": {
+    "select_language": "言語を選択",
+    "current_language": "現在の言語"
+  }
+}

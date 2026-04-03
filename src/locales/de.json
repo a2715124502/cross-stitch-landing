@@ -1,0 +1,87 @@
+{
+  "common": {
+    "skip": "Überspringen",
+    "continue": "Weiter",
+    "next": "Weiter",
+    "back": "Zurück",
+    "start": "Starten",
+    "subscribe_now": "Jetzt Abonnieren"
+  },
+  "onboarding": {
+    "welcome": "Willkommen bei Cross Stitch",
+    "subtitle": "Entspannen Sie sich und entfalten Sie Ihre Kreativität durch Ausmalen",
+    "feature_count": "100M",
+    "feature_desc": "Glückliche Künstler",
+    "testimonial": "Das ist der beste Weg, um mich jeden Tag zu entspannen. Cross Stitch macht mein Leben erfüllter"
+  },
+  "questions": {
+    "q1": {
+      "title": "Was ist Ihr Geschlecht?",
+      "subtitle": "Dies hilft uns, Ihre Erfahrung zu personalisieren.",
+      "option": {
+        "female": "Weiblich",
+        "male": "Männlich",
+        "other": "Andere"
+      }
+    },
+    "q2": {
+      "title": "Was ist Ihre Altersgruppe?",
+      "subtitle": "Dies hilft uns, relevante Stile zu empfehlen.",
+      "option": {
+        "under14": "Unter 14",
+        "range1": "14-20",
+        "range2": "20-25",
+        "range3": "26-35",
+        "range4": "36-50",
+        "over50": "Über 50"
+      }
+    },
+    "q3": {
+      "title": "Welcher Stil inspiriert Sie am meisten?",
+      "subtitle": "Entdecken Sie Ihre kreativen Stärken durch vier Fragen",
+      "option": {
+        "animals": "Tiere",
+        "art": "Kunst",
+        "flowers": "Blumen",
+        "nature": "Natur",
+        "pets": "Haustiere",
+        "celebration": "Feier",
+        "food": "Essen",
+        "super_size": "Super Größe"
+      }
+    },
+    "q4": {
+      "title": "Was sind Ihre Ziele?",
+      "subtitle": "Dies hilft uns, Ihre Erfahrung zu personalisieren.",
+      "option": {
+        "relax": "Mich entspannen",
+        "fun": "Spaß haben",
+        "creativity": "Meine Kreativität ausdrücken",
+        "disconnect": "Mein Gehirn ausschalten",
+        "skills": "Meine Malkünste entwickeln",
+        "other": "Andere"
+      }
+    },
+    "q5": {
+      "title": "Welche Paletten sprechen Sie am meisten an?"
+    },
+    "q6": {
+      "title": "Wählen Sie Ihre Pinsel"
+    }
+  },
+  "subscription": {
+    "choose_plan": "Wählen Sie Ihren Plan",
+    "unlimited_access": "Unbegrenzter Zugang zu allen Kategorien und Bildern, unbegrenzter Bildimport",
+    "weekly": "Wöchentlich",
+    "yearly": "Jährlich",
+    "best_value": "Bestes Preis-Leistungs-Verhältnis",
+    "terms": "Alle Abonnementoptionen sind automatisch verlängerbare Abonnements. Die Abonnementgebühren werden von Ihrem Apple-Konto abgebucht, wenn Sie Ihren Kauf bestätigen oder wenn Ihr Testzeitraum endet. Wenn Sie nicht verlängern möchten, denken Sie daran, mindestens 24 Stunden vor Ablauf des Abonnements oder der kostenlosen Testphase zu kündigen. Sie können Ihre Abonnements jederzeit in den Einstellungen Ihres Apple-Kontos verwalten.",
+    "terms_of_service": "Nutzungsbedingungen",
+    "privacy_policy": "Datenschutzrichtlinie",
+    "restore_purchase": "Kauf Wiederherstellen"
+  },
+  "language": {
+    "select_language": "Sprache Auswählen",
+    "current_language": "Aktuelle Sprache"
+  }
+}

@@ -1016,9 +1016,9 @@ function renderQuestionPage2() {
             </div>
           </button>
           <!-- Option Card 2 -->
-          <button class="option-card" onclick="selectOption('14-17')">
+          <button class="option-card" onclick="selectOption('14-20')">
             <span class="option-icon">🎓</span>
-            <span class="option-text">14-17</span>
+            <span class="option-text">14-20</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1026,9 +1026,9 @@ function renderQuestionPage2() {
             </div>
           </button>
           <!-- Option Card 3 -->
-          <button class="option-card" onclick="selectOption('18-24')">
+          <button class="option-card" onclick="selectOption('20-25')">
             <span class="option-icon">✒️</span>
-            <span class="option-text">18-24</span>
+            <span class="option-text">20-25</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1036,9 +1036,9 @@ function renderQuestionPage2() {
             </div>
           </button>
           <!-- Option Card 4 -->
-          <button class="option-card" onclick="selectOption('25-34')">
+          <button class="option-card" onclick="selectOption('26-35')">
             <span class="option-icon">💼</span>
-            <span class="option-text">25-34</span>
+            <span class="option-text">26-35</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1046,9 +1046,9 @@ function renderQuestionPage2() {
             </div>
           </button>
           <!-- Option Card 5 -->
-          <button class="option-card" onclick="selectOption('35-44')">
+          <button class="option-card" onclick="selectOption('36-50')">
             <span class="option-icon">🌳</span>
-            <span class="option-text">35-44</span>
+            <span class="option-text">36-50</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1056,9 +1056,9 @@ function renderQuestionPage2() {
             </div>
           </button>
           <!-- Option Card 6 -->
-          <button class="option-card" onclick="selectOption('45+')">
+          <button class="option-card" onclick="selectOption('50+')">
             <span class="option-icon">💎</span>
-            <span class="option-text">45岁或更大</span>
+            <span class="option-text">大于50</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -3026,7 +3026,7 @@ function renderSubscriptionPage() {
       <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; padding-bottom: 10px; overflow-y: auto;">
         <!-- Hero Section -->
         <div class="hero-section">
-          <img class="hero-image" src="./clip/pic/31013c4f30c499704b74a387b332a2ce.webp" alt="十字绣涂色艺术">
+          <img class="hero-image" src="./clip/pic/31013c4f30c499704b74a387b332a2ce.webp" alt="十字绣涂色艺术" onerror="this.onerror=null; this.src='./clip/pic/31013c4f30c499704b74a387b332a2ce.jpg'; this.classList.add('fallback-jpg');">
           <div class="hero-gradient"></div>
         </div>
         
@@ -3137,6 +3137,7 @@ function renderSubscriptionPage() {
       animation: fadeInUp 0.2s ease forwards;
       animation-delay: 0.1s;
       opacity: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
     
     .hero-image {

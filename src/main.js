@@ -564,7 +564,7 @@ function renderOnboardingPage2() {
     <div class="onboarding-page-2">
       <!-- Background Illustration Layer (Full Screen) -->
       <div class="background-layer">
-        <img alt="Background illustration" class="background-image" src="./clip/图片/Gemini_Generated_Image_w6zdxow6zdxow6zd 1.png">
+        <img alt="Background illustration" class="background-image" src="./images/Gemini_Generated_Image_w6zdxow6zdxow6zd.png">
         <div class="overlay"></div>
       </div>
       <!-- Fixed Bottom Action Area -->

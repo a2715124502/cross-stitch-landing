@@ -89,7 +89,14 @@ const sharedStyles = `
     padding-bottom: 100px;
     flex: 1;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     box-sizing: border-box;
+  }
+
+  .main-content::-webkit-scrollbar {
+    display: none;
   }
 
   .header-section,
@@ -562,11 +569,12 @@ function renderOnboardingPage2() {
   
   app.innerHTML = `
     <div class="onboarding-page-2">
-      <!-- Background Illustration Layer (Full Screen) -->
-      <div class="background-layer">
-        <img alt="Background illustration" class="background-image" src="./images/Gemini_Generated_Image_w6zdxow6zdxow6zd.png">
-        <div class="overlay"></div>
-      </div>
+      <!-- Fullscreen Background Image -->
+      <main class="background-main">
+        <img alt="Background illustration" class="background-image" src="./images/Gemini_Generated_Image_w6zdxow6zdxow6zd 1.png">
+        <!-- Gradient Overlay for smooth transition -->
+        <div class="gradient-overlay"></div>
+      </main>
       <!-- Fixed Bottom Action Area -->
       <footer class="bottom-action">
         <div class="text-center space-y-2 mb-8">
@@ -590,21 +598,60 @@ function renderOnboardingPage2() {
   const style = document.createElement('style');
   style.textContent = `
     .onboarding-page-2 {
-      position: relative;
+      font-family: 'PingFang SC', 'SF Pro', 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+      background-color: #FFFFFF;
+      color: #000000;
+      overflow: hidden;
       height: 100vh;
       height: 100dvh;
       width: 100%;
+      position: relative;
+    }
+
+    .page-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .top-app-bar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 50;
       display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 56px;
+      background-color: #FFFFFF;
     }
     
-    .background-layer {
+    .app-title {
+      font-family: 'PingFang SC', 'SF Pro', sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 1;
+    }
+    
+    .placeholder {
+      width: 24px;
+    }
+    
+    .background-main {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
     }
     
@@ -614,16 +661,13 @@ function renderOnboardingPage2() {
       object-fit: cover;
     }
     
-    .overlay {
+    .gradient-overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
       bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: linear-gradient(to top, rgba(0,0,0,0.67) 0%, rgba(0,0,0,0.34) 50%, transparent 100%);
-      background-size: cover;
-      background-position: center;
-      z-index: 1;
     }
     
     .text-center {
@@ -846,13 +890,13 @@ function renderQuestionPage1() {
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
-        <!-- Headline Section -->
-        <div class="headline-section" style="animation: fadeInUp 0.6s ease forwards;">
+        <!-- Headline Section - Fixed -->
+        <div class="headline-section" style="animation: fadeInUp 0.6s ease forwards; position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
           <h2 class="main-title">你的性别是什么？</h2>
           <p class="subtitle">这帮助我们个性化您的体验。</p>
         </div>
-        <!-- Selection Cards -->
-        <div class="selection-cards" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
+        <!-- Selection Cards - Scrollable -->
+        <div class="selection-cards scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
           <!-- Female Card -->
           <div class="option-card" onclick="selectOption('female')">
             <div class="option-content">
@@ -1006,6 +1050,20 @@ function renderQuestionPage1() {
       flex-direction: column;
       gap: 16px;
     }
+
+    .scrollable-options {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 2px;
+      padding-left: 2px;
+    }
+
+    .scrollable-options::-webkit-scrollbar {
+      display: none;
+    }
     
     .option-card {
       position: relative;
@@ -1141,13 +1199,13 @@ function renderQuestionPage2() {
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
-        <!-- Header Section -->
-        <header class="header-section">
+        <!-- Header Section - Fixed -->
+        <header class="header-section" style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
           <h2 class="main-title">你的年龄组是什么？</h2>
           <p class="subtitle">这帮助我们建议相关的风格。</p>
         </header>
-        <!-- Options List -->
-        <div class="options-list" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
+        <!-- Options List - Scrollable -->
+        <div class="options-list scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
           <!-- Option Card 1 -->
           <button class="option-card" onclick="selectOption('under14')">
             <span class="option-icon">✏️</span>
@@ -1313,6 +1371,20 @@ function renderQuestionPage2() {
       flex-direction: column;
       gap: 12px;
     }
+
+    .scrollable-options {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 2px;
+      padding-left: 2px;
+    }
+
+    .scrollable-options::-webkit-scrollbar {
+      display: none;
+    }
     
     .option-card {
       width: 100%;
@@ -1448,10 +1520,12 @@ function renderQuestionPage3() {
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
-        <!-- Headline -->
-        <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">哪种风格最能激励你？</h2>
-        <!-- Style Selection Grid -->
-        <div class="style-grid" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
+        <!-- Headline - Fixed -->
+        <div style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
+          <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">哪种风格最能激励你？</h2>
+        </div>
+        <!-- Style Selection Grid - Scrollable -->
+        <div class="style-grid scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
           <!-- Card 1: Animals -->
           <div class="style-card" onclick="toggleOption('style', 'animals')">
             <img class="card-image" src="./clip/图片/066e989deaf84f8049c78964200ddc54.webp" alt="动物" loading="lazy">
@@ -1653,6 +1727,20 @@ function renderQuestionPage3() {
       margin-bottom: 8px;
       color: #000000;
     }
+    
+    .scrollable-options {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 2px;
+      padding-left: 2px;
+    }
+    
+    .scrollable-options::-webkit-scrollbar {
+      display: none;
+    }
 
     .style-card {
       position: relative;
@@ -1826,13 +1914,13 @@ function renderQuestionPage4() {
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
-        <!-- Header Titles -->
-        <div class="header-section">
+        <!-- Header Titles - Fixed -->
+        <div class="header-section" style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
           <h2 class="main-title">你的目标是什么？</h2>
           <p class="subtitle">这帮助我们个性化您的体验。</p>
         </div>
-        <!-- Selection List -->
-        <div class="options-list" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
+        <!-- Selection List - Scrollable -->
+        <div class="options-list scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
           <!-- Option: Relax -->
           <button class="option-item" onclick="selectOption('relax')">
             <div class="option-content">
@@ -1936,7 +2024,7 @@ function renderQuestionPage4() {
       height: 100dvh;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      overflow: hidden;
     }
 
     .top-nav {
@@ -2021,6 +2109,20 @@ function renderQuestionPage4() {
       display: flex;
       flex-direction: column;
       gap: 16px;
+    }
+    
+    .scrollable-options {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 2px;
+      padding-left: 2px;
+    }
+    
+    .scrollable-options::-webkit-scrollbar {
+      display: none;
     }
 
     .option-item {

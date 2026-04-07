@@ -89,7 +89,14 @@ const sharedStyles = `
     padding-bottom: 100px;
     flex: 1;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     box-sizing: border-box;
+  }
+
+  .main-content::-webkit-scrollbar {
+    display: none;
   }
 
   .header-section,
@@ -562,11 +569,12 @@ function renderOnboardingPage2() {
   
   app.innerHTML = `
     <div class="onboarding-page-2">
-      <!-- Background Illustration Layer (Full Screen) -->
-      <div class="background-layer">
-        <img alt="Background illustration" class="background-image" src="./images/Gemini_Generated_Image_w6zdxow6zdxow6zd.png">
-        <div class="overlay"></div>
-      </div>
+      <!-- Fullscreen Background Image -->
+      <main class="background-main">
+        <img alt="Background illustration" class="background-image" src="./images/Gemini_Generated_Image_w6zdxow6zdxow6zd 1.png">
+        <!-- Gradient Overlay for smooth transition -->
+        <div class="gradient-overlay"></div>
+      </main>
       <!-- Fixed Bottom Action Area -->
       <footer class="bottom-action">
         <div class="text-center space-y-2 mb-8">
@@ -590,21 +598,60 @@ function renderOnboardingPage2() {
   const style = document.createElement('style');
   style.textContent = `
     .onboarding-page-2 {
-      position: relative;
+      font-family: 'PingFang SC', 'SF Pro', 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+      background-color: #FFFFFF;
+      color: #000000;
+      overflow: hidden;
       height: 100vh;
       height: 100dvh;
       width: 100%;
+      position: relative;
+    }
+
+    .page-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .top-app-bar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 50;
       display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      height: 56px;
+      background-color: #FFFFFF;
     }
     
-    .background-layer {
+    .app-title {
+      font-family: 'PingFang SC', 'SF Pro', sans-serif;
+      font-size: 18px;
+      font-weight: bold;
+      color: #000000;
+      opacity: 1;
+    }
+    
+    .placeholder {
+      width: 24px;
+    }
+    
+    .background-main {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
     }
     
@@ -614,16 +661,13 @@ function renderOnboardingPage2() {
       object-fit: cover;
     }
     
-    .overlay {
+    .gradient-overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
       bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background: linear-gradient(to top, rgba(0,0,0,0.67) 0%, rgba(0,0,0,0.34) 50%, transparent 100%);
-      background-size: cover;
-      background-position: center;
-      z-index: 1;
     }
     
     .text-center {
@@ -846,13 +890,13 @@ function renderQuestionPage1() {
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
-        <!-- Headline Section -->
-        <div class="headline-section" style="animation: fadeInUp 0.6s ease forwards;">
+        <!-- Headline Section - Fixed -->
+        <div class="headline-section" style="animation: fadeInUp 0.6s ease forwards; position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
           <h2 class="main-title">你的性别是什么？</h2>
           <p class="subtitle">这帮助我们个性化您的体验。</p>
         </div>
-        <!-- Selection Cards -->
-        <div class="selection-cards" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
+        <!-- Selection Cards - Scrollable -->
+        <div class="selection-cards scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
           <!-- Female Card -->
           <div class="option-card" onclick="selectOption('female')">
             <div class="option-content">
@@ -1006,6 +1050,20 @@ function renderQuestionPage1() {
       flex-direction: column;
       gap: 16px;
     }
+
+    .scrollable-options {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 2px;
+      padding-left: 2px;
+    }
+
+    .scrollable-options::-webkit-scrollbar {
+      display: none;
+    }
     
     .option-card {
       position: relative;
@@ -1141,17 +1199,19 @@ function renderQuestionPage2() {
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
-        <!-- Header Section -->
-        <header class="header-section">
+        <!-- Header Section - Fixed -->
+        <header class="header-section" style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
           <h2 class="main-title">你的年龄组是什么？</h2>
           <p class="subtitle">这帮助我们建议相关的风格。</p>
         </header>
-        <!-- Options List -->
-        <div class="options-list" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
+        <!-- Options List - Scrollable -->
+        <div class="options-list scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
           <!-- Option Card 1 -->
           <button class="option-card" onclick="selectOption('under14')">
-            <span class="option-icon">✏️</span>
-            <span class="option-text">18岁以下</span>
+            <div class="option-content">
+              <span class="option-icon">✏️</span>
+              <span class="option-text">18岁以下</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1160,8 +1220,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 2 -->
           <button class="option-card" onclick="selectOption('14-20')">
-            <span class="option-icon">🎓</span>
-            <span class="option-text">18-29岁</span>
+            <div class="option-content">
+              <span class="option-icon">🎓</span>
+              <span class="option-text">18-29岁</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1170,8 +1232,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 3 -->
           <button class="option-card" onclick="selectOption('20-25')">
-            <span class="option-icon">✒️</span>
-            <span class="option-text">30-39岁</span>
+            <div class="option-content">
+              <span class="option-icon">✒️</span>
+              <span class="option-text">30-39岁</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1180,8 +1244,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 4 -->
           <button class="option-card" onclick="selectOption('26-35')">
-            <span class="option-icon">💼</span>
-            <span class="option-text">40-49岁</span>
+            <div class="option-content">
+              <span class="option-icon">💼</span>
+              <span class="option-text">40-49岁</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1190,8 +1256,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 5 -->
           <button class="option-card" onclick="selectOption('36-50')">
-            <span class="option-icon">🌳</span>
-            <span class="option-text">50-59岁</span>
+            <div class="option-content">
+              <span class="option-icon">🌳</span>
+              <span class="option-text">50-59岁</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1200,8 +1268,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 6 -->
           <button class="option-card" onclick="selectOption('50+')">
-            <span class="option-icon">💎</span>
-            <span class="option-text">60岁以上</span>
+            <div class="option-content">
+              <span class="option-icon">💎</span>
+              <span class="option-text">60岁以上</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1313,6 +1383,20 @@ function renderQuestionPage2() {
       flex-direction: column;
       gap: 12px;
     }
+
+    .scrollable-options {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 2px;
+      padding-left: 2px;
+    }
+
+    .scrollable-options::-webkit-scrollbar {
+      display: none;
+    }
     
     .option-card {
       width: 100%;
@@ -1364,6 +1448,12 @@ function renderQuestionPage2() {
     .option-card.selected .checkbox svg {
       opacity: 1;
       transform: scale(1);
+    }
+
+    .option-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
 
     .option-icon {
@@ -1448,10 +1538,12 @@ function renderQuestionPage3() {
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
-        <!-- Headline -->
-        <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">哪种风格最能激励你？</h2>
-        <!-- Style Selection Grid -->
-        <div class="style-grid" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
+        <!-- Headline - Fixed -->
+        <div style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
+          <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">哪种风格最能激励你？</h2>
+        </div>
+        <!-- Style Selection Grid - Scrollable -->
+        <div class="style-grid scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
           <!-- Card 1: Animals -->
           <div class="style-card" onclick="toggleOption('style', 'animals')">
             <img class="card-image" src="./clip/图片/066e989deaf84f8049c78964200ddc54.webp" alt="动物" loading="lazy">
@@ -1653,6 +1745,20 @@ function renderQuestionPage3() {
       margin-bottom: 8px;
       color: #000000;
     }
+    
+    .scrollable-options {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 2px;
+      padding-left: 2px;
+    }
+    
+    .scrollable-options::-webkit-scrollbar {
+      display: none;
+    }
 
     .style-card {
       position: relative;
@@ -1826,17 +1932,17 @@ function renderQuestionPage4() {
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
-        <!-- Header Titles -->
-        <div class="header-section">
+        <!-- Header Titles - Fixed -->
+        <div class="header-section" style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
           <h2 class="main-title">你的目标是什么？</h2>
           <p class="subtitle">这帮助我们个性化您的体验。</p>
         </div>
-        <!-- Selection List -->
-        <div class="options-list" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
+        <!-- Selection List - Scrollable -->
+        <div class="options-list scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
           <!-- Option: Relax -->
           <button class="option-item" onclick="selectOption('relax')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 20C2 32.1503 8 42 20 42C32 42 38 32.1503 38 20H2Z" fill="none" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 14V6" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 14V10" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14V10" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.1904 30.6229C37.1802 28.039 37.764 25.1374 37.9417 22.0511C38.2868 22.0174 38.6402 22 39 22C42.866 22 46 24.0147 46 26.5C46 28.9853 42.866 31 39 31C38.0007 31 37.0504 30.8654 36.1904 30.6229Z" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="option-icon">☕️</span>
               <span class="option-text">放松自己</span>
             </div>
             <div class="option-checkbox">
@@ -1848,7 +1954,7 @@ function renderQuestionPage4() {
           <!-- Option: Have Fun -->
           <button class="option-item" onclick="selectOption('fun')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 18H16C9.37258 18 4 23.3726 4 30C4 36.6274 9.37258 42 16 42H32C38.6274 42 44 36.6274 44 30C44 23.3726 38.6274 18 32 18Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M16 26V34" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 30H20" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 16V9.71429H32V4" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 34C34.2091 34 36 32.2091 36 30C36 27.7909 34.2091 26 32 26C29.7909 26 28 27.7909 28 30C28 32.2091 29.7909 34 32 34Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/></svg>
+              <span class="option-icon">🎮</span>
               <span class="option-text">玩得开心</span>
             </div>
             <div class="option-checkbox">
@@ -1860,7 +1966,7 @@ function renderQuestionPage4() {
           <!-- Option: Express Creativity -->
           <button class="option-item" onclick="selectOption('creativity')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.036 44.0002C18.0561 40.8046 16.5778 38.4223 14.6011 36.8533C11.636 34.4998 6.92483 35.9625 5.18458 33.535C3.44433 31.1074 6.40382 26.6432 7.44234 24.0091C8.48086 21.3751 3.46179 20.4437 4.04776 19.6959C4.43842 19.1974 6.97471 17.7588 11.6567 15.3802C12.987 7.79356 17.9008 4.00024 26.3982 4.00024C39.1441 4.00024 44 14.8062 44 21.6791C44 28.5521 38.1201 35.9564 29.7441 37.5529C28.9951 38.6437 30.0754 40.7928 32.9848 44.0002" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M19.4997 14.5001C18.8464 17.0344 19.0408 18.8139 20.0829 19.8386C21.125 20.8634 22.9011 21.5335 25.4112 21.849C24.8417 25.1177 25.5361 26.6512 27.4942 26.4494C29.4524 26.2476 30.6289 25.434 31.0239 24.0084C34.0842 24.8685 35.7428 24.1487 35.9997 21.849C36.3852 18.3994 34.525 15.6476 33.7624 15.6476C32.9997 15.6476 31.0239 15.5548 31.0239 14.5001C31.0239 13.4453 28.7159 12.8494 26.6329 12.8494C24.5499 12.8494 25.8035 11.4453 22.9432 12.0001C21.0363 12.3699 19.8885 13.2032 19.4997 14.5001Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M30.5002 25.5002C29.4833 26.1313 28.0878 27.1805 27.5002 28.0002C26.0313 30.0497 24.8398 31.2976 24.5791 32.6083" stroke="#999" stroke-width="4" stroke-linecap="round"/></svg>
+              <span class="option-icon">🧠</span>
               <span class="option-text">表达我的创造力</span>
             </div>
             <div class="option-checkbox">
@@ -1872,7 +1978,7 @@ function renderQuestionPage4() {
           <!-- Option: Disconnect -->
           <button class="option-item" onclick="selectOption('disconnect')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 15H42C43.1046 15 44 15.8954 44 17V31C44 32.1046 43.1046 33 42 33H32" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 15H6C4.89543 15 4 15.8954 4 17V31C4 32.1046 4.89543 33 6 33H17" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 6V42" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 24H16" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 24H36" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="option-icon">⛓️‍💥</span>
               <span class="option-text">断开我的大脑</span>
             </div>
             <div class="option-checkbox">
@@ -1884,7 +1990,7 @@ function renderQuestionPage4() {
           <!-- Option: Develop Coloring Skills -->
           <button class="option-item" onclick="selectOption('skills')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M16 21C17.6569 21 19 19.6569 19 18C19 16.3431 17.6569 15 16 15C14.3431 15 13 16.3431 13 18C13 19.6569 14.3431 21 16 21Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M17 34C18.6569 34 20 32.6569 20 31C20 29.3431 18.6569 28 17 28C15.3431 28 14 29.3431 14 31C14 32.6569 15.3431 34 17 34Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/></svg>
+              <span class="option-icon">🎨</span>
               <span class="option-text">发展我的着色技巧</span>
             </div>
             <div class="option-checkbox">
@@ -1896,7 +2002,7 @@ function renderQuestionPage4() {
           <!-- Option: Relieve Stress -->
           <button class="option-item" onclick="selectOption('stress')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.7778 7C13.7321 7 4.77783 15.9543 4.77783 27C4.77783 32.2301 6.49127 37.4362 9.77783 41H39.7778C43.0644 37.4362 44.7778 32.2301 44.7778 27C44.7778 15.9543 35.8235 7 24.7778 7Z" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.7778" cy="30" r="4" fill="none" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.7778 20V26" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.7778 12V14" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.77783 28H11.7778" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7778 18L15.192 19.4142" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M37.7778 28H39.7778" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34.7778 19.4141L36.192 17.9998" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="option-icon">⏱️</span>
               <span class="option-text">缓解压力</span>
             </div>
             <div class="option-checkbox">
@@ -1908,7 +2014,7 @@ function renderQuestionPage4() {
           <!-- Option: Other -->
           <button class="option-item" onclick="selectOption('other')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="34.5" cy="13.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="34.5" cy="34.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="13.5" cy="13.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="13.5" cy="34.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/></svg>
+              <span class="option-icon">♾️</span>
               <span class="option-text">其他</span>
             </div>
             <div class="option-checkbox">
@@ -1936,7 +2042,7 @@ function renderQuestionPage4() {
       height: 100dvh;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      overflow: hidden;
     }
 
     .top-nav {
@@ -2021,6 +2127,20 @@ function renderQuestionPage4() {
       display: flex;
       flex-direction: column;
       gap: 16px;
+    }
+    
+    .scrollable-options {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-right: 2px;
+      padding-left: 2px;
+    }
+    
+    .scrollable-options::-webkit-scrollbar {
+      display: none;
     }
 
     .option-item {

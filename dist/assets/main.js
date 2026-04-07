@@ -6,6 +6,21 @@ let isTransitioning = false;
 let completedQuestions = 0;
 const totalQuestions = 4;
 
+// 风格ID到中文标签的映射
+const styleLabelMap = {
+  'animals': '动物',
+  'comics': '艺术',
+  'people': '花朵',
+  'cute': '自然',
+  'food': '宠物',
+  'mandala': '庆祝',
+  'flowers': '食物',
+  'simple': '超级尺寸'
+};
+
+// 存储用户选择的风格
+let selectedStyles = [];
+
 const progressStore = {
   completedQuestions: 0,
   totalQuestions: 4,
@@ -64,7 +79,6 @@ const sharedStyles = `
     padding: 0 20px;
     width: 100%;
     box-sizing: border-box;
-    background-color: #FFFFFF;
   }
 
   .main-content {
@@ -87,7 +101,7 @@ const sharedStyles = `
     font-size: 24px;
     font-weight: bold;
     line-height: 1.2;
-    margin-bottom: 1.125rem;
+    margin-bottom: 8px;
     color: #000000;
     white-space: nowrap;
     overflow: visible;
@@ -438,8 +452,19 @@ function renderOnboardingPage1() {
 
   const app = document.getElementById('app');
   
+  // 创建组件的辅助函数
+  const createStatComponent = (value, subtitle) => `
+    <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin: 0 auto;">
+      <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="48" height="48"><path fill="#CCCCCC" d="M554.92 162.9c10.18 10.44 32.76 7.23 59.24-8.41 26.48-15.64 52.83-41.34 69.14-67.42 16.3-26.08 20.07-48.57 9.89-59.01-10.18-10.44-32.76-7.23-59.24 8.41-26.48 15.65-52.83 41.35-69.14 67.43-16.3 26.08-20.07 48.57-9.89 59z m0 0M494.33 262.41c2.97 14.28 23.73 23.71 54.47 24.76 30.74 1.05 66.78-6.45 94.55-19.67 27.77-13.22 43.04-30.16 40.07-44.44-2.97-14.27-23.73-23.71-54.47-24.76-30.74-1.05-66.78 6.45-94.55 19.67-27.77 13.23-43.04 30.17-40.07 44.44z m0 0M424.36 150.64c2.56 34.4 12.68 65.62 26.55 81.89 13.87 16.27 29.38 15.11 40.69-3.03 11.31-18.14 16.7-50.51 14.14-84.92-2.56-34.41-12.68-65.62-26.55-81.89-13.87-16.27-29.38-15.11-40.69 3.03-11.31 18.14-16.7 50.51-14.14 84.92z m0 0M426.3 401.09c5.03 13.68 26.95 19.98 57.51 16.51 30.56-3.46 65.11-16.17 90.64-33.32s38.16-36.14 33.12-49.82c-5.03-13.69-26.95-19.98-57.51-16.51-30.56 3.46-65.12 16.17-90.64 33.32-25.52 17.14-38.15 36.13-33.12 49.82z m0 0M341.03 302.08c11.71 52.03 39.03 90.2 61.01 85.26 21.98-4.95 30.31-51.14 18.6-103.17-11.71-52.03-39.03-90.2-61.01-85.25-21.98 4.94-30.31 51.13-18.6 103.16z m0 0M425.92 566.28c9.45 11.09 32.2 9.41 59.67-4.43s55.48-37.71 73.49-62.65c18.01-24.93 23.28-47.12 13.82-58.21-9.46-11.1-32.2-9.41-59.67 4.42s-55.48 37.72-73.49 62.65c-18.01 24.93-23.28 47.13-13.82 58.22z m0 0M311.48 502.97c29.01 44.75 67.85 71.1 86.76 58.84 18.91-12.26 10.72-58.47-18.28-103.23-29.01-44.76-67.85-71.1-86.76-58.84-18.92 12.26-10.73 58.48 18.28 103.23z m0 0M475.69 723.78c12.67 7.21 33.48-2.12 54.59-24.48 21.11-22.36 39.32-54.36 47.76-83.93 8.44-29.57 5.84-52.23-6.83-59.44-12.67-7.21-33.48 2.12-54.59 24.48-21.11 22.36-39.32 54.36-47.76 83.93-8.45 29.58-5.84 52.24 6.83 59.44z m0 0M346.24 702.24c42.51 32.21 88.01 43.75 101.61 25.79 13.61-17.96-9.82-58.63-52.34-90.83-42.51-32.21-88.01-43.75-101.61-25.78-13.61 17.95 9.82 58.62 52.34 90.82z m0 0M584.76 856.77c22.39 2.57 45.48-38.29 51.57-91.27 6.09-52.98-7.11-98.02-29.5-100.6-22.39-2.57-45.48 38.29-51.57 91.27-6.09 52.99 7.11 98.02 29.5 100.6z m0 0M457.99 889.39c51.73 12.96 98.11 5.74 103.58-16.12 5.48-21.86-32.02-50.08-83.76-63.04s-98.11-5.74-103.59 16.12c-5.46 21.86 32.04 50.08 83.77 63.04z m0 0M658.45 851.41c6.05 52.99 29.1 93.87 51.49 91.32 22.39-2.55 35.64-47.59 29.59-100.57-6.05-52.99-29.1-93.87-51.49-91.31-22.39 2.55-35.64 47.57-29.59 100.56z m0 0M593.72 1001.97c34.5 0.59 66.51-6.63 83.98-18.96 17.47-12.32 17.73-27.88 0.7-40.8-17.03-12.92-48.78-21.25-83.28-21.84-34.5-0.59-66.51 6.63-83.98 18.96-17.47 12.32-17.73 27.88-0.7 40.8 17.04 12.92 48.78 21.24 83.28 21.84z m0 0"></path></svg>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+        <h2 style="font-size: 28px; font-weight: bold; color: #000000; line-height: 1.2; margin: 0;" class="title">${value}</h2>
+        <p class="subtitle" style="margin: 0;">${subtitle}</p>
+      </div>
+      <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="48" height="48"><path fill="#CCCCCC" d="M371.99 124.79c38.21 37.27 81.95 54.39 97.7 38.24 15.74-16.14-2.46-59.45-40.68-96.71-38.21-37.27-81.96-54.39-97.7-38.25-15.75 16.16 2.47 59.46 40.68 96.72z m0 0M429.03 281.36c52.25 10.88 98.34 1.79 102.94-20.29 4.59-22.08-34.05-48.8-86.3-59.67-52.26-10.87-98.35-1.79-102.94 20.29-4.6 22.08 34.04 48.79 86.3 59.67z m0 0M551.57 243.35c22.49 1.67 43.94-40.12 47.89-93.35 3.96-53.23-11.06-97.73-33.55-99.41-22.49-1.67-43.94 40.12-47.89 93.35-3.96 53.23 11.06 97.73 33.55 99.41z m0 0M494.35 406.27c50.1 18.42 97.02 16.18 104.8-4.98 7.78-21.17-26.52-53.26-76.62-71.68-50.1-18.42-97.02-16.18-104.8 4.99-7.79 21.17 26.52 53.25 76.62 71.67z m0 0M623.46 387.55c14.23 3.21 31.43-11.8 45.12-39.37 13.68-27.57 21.78-63.52 21.23-94.29-0.55-30.78-9.66-51.71-23.9-54.91-14.23-3.2-31.43 11.81-45.12 39.38-13.68 27.57-21.77 63.52-21.22 94.29 0.55 30.77 9.65 51.7 23.89 54.9z m0 0M498.87 533.64c40.62 34.63 85.41 48.78 100.04 31.62 14.63-17.16-6.44-59.15-47.06-93.78-40.62-34.62-85.41-48.78-100.04-31.62-14.63 17.17 6.44 59.15 47.06 93.78z m0 0M626.62 560.34c12.24 7.94 33.57-0.19 55.96-21.31 22.39-21.13 42.43-52.05 52.57-81.11 10.14-29.06 8.84-51.85-3.4-59.79-12.24-7.94-33.57 0.19-55.96 21.31-22.39 21.13-42.43 52.04-52.57 81.11-10.15 29.07-8.85 51.86 3.4 59.79z m0 0M465.46 660.22c26.41 46.39 63.7 74.95 83.3 63.8 19.6-11.16 14.09-57.81-12.31-104.2s-63.69-74.95-83.29-63.8c-19.62 11.16-14.11 57.81 12.3 104.2z m0 0M576.22 728.09c8.81 11.63 31.63 11.26 59.87-0.98s57.61-34.49 77.05-58.36c19.43-23.87 25.98-45.74 17.16-57.37-8.81-11.63-31.63-11.26-59.88 0.98-28.24 12.24-57.61 34.49-77.04 58.36-19.43 23.87-25.97 45.74-17.16 57.37z m0 0M387.03 765.67c6.1 53.03 29.21 93.92 51.62 91.35 22.41-2.58 35.63-47.66 29.52-100.68-6.1-53.03-29.21-93.92-51.62-91.35-22.41 2.57-35.62 47.65-29.52 100.68z m0 0M463.17 872.94c3.54 14.15 24.69 22.75 55.47 22.56 30.78-0.19 66.52-9.15 93.75-23.5 27.24-14.35 41.82-31.9 38.28-46.05-3.55-14.16-24.69-22.75-55.47-22.56-30.78 0.19-66.52 9.15-93.75 23.5-27.24 14.34-41.83 31.89-38.28 46.05z m0 0M313.14 942.95c14.49 1.66 29.98-15.12 40.62-44 10.64-28.88 14.82-65.49 10.96-96.03-3.86-30.54-15.16-50.37-29.66-52.02-14.5-1.65-29.98 15.12-40.62 44-10.64 28.88-14.82 65.49-10.96 96.03 3.86 30.54 15.16 50.37 29.66 52.02z m0 0M332.44 962.8c0.25 14.59 18.91 27.75 48.93 34.53 30.03 6.78 66.87 6.14 96.64-1.67 29.78-7.81 47.96-21.61 47.71-36.2-0.25-14.59-18.9-27.75-48.93-34.52-30.03-6.78-66.87-6.14-96.64 1.67-29.78 7.8-47.97 21.6-47.71 36.19z m0 0"></path></svg>
+    </div>
+  `;  
   app.innerHTML = `
-    <div class="container" style="position: relative; display: flex; align-items: center; justify-content: center;">
+    <div class="container" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; height: 100dvh;">
       <div 
         id="text1"
         style="animation: fadeInUp 0.8s ease forwards; position: absolute; text-align: center; width: 100%; max-width: 335px;"
@@ -448,26 +473,21 @@ function renderOnboardingPage1() {
         <p style="margin-top: 8px;" class="subtitle">在这里，你可以通过填色来放松心情，释放创造力，成为真正的艺术家</p>
       </div>
       
-      <div 
-        id="text2"
-        style="opacity: 0; position: absolute; text-align: center; width: 100%; max-width: 335px;"
-      >
-        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin: 0 auto;">
-          <svg t="1774519416064" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1694" width="48" height="48"><path d="M554.92 162.9c10.18 10.44 32.76 7.23 59.24-8.41 26.48-15.64 52.83-41.34 69.14-67.42 16.3-26.08 20.07-48.57 9.89-59.01-10.18-10.44-32.76-7.23-59.24 8.41-26.48 15.65-52.83 41.35-69.14 67.43-16.3 26.08-20.07 48.57-9.89 59z m0 0M494.33 262.41c2.97 14.28 23.73 23.71 54.47 24.76 30.74 1.05 66.78-6.45 94.55-19.67 27.77-13.22 43.04-30.16 40.07-44.44-2.97-14.27-23.73-23.71-54.47-24.76-30.74-1.05-66.78 6.45-94.55 19.67-27.77 13.23-43.04 30.17-40.07 44.44z m0 0M424.36 150.64c2.56 34.4 12.68 65.62 26.55 81.89 13.87 16.27 29.38 15.11 40.69-3.03 11.31-18.14 16.7-50.51 14.14-84.92-2.56-34.41-12.68-65.62-26.55-81.89-13.87-16.27-29.38-15.11-40.69 3.03-11.31 18.14-16.7 50.51-14.14 84.92z m0 0M426.3 401.09c5.03 13.68 26.95 19.98 57.51 16.51 30.56-3.46 65.11-16.17 90.64-33.32s38.16-36.14 33.12-49.82c-5.03-13.69-26.95-19.98-57.51-16.51-30.56 3.46-65.12 16.17-90.64 33.32-25.52 17.14-38.15 36.13-33.12 49.82z m0 0M341.03 302.08c11.71 52.03 39.03 90.2 61.01 85.26 21.98-4.95 30.31-51.14 18.6-103.17-11.71-52.03-39.03-90.2-61.01-85.25-21.98 4.94-30.31 51.13-18.6 103.16z m0 0M425.92 566.28c9.45 11.09 32.2 9.41 59.67-4.43s55.48-37.71 73.49-62.65c18.01-24.93 23.28-47.12 13.82-58.21-9.46-11.1-32.2-9.41-59.67 4.42s-55.48 37.72-73.49 62.65c-18.01 24.93-23.28 47.13-13.82 58.22z m0 0M311.48 502.97c29.01 44.75 67.85 71.1 86.76 58.84 18.91-12.26 10.72-58.47-18.28-103.23-29.01-44.76-67.85-71.1-86.76-58.84-18.92 12.26-10.73 58.48 18.28 103.23z m0 0M475.69 723.78c12.67 7.21 33.48-2.12 54.59-24.48 21.11-22.36 39.32-54.36 47.76-83.93 8.44-29.57 5.84-52.23-6.83-59.44-12.67-7.21-33.48 2.12-54.59 24.48-21.11 22.36-39.32 54.36-47.76 83.93-8.45 29.58-5.84 52.24 6.83 59.44z m0 0M346.24 702.24c42.51 32.21 88.01 43.75 101.61 25.79 13.61-17.96-9.82-58.63-52.34-90.83-42.51-32.21-88.01-43.75-101.61-25.78-13.61 17.95 9.82 58.62 52.34 90.82z m0 0M584.76 856.77c22.39 2.57 45.48-38.29 51.57-91.27 6.09-52.98-7.11-98.02-29.5-100.6-22.39-2.57-45.48 38.29-51.57 91.27-6.09 52.99 7.11 98.02 29.5 100.6z m0 0M457.99 889.39c51.73 12.96 98.11 5.74 103.58-16.12 5.48-21.86-32.02-50.08-83.76-63.04s-98.11-5.74-103.59 16.12c-5.46 21.86 32.04 50.08 83.77 63.04z m0 0M658.45 851.41c6.05 52.99 29.1 93.87 51.49 91.32 22.39-2.55 35.64-47.59 29.59-100.57-6.05-52.99-29.1-93.87-51.49-91.31-22.39 2.55-35.64 47.57-29.59 100.56z m0 0M593.72 1001.97c34.5 0.59 66.51-6.63 83.98-18.96 17.47-12.32 17.73-27.88 0.7-40.8-17.03-12.92-48.78-21.25-83.28-21.84-34.5-0.59-66.51 6.63-83.98 18.96-17.47 12.32-17.73 27.88-0.7 40.8 17.04 12.92 48.78 21.24 83.28 21.84z m0 0" fill="#B5B5B5" p-id="1695"></path></svg>
-          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-            <h2 style="font-size: 28px; font-weight: bold; color: #000000; line-height: 1.2;" class="title">100M</h2>
-            <p class="subtitle">快乐的艺术家</p>
-          </div>
-          <svg t="1774519452716" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1836" width="48" height="48"><path d="M371.99 124.79c38.21 37.27 81.95 54.39 97.7 38.24 15.74-16.14-2.46-59.45-40.68-96.71-38.21-37.27-81.96-54.39-97.7-38.25-15.75 16.16 2.47 59.46 40.68 96.72z m0 0M429.03 281.36c52.25 10.88 98.34 1.79 102.94-20.29 4.59-22.08-34.05-48.8-86.3-59.67-52.26-10.87-98.35-1.79-102.94 20.29-4.6 22.08 34.04 48.79 86.3 59.67z m0 0M551.57 243.35c22.49 1.67 43.94-40.12 47.89-93.35 3.96-53.23-11.06-97.73-33.55-99.41-22.49-1.67-43.94 40.12-47.89 93.35-3.96 53.23 11.06 97.73 33.55 99.41z m0 0M494.35 406.27c50.1 18.42 97.02 16.18 104.8-4.98 7.78-21.17-26.52-53.26-76.62-71.68-50.1-18.42-97.02-16.18-104.8 4.99-7.79 21.17 26.52 53.25 76.62 71.67z m0 0M623.46 387.55c14.23 3.21 31.43-11.8 45.12-39.37 13.68-27.57 21.78-63.52 21.23-94.29-0.55-30.78-9.66-51.71-23.9-54.91-14.23-3.2-31.43 11.81-45.12 39.38-13.68 27.57-21.77 63.52-21.22 94.29 0.55 30.77 9.65 51.7 23.89 54.9z m0 0M498.87 533.64c40.62 34.63 85.41 48.78 100.04 31.62 14.63-17.16-6.44-59.15-47.06-93.78-40.62-34.62-85.41-48.78-100.04-31.62-14.63 17.17 6.44 59.15 47.06 93.78z m0 0M626.62 560.34c12.24 7.94 33.57-0.19 55.96-21.31 22.39-21.13 42.43-52.05 52.57-81.11 10.14-29.06 8.84-51.85-3.4-59.79-12.24-7.94-33.57 0.19-55.96 21.31-22.39 21.13-42.43 52.04-52.57 81.11-10.15 29.07-8.85 51.86 3.4 59.79z m0 0M465.46 660.22c26.41 46.39 63.7 74.95 83.3 63.8 19.6-11.16 14.09-57.81-12.31-104.2s-63.69-74.95-83.29-63.8c-19.62 11.16-14.11 57.81 12.3 104.2z m0 0M576.22 728.09c8.81 11.63 31.63 11.26 59.87-0.98s57.61-34.49 77.05-58.36c19.43-23.87 25.98-45.74 17.16-57.37-8.81-11.63-31.63-11.26-59.88 0.98-28.24 12.24-57.61 34.49-77.04 58.36-19.43 23.87-25.97 45.74-17.16 57.37z m0 0M387.03 765.67c6.1 53.03 29.21 93.92 51.62 91.35 22.41-2.58 35.63-47.66 29.52-100.68-6.1-53.03-29.21-93.92-51.62-91.35-22.41 2.57-35.62 47.65-29.52 100.68z m0 0M463.17 872.94c3.54 14.15 24.69 22.75 55.47 22.56 30.78-0.19 66.52-9.15 93.75-23.5 27.24-14.35 41.82-31.9 38.28-46.05-3.55-14.16-24.69-22.75-55.47-22.56-30.78 0.19-66.52 9.15-93.75 23.5-27.24 14.34-41.83 31.89-38.28 46.05z m0 0M313.14 942.95c14.49 1.66 29.98-15.12 40.62-44 10.64-28.88 14.82-65.49 10.96-96.03-3.86-30.54-15.16-50.37-29.66-52.02-14.5-1.65-29.98 15.12-40.62 44-10.64 28.88-14.82 65.49-10.96 96.03 3.86 30.54 15.16 50.37 29.66 52.02z m0 0M332.44 962.8c0.25 14.59 18.91 27.75 48.93 34.53 30.03 6.78 66.87 6.14 96.64-1.67 29.78-7.81 47.96-21.61 47.71-36.2-0.25-14.59-18.9-27.75-48.93-34.52-30.03-6.78-66.87-6.14-96.64 1.67-29.78 7.8-47.97 21.6-47.71 36.19z m0 0" fill="#B5B5B5" p-id="1837"></path></svg>
+      <div id="statContainer" style="opacity: 0; display: flex; flex-direction: column; align-items: center; gap: 72px; position: absolute; width: 100%; max-width: 335px;">
+        <div id="stat1" style="opacity: 0; width: 100%;">
+          ${createStatComponent('5M+', '累计下载')}
+        </div>
+        <div id="stat2" style="opacity: 0; width: 100%;">
+          ${createStatComponent('1M+', '快乐的艺术家')}
+        </div>
+        <div id="stat3" style="opacity: 0; width: 100%;">
+          ${createStatComponent('4.7+', 'Appstore')}
         </div>
       </div>
       
-      <div 
-        id="text3"
-        style="opacity: 0; position: absolute; text-align: center; width: 100%; max-width: 335px;"
-      >
-        <h2 class="title">"这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"</h2>
-        <p class="subtitle" style="margin-top: 16px;">- Sarah, 资深用户</p>
+      <div id="testimonialContainer" style="opacity: 0; position: absolute; text-align: center; width: 100%; max-width: 335px;">
+        <h1 style="font-size: 32px; white-space: normal; margin-bottom: 8px; line-height: 1.3;" class="title">"这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"</h1>
+        <p style="margin-top: 8px;" class="subtitle">Sarah, 资深用户</p>
       </div>
     </div>
   `;
@@ -475,42 +495,68 @@ function renderOnboardingPage1() {
   // 文字动画序列
   animationTimerIds.push(setTimeout(() => {
     const text1 = document.getElementById('text1');
-    const text2 = document.getElementById('text2');
+    const statContainer = document.getElementById('statContainer');
 
-    if (text1 && text2) {
+    if (text1 && statContainer) {
       text1.style.animation = 'fadeOutUp 0.8s ease forwards';
       animationTimerIds.push(setTimeout(() => {
-        text2.style.animation = 'fadeInUp 0.8s ease forwards';
+        statContainer.style.opacity = '1';
       }, 400));
     }
   }, 2000));
 
+  // 三个组件依次出现 - 每个增加0.5秒延迟
   animationTimerIds.push(setTimeout(() => {
-    const text2 = document.getElementById('text2');
-    const text3 = document.getElementById('text3');
-
-    if (text2 && text3) {
-      text2.style.animation = 'fadeOutUp 0.8s ease forwards';
-      animationTimerIds.push(setTimeout(() => {
-        text3.style.animation = 'fadeInUp 0.8s ease forwards';
-      }, 400));
+    const stat1 = document.getElementById('stat1');
+    if (stat1) {
+      stat1.style.animation = 'fadeInUp 0.8s ease forwards';
     }
-  }, 4000));
+  }, 3100));
 
   animationTimerIds.push(setTimeout(() => {
-    const text3 = document.getElementById('text3');
-
-    if (text3) {
-      text3.style.animation = 'fadeOutUp 0.8s ease forwards';
-      animationTimerIds.push(setTimeout(() => {
-        currentPage = 1;
-        renderPage();
-      }, 800));
+    const stat2 = document.getElementById('stat2');
+    if (stat2) {
+      stat2.style.animation = 'fadeInUp 0.8s ease forwards';
     }
-  }, 6000));
+  }, 3700));
+
+  animationTimerIds.push(setTimeout(() => {
+    const stat3 = document.getElementById('stat3');
+    if (stat3) {
+      stat3.style.animation = 'fadeInUp 0.8s ease forwards';
+    }
+  }, 4300));
+
+  // 所有组件统一消失 - 整体时间往后推迟
+  animationTimerIds.push(setTimeout(() => {
+    const stat1 = document.getElementById('stat1');
+    const stat2 = document.getElementById('stat2');
+    const stat3 = document.getElementById('stat3');
+    const testimonialContainer = document.getElementById('testimonialContainer');
+    
+    if (stat1) stat1.style.animation = 'fadeOutUp 0.8s ease forwards';
+    if (stat2) stat2.style.animation = 'fadeOutUp 0.8s ease forwards';
+    if (stat3) stat3.style.animation = 'fadeOutUp 0.8s ease forwards';
+    
+    animationTimerIds.push(setTimeout(() => {
+      if (testimonialContainer) {
+        testimonialContainer.style.opacity = '1';
+        testimonialContainer.style.animation = 'fadeInUp 0.8s ease forwards';
+      }
+      
+      animationTimerIds.push(setTimeout(() => {
+        if (testimonialContainer) {
+          testimonialContainer.style.animation = 'fadeOutUp 0.8s ease forwards';
+        }
+        
+        animationTimerIds.push(setTimeout(() => {
+          currentPage = 1;
+          renderPage();
+        }, 800));
+      }, 2000));
+    }, 800));
+  }, 5700));
 }
-
-// 引导页2 - 核心功能展示
 function renderOnboardingPage2() {
   const app = document.getElementById('app');
   
@@ -518,18 +564,18 @@ function renderOnboardingPage2() {
     <div class="onboarding-page-2">
       <!-- Background Illustration Layer (Full Screen) -->
       <div class="background-layer">
-        <img alt="Professional photograph of a person using an Apple Pencil to color a detailed mandala on an iPad screen" class="background-image" src="./images/onboarding2.webp">
+        <img alt="Background illustration" class="background-image" src="./clip/图片/Gemini_Generated_Image_w6zdxow6zdxow6zd 1.png">
         <div class="overlay"></div>
       </div>
       <!-- Fixed Bottom Action Area -->
       <footer class="bottom-action">
-        <div class="text-container">
-          <h1 style="animation: fadeInUp 0.6s ease forwards; font-size: 32px; white-space: nowrap;" class="title">欢迎来到Cross Stitch</h1>
-          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.1s; opacity: 0; font-size: 16px;" class="subtitle">创造、上色和享受乐趣</p>
+        <div class="text-center space-y-2 mb-8">
+          <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; white-space: nowrap;" class="main-title">欢迎来到Cross Stitch</h1>
+          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px;" class="subtitle">创造、上色和享受乐趣</p>
         </div>
         <div class="button-container">
           <button 
-            style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;"
+            style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;"
             class="bottom-button"
             onclick="nextPage()"
           >
@@ -574,13 +620,13 @@ function renderOnboardingPage2() {
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%), url('./images/59e77b30045b29e227002c5f0ba8d837.webp');
+      background: linear-gradient(to top, rgba(0,0,0,0.67) 0%, rgba(0,0,0,0.34) 50%, transparent 100%);
       background-size: cover;
       background-position: center;
       z-index: 1;
     }
     
-    .text-container {
+    .text-center {
       text-align: center;
       margin-bottom: 32px;
       padding: 0 20px;
@@ -588,11 +634,18 @@ function renderOnboardingPage2() {
       box-sizing: border-box;
     }
     
-    .title {
-      color: white;
-      font-family: 'PingFang SC', 'SF Pro Display', sans-serif;
+    .space-y-2 > * + * {
+      margin-top: 8px;
+    }
+    
+    .mb-8 {
+      margin-bottom: 32px;
+    }
+    
+    .main-title {
       font-size: 32px;
       font-weight: bold;
+      color: #FFFFFF;
       line-height: 1.2;
       margin-bottom: 8px;
       white-space: nowrap;
@@ -600,9 +653,8 @@ function renderOnboardingPage2() {
     }
     
     .subtitle {
-      color: rgba(255, 255, 255, 0.8);
-      font-family: 'PingFang SC', 'SF Pro Display', sans-serif;
       font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
       line-height: 1.4;
       margin-top: 8px;
     }
@@ -752,7 +804,7 @@ function renderOnboardingPage3() {
       font-weight: bold;
       color: #000000;
       line-height: 1.2;
-      margin-bottom: 1.125rem;
+      margin-bottom: 8px;
     }
 
     .subtitle {
@@ -847,8 +899,8 @@ function renderQuestionPage1() {
   style.textContent = `
     .question-page-1 {
       font-family: 'Inter', 'PingFang SC', sans-serif;
-      background-color: #FFFFFF;
       color: #000000;
+      background-color: #FFFFFF;
       height: 100vh;
       height: 100dvh;
       display: flex;
@@ -932,15 +984,14 @@ function renderQuestionPage1() {
     }
 
     .headline-section {
-      margin-bottom: 32px;
-      padding-top: 24px;
+      margin-bottom: 24px;
     }
     
     .main-title {
       font-size: 24px;
       font-weight: bold;
       line-height: 1.2;
-      margin-bottom: 1.125rem;
+      margin-bottom: 8px;
       color: #000000;
     }
     
@@ -1003,6 +1054,8 @@ function renderQuestionPage1() {
       font-size: 18px;
       font-weight: 500;
       color: #000000;
+      font-family: 'PingFang SC', 'SF Pro', sans-serif;
+      text-align: left;
     }
     
     .checkbox {
@@ -1098,7 +1151,7 @@ function renderQuestionPage2() {
           <!-- Option Card 1 -->
           <button class="option-card" onclick="selectOption('under14')">
             <span class="option-icon">✏️</span>
-            <span class="option-text">14岁以下</span>
+            <span class="option-text">18岁以下</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1108,7 +1161,7 @@ function renderQuestionPage2() {
           <!-- Option Card 2 -->
           <button class="option-card" onclick="selectOption('14-20')">
             <span class="option-icon">🎓</span>
-            <span class="option-text">14-20</span>
+            <span class="option-text">18-29岁</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1118,7 +1171,7 @@ function renderQuestionPage2() {
           <!-- Option Card 3 -->
           <button class="option-card" onclick="selectOption('20-25')">
             <span class="option-icon">✒️</span>
-            <span class="option-text">20-25</span>
+            <span class="option-text">30-39岁</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1128,7 +1181,7 @@ function renderQuestionPage2() {
           <!-- Option Card 4 -->
           <button class="option-card" onclick="selectOption('26-35')">
             <span class="option-icon">💼</span>
-            <span class="option-text">26-35</span>
+            <span class="option-text">40-49岁</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1138,7 +1191,7 @@ function renderQuestionPage2() {
           <!-- Option Card 5 -->
           <button class="option-card" onclick="selectOption('36-50')">
             <span class="option-icon">🌳</span>
-            <span class="option-text">36-50</span>
+            <span class="option-text">50-59岁</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1148,7 +1201,7 @@ function renderQuestionPage2() {
           <!-- Option Card 6 -->
           <button class="option-card" onclick="selectOption('50+')">
             <span class="option-icon">💎</span>
-            <span class="option-text">大于50</span>
+            <span class="option-text">60岁以上</span>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1167,8 +1220,8 @@ function renderQuestionPage2() {
   style.textContent = `
     .question-page-2 {
       font-family: 'PingFang SC', 'SF Pro', 'Inter', sans-serif;
-      background-color: #FFFFFF;
       color: #000000;
+      background-color: #FFFFFF;
       height: 100vh;
       height: 100dvh;
       display: flex;
@@ -1245,7 +1298,7 @@ function renderQuestionPage2() {
       font-weight: bold;
       color: #000000;
       line-height: 1.2;
-      margin-bottom: 1.125rem;
+      margin-bottom: 8px;
     }
 
     .subtitle {
@@ -1325,8 +1378,9 @@ function renderQuestionPage2() {
 
     .option-text {
       font-size: 18px;
-      color: #000000;
       font-weight: 500;
+      color: #000000;
+      font-family: 'PingFang SC', 'SF Pro', sans-serif;
       text-align: left;
     }
 
@@ -1520,8 +1574,8 @@ function renderQuestionPage3() {
   style.textContent = `
     .question-page-3 {
       font-family: 'PingFang SC', 'SF Pro Display', 'Noto Sans SC', sans-serif;
-      background-color: #FFFFFF;
       color: #000000;
+      background-color: #FFFFFF;
       height: 100vh;
       height: 100dvh;
       display: flex;
@@ -1596,7 +1650,7 @@ function renderQuestionPage3() {
       font-size: 24px;
       font-weight: bold;
       line-height: 1.2;
-      margin-bottom: 1.125rem;
+      margin-bottom: 8px;
       color: #000000;
     }
 
@@ -1714,6 +1768,16 @@ function renderQuestionPage3() {
       let selectedOptions = [];
       if (type === 'style') {
         selectedOptions = document.querySelectorAll('.style-card.selected');
+        
+        // 更新 selectedStyles 数组
+        selectedStyles = [];
+        selectedOptions.forEach(option => {
+          const onclickAttr = option.getAttribute('onclick');
+          const match = onclickAttr.match(/toggleOption\('style',\s*'([^']+)'\)/);
+          if (match && match[1]) {
+            selectedStyles.push(match[1]);
+          }
+        });
       } else if (type === 'palette') {
         selectedOptions = document.querySelectorAll('.palette-card.selected');
       } else if (type === 'brush') {
@@ -1829,6 +1893,18 @@ function renderQuestionPage4() {
               </svg>
             </div>
           </button>
+          <!-- Option: Relieve Stress -->
+          <button class="option-item" onclick="selectOption('stress')">
+            <div class="option-content">
+              <svg class="option-icon" width="24" height="24" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.7778 7C13.7321 7 4.77783 15.9543 4.77783 27C4.77783 32.2301 6.49127 37.4362 9.77783 41H39.7778C43.0644 37.4362 44.7778 32.2301 44.7778 27C44.7778 15.9543 35.8235 7 24.7778 7Z" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.7778" cy="30" r="4" fill="none" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.7778 20V26" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.7778 12V14" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.77783 28H11.7778" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7778 18L15.192 19.4142" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M37.7778 28H39.7778" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34.7778 19.4141L36.192 17.9998" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="option-text">缓解压力</span>
+            </div>
+            <div class="option-checkbox">
+              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </button>
           <!-- Option: Other -->
           <button class="option-item" onclick="selectOption('other')">
             <div class="option-content">
@@ -1854,8 +1930,8 @@ function renderQuestionPage4() {
   style.textContent = `
     .question-page-4 {
       font-family: 'PingFang SC', 'SF Pro', 'Inter', sans-serif;
-      background-color: #FFFFFF;
       color: #000000;
+      background-color: #FFFFFF;
       height: 100vh;
       height: 100dvh;
       display: flex;
@@ -1931,7 +2007,7 @@ function renderQuestionPage4() {
       font-size: 24px;
       font-weight: bold;
       line-height: 1.2;
-      margin-bottom: 1.125rem;
+      margin-bottom: 8px;
       color: #000000;
     }
 
@@ -2003,6 +2079,8 @@ function renderQuestionPage4() {
       font-size: 18px;
       font-weight: 500;
       color: #000000;
+      font-family: 'PingFang SC', 'SF Pro', sans-serif;
+      text-align: left;
     }
     
     .selected-text {
@@ -2751,11 +2829,26 @@ function renderOnboardingPage5() {
         ></div>
         
         <h1 
-          style="animation: fadeInUp 0.6s ease forwards; opacity: 0; margin-top: 24px; text-align: center; color: #000000; font-size: 24px; white-space: normal;"
+          style="animation: fadeInUp 0.6s ease forwards; opacity: 0; top: 122px; text-align: center; color: #000000; font-size: 24px; white-space: normal; position: absolute; width: 340px; padding: 0; box-sizing: border-box;"
           class="title" 
-          id="loadingText"
+          id="loadingText1"
         >
-          正在设置您的上色体验
+          正在分析你的风格偏好...
+        </h1>
+        
+        <h1 
+          style="animation: fadeInUp 0.6s ease forwards; opacity: 0; top: 122px; text-align: center; color: #000000; font-size: 24px; white-space: normal; position: absolute; visibility: hidden; width: 340px; padding: 0; box-sizing: border-box;"
+          class="title" 
+          id="loadingText2"
+        >
+        </h1>
+        
+        <h1 
+          style="animation: fadeInUp 0.6s ease forwards; opacity: 0; top: 122px; text-align: center; color: #000000; font-size: 24px; white-space: normal; position: absolute; visibility: hidden; width: 340px; padding: 0; box-sizing: border-box;"
+          class="title" 
+          id="loadingText3"
+        >
+          你的专属填色体验已就绪
         </h1>
       </div>
       
@@ -2767,7 +2860,7 @@ function renderOnboardingPage5() {
             id="tryButton"
             onclick="nextPage()"
           >
-            让我们试试
+            让我试试
           </button>
         </div>
       </footer>
@@ -2858,6 +2951,59 @@ function renderOnboardingPage5() {
       height: 200px;
       position: relative;
       z-index: 5;
+    }
+    
+    .loading-circle,
+    .loading-check {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      transform: translateY(-24px);
+      position: relative;
+    }
+    
+    .loading-circle {
+      border: 4px solid #F0F0F0;
+      background: none;
+    }
+    
+    .loading-circle::before {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 4px solid transparent;
+      border-top-color: #FED11F;
+      animation: loadingSpin 1s linear infinite;
+    }
+    
+    .loading-check {
+      background-color: #FED11F;
+    }
+    
+    @keyframes loadingSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    @keyframes scaleIn {
+      from {
+        transform: translateY(-24px) scale(0);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(-24px) scale(1);
+        opacity: 1;
+      }
     }
     
     .progress-ring-circle-bg,
@@ -3046,10 +3192,31 @@ function renderOnboardingPage5() {
   `;
   document.head.appendChild(style);
   
-  // 模拟加载过程
+  // 生成风格文案
+  function generateStyleText() {
+    if (selectedStyles.length === 0) {
+      return '已为你匹配专属图案';
+    }
+    
+    // 转换为中文标签
+    const styleLabels = selectedStyles.map(id => styleLabelMap[id] || id);
+    
+    if (styleLabels.length <= 3) {
+      // 1-3个风格：直接拼接
+      return `已为你匹配 ${styleLabels.join('、')} 风格专属图案`;
+    } else {
+      // 4个及以上风格：取前3个，后面加等X种
+      const firstThree = styleLabels.slice(0, 3);
+      return `已为你匹配 ${firstThree.join('、')} 等${styleLabels.length}种风格专属图案`;
+    }
+  }
+  
+  // 模拟加载过程 - 三个阶段
   setTimeout(() => {
     const loadingCircle = document.getElementById('loadingCircle');
-    const loadingText = document.getElementById('loadingText');
+    const loadingText1 = document.getElementById('loadingText1');
+    const loadingText2 = document.getElementById('loadingText2');
+    const loadingText3 = document.getElementById('loadingText3');
     const tryButton = document.getElementById('tryButton');
     
     if (loadingCircle) {
@@ -3057,24 +3224,40 @@ function renderOnboardingPage5() {
       loadingCircle.innerHTML = '✓';
     }
     
-    if (loadingText) {
-      // 执行缩小消失动画
-      loadingText.style.animation = 'scaleOut 0.3s ease forwards';
-      
-      // 动画完成后更改文本并执行弹出动画
-      setTimeout(() => {
-        loadingText.textContent = 'Cross Stitch准备好了。准备好尝试一下吗？';
-        loadingText.style.animation = 'popIn 0.3s ease forwards';
-      }, 500);
+    // 第一阶段：文案1消失
+    if (loadingText1) {
+      loadingText1.style.animation = 'scaleOut 0.3s ease forwards';
     }
     
-    if (tryButton) {
-      // 延迟按钮动画，与文本动画协调
+    // 第二阶段：显示文案2
+    setTimeout(() => {
+      if (loadingText2) {
+        loadingText2.textContent = generateStyleText();
+        loadingText2.style.visibility = 'visible';
+        loadingText2.style.animation = 'popIn 0.3s ease forwards';
+      }
+      
+      // 第三阶段：文案2消失，显示文案3
       setTimeout(() => {
-        tryButton.style.animation = 'fadeInUp 0.6s ease forwards';
-      }, 800);
-    }
-  }, 3000);
+        if (loadingText2) {
+          loadingText2.style.animation = 'scaleOut 0.3s ease forwards';
+        }
+        
+        setTimeout(() => {
+          if (loadingText3) {
+            loadingText3.style.visibility = 'visible';
+            loadingText3.style.animation = 'popIn 0.3s ease forwards';
+          }
+          
+          if (tryButton) {
+            setTimeout(() => {
+              tryButton.style.animation = 'fadeInUp 0.6s ease forwards';
+            }, 300);
+          }
+        }, 500);
+      }, 1500); // 文案2显示1.5秒
+    }, 500); // 文案1消失后0.5秒
+  }, 3000); // 初始3秒后开始
 }
 
 // 订阅页
@@ -3102,7 +3285,7 @@ function renderSubscriptionPage() {
         
         <!-- Content Canvas - 统一容器 -->
         <div class="subscription-content-container">
-          <h2>Choose your plan</h2>
+          <h2>解锁你的专属内容</h2>
           <p>无限制访问所有分类和图片，无限制导入图片</p>
           
           <!-- Subscription Cards Cluster -->

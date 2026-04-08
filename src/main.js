@@ -493,7 +493,7 @@ function renderOnboardingPage1() {
       </div>
       
       <div id="testimonialContainer" style="opacity: 0; position: absolute; text-align: center; width: 100%; max-width: 335px;">
-        <h1 style="font-size: 32px; white-space: normal; margin-bottom: 8px; line-height: 1.3;" class="title">"这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"</h1>
+        <h1 style="font-size: 24px; white-space: normal; margin-bottom: 8px; line-height: 1.3;" class="title">"这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"</h1>
         <p style="margin-top: 8px;" class="subtitle">Sarah, 资深用户</p>
       </div>
     </div>

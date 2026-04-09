@@ -4111,14 +4111,22 @@ function renderSubscriptionPage() {
   }
   document.head.appendChild(style);
   
-  // 初始化时确保Weekly和Yearly可见（开关默认关闭）
+  // 初始化时确保Monthly开启（开关默认开启）
+  const monthlyToggle = document.getElementById('monthly-toggle');
   const weeklyPlan = document.getElementById('weekly-plan');
   const yearlyPlan = document.getElementById('yearly-plan');
+  const freeTrialDescription = document.getElementById('free-trial-description');
+  if (monthlyToggle) {
+    monthlyToggle.classList.add('toggle-active');
+  }
   if (weeklyPlan) {
-    weeklyPlan.style.display = 'flex';
+    weeklyPlan.style.display = 'none';
   }
   if (yearlyPlan) {
-    yearlyPlan.style.display = 'flex';
+    yearlyPlan.style.display = 'none';
+  }
+  if (freeTrialDescription) {
+    freeTrialDescription.style.display = 'block';
   }
 }
 

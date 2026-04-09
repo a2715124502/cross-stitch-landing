@@ -480,7 +480,7 @@ function renderOnboardingPage1() {
         style="animation: fadeInUp 0.8s ease forwards; position: absolute; text-align: center; width: 100%; max-width: 335px;"
       >
         <h1 style="font-size: 32px; white-space: nowrap; margin-bottom: 8px;" class="title">欢迎来到Cross Stitch</h1>
-        <p style="margin-top: 8px;" class="subtitle">在这里，你可以通过填色来放松心情，释放创造力，成为真正的艺术家</p>
+        <p style="margin-top: 8px;" class="subtitle">每一次填色，都是创作</p>
       </div>
       
       <div id="statContainer" style="opacity: 0; display: flex; flex-direction: column; align-items: center; gap: 72px; position: absolute; width: 100%; max-width: 335px;">

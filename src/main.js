@@ -3715,7 +3715,7 @@ function renderSubscriptionPage() {
           <div class="subscription-cards">
             <!-- Monthly Plan -->
             <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
-              <span>启用三天免费试用</span>
+              <span>启用3天免费试用</span>
               <div class="subscription-card-right">
                 <span></span>
                 <div class="subscription-toggle" id="monthly-toggle" onclick="event.stopPropagation(); toggleFreeTrial();">

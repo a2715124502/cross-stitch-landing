@@ -426,12 +426,15 @@ function renderPage(animate = true) {
       renderOnboardingPage5();
       break;
     case 8:
+      renderTrialIntroPage();
+      break;
+    case 9:
       renderSubscriptionPage();
       break;
   }
   
-  // 只为引导页1-3添加过渡动画
-  if (animate && (currentPage === 0 || currentPage === 1 || currentPage === 2)) {
+  // 只为引导页1-3和介绍页添加过渡动画
+  if (animate && (currentPage === 0 || currentPage === 1 || currentPage === 2 || currentPage === 8)) {
     addPageEnterAnimation();
   }
 }
@@ -1979,7 +1982,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('disconnect')">
             <div class="option-content">
               <span class="option-icon">⛓️‍💥</span>
-              <span class="option-text">断开我的大脑</span>
+              <span class="option-text">放空大脑</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -3380,6 +3383,306 @@ function renderOnboardingPage5() {
   }, 3000); // 初始3秒后开始
 }
 
+// 介绍页 - 免费试用3天
+function renderTrialIntroPage() {
+  const app = document.getElementById('app');
+  
+  // 计算3天后的日期
+  const today = new Date();
+  const futureDate = new Date(today);
+  futureDate.setDate(futureDate.getDate() + 3);
+  
+  const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+  const formattedDate = `${futureDate.getFullYear()}年${monthNames[futureDate.getMonth()]}${futureDate.getDate()}日`;
+  
+  app.innerHTML = `
+    <div class="trial-intro-page" style="font-family: 'PingFang SC', 'SF Pro', sans-serif; background-color: #FFFFFF; color: #000000; height: 100vh; height: 100dvh; display: flex; flex-direction: column;">
+      <!-- TopAppBar -->
+      <header style="position: fixed; top: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 56px; background-color: transparent; z-index: 50;">
+        <div style="width: 24px;"></div>
+      </header>
+      
+      <!-- Main Content -->
+      <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; overflow-y: auto;">
+        <!-- Hero Section -->
+        <div class="hero-section">
+          <img class="hero-image" src="./clip/pic/5c1b3e7f7cc193e24c84067d9ec3b7d8.jpg" alt="十字绣涂色艺术">
+          <div class="hero-gradient"></div>
+        </div>
+        
+        <!-- Content Container -->
+        <div class="trial-intro-content">
+          <h2 class="page-title">免费试用3天</h2>
+          
+          <!-- Timeline -->
+          <div class="timeline-container">
+            <!-- Timeline Line -->
+            <div class="timeline-line"></div>
+            
+            <!-- Item 1: Today -->
+            <div class="timeline-item">
+              <div class="timeline-icon">
+                <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="12" width="32" height="28" rx="4" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 20H40" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="18" cy="8" r="4" fill="#333333"/>
+                  <circle cx="30" cy="8" r="4" fill="#333333"/>
+                </svg>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">今天</h3>
+                <p class="timeline-description">无限访问所有分类和图片，无限制导入图片，无广告</p>
+              </div>
+            </div>
+            
+            <!-- Item 2: 2 Days Later -->
+            <div class="timeline-item">
+              <div class="timeline-icon">
+                <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 4V8" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M24 40V44" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M40 24H44" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 24H8" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="24" cy="24" r="16" stroke="#333333" stroke-width="4"/>
+                  <path d="M24 16V24L30 28" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">2天后</h3>
+                <p class="timeline-description">试用期结束前一天，您将收到提醒</p>
+              </div>
+            </div>
+            
+            <!-- Item 3: 3 Days Later -->
+            <div class="timeline-item" style="margin-top: 18px;">
+              <div class="timeline-icon" style="margin-top: 8px;">
+                <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">3天后</h3>
+                <p class="timeline-description">${formattedDate}前无需付费。您可以提前取消</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Fixed Bottom CTA Section -->
+      <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
+        <div class="button-container" style="padding-top: 12px;">
+          <button class="bottom-button" onclick="goToSubscription()">免费试用</button>
+        </div>
+      </footer>
+    </div>
+  `;
+  
+  // 添加样式
+  const style = document.createElement('style');
+  style.id = 'trial-intro-page-styles';
+  style.textContent = `
+    .trial-intro-page .hero-section {
+      width: 100%;
+      position: relative;
+      min-height: 200px;
+      max-height: 40vh;
+      overflow: hidden;
+      background-color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trial-intro-page .hero-image {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 40vh;
+      object-fit: contain;
+      display: block;
+    }
+    
+    .trial-intro-page .hero-gradient {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 96px;
+      background: linear-gradient(to top, white 0%, transparent 100%);
+    }
+    
+    .trial-intro-page .trial-intro-content {
+      width: 100%;
+      max-width: 400px;
+      padding: 0 20px;
+      padding-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .trial-intro-page .page-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #000000;
+      line-height: 1.2;
+      text-align: center;
+      font-family: 'PingFang SC', sans-serif;
+      margin: 0;
+      margin-bottom: 32px;
+    }
+    
+    .trial-intro-page .timeline-container {
+      width: 100%;
+      position: relative;
+      padding-left: 48px;
+      padding-right: 0;
+    }
+    
+    .trial-intro-page .timeline-line {
+      position: absolute;
+      left: 15px;
+      top: 12px;
+      bottom: 12px;
+      width: 4px;
+      background-color: #FED11F;
+    }
+    
+    .trial-intro-page .timeline-item {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    
+    .trial-intro-page .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .trial-intro-page .timeline-icon {
+      position: absolute;
+      left: -48px;
+      width: 32px;
+      height: 32px;
+      background-color: #FED11F;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+    
+    .trial-intro-page .timeline-icon svg path,
+    .trial-intro-page .timeline-icon svg rect,
+    .trial-intro-page .timeline-icon svg circle {
+      stroke: #FFFFFF;
+      fill: none;
+    }
+    
+    .trial-intro-page .timeline-icon svg circle[fill] {
+      fill: none;
+    }
+    
+    .trial-intro-page .timeline-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .trial-intro-page .timeline-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #000000;
+      line-height: 1.2;
+      margin: 0;
+      font-family: 'PingFang SC', sans-serif;
+    }
+    
+    .trial-intro-page .timeline-description {
+      font-size: 14px;
+      color: #888888;
+      line-height: 1.4;
+      margin: 0;
+      font-family: 'PingFang SC', sans-serif;
+    }
+    
+    .trial-intro-page .bottom-button {
+      background-color: #FED11F;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .page-transition-enter {
+      animation: pageFadeIn 0.4s ease-out forwards;
+    }
+    
+    @keyframes pageFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(1.02);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .page-transition-exit {
+      animation: pageFadeOut 0.3s ease-in forwards;
+    }
+    
+    @keyframes pageFadeOut {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.98);
+      }
+    }
+  `;
+  
+  // 移除可能存在的旧样式
+  const oldStyle = document.getElementById('trial-intro-page-styles');
+  if (oldStyle) {
+    oldStyle.remove();
+  }
+  
+  document.head.appendChild(style);
+}
+
+// 跳转到订阅页
+window.goToSubscription = function() {
+  if (isTransitioning) return;
+  isTransitioning = true;
+  
+  const app = document.getElementById('app');
+  const firstChild = app.firstElementChild;
+  if (firstChild) {
+    firstChild.classList.add('page-transition-exit');
+  }
+  
+  setTimeout(() => {
+    currentPage = 9;
+    renderPage();
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 400);
+  }, 300);
+};
+
 // 订阅页
 function renderSubscriptionPage() {
   const app = document.getElementById('app');
@@ -3405,16 +3708,32 @@ function renderSubscriptionPage() {
         
         <!-- Content Canvas - 统一容器 -->
         <div class="subscription-content-container">
-          <h2>解锁你的专属内容</h2>
-          <p>无限制访问所有分类和图片，无限制导入图片</p>
+          <h2 class="subscription-title">解锁你的专属内容</h2>
+          <p class="subscription-description">无限制访问所有分类和图片，无限制导入图片</p>
           
           <!-- Subscription Cards Cluster -->
           <div class="subscription-cards">
+            <!-- Monthly Plan -->
+            <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
+              <span>启用三天免费试用</span>
+              <div class="subscription-card-right">
+                <span></span>
+                <div class="subscription-toggle" id="monthly-toggle" onclick="event.stopPropagation(); toggleFreeTrial();">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Free Trial Description -->
+            <div class="free-trial-description" id="free-trial-description" style="display: none;">
+              3天免费之后，$3.49每周。自动续费，随时取消
+            </div>
+
             <!-- Weekly Plan -->
             <div class="subscription-card" onclick="toggleSubscription('weekly')" id="weekly-plan">
-              <span>Weekly</span>
+              <span>Monthly</span>
               <div class="subscription-card-right">
-                <span>¥68.00</span>
+                <span>$9.99</span>
                 <div class="subscription-check" id="weekly-check"></div>
               </div>
             </div>
@@ -3426,7 +3745,7 @@ function renderSubscriptionPage() {
                 <span class="best-value-badge">Best Value</span>
               </div>
               <div class="subscription-card-right">
-                <span>¥408.00</span>
+                <span>$59.99</span>
                 <div class="subscription-check subscription-check-active" id="yearly-check">
                   <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
@@ -3442,7 +3761,7 @@ function renderSubscriptionPage() {
           <div style="font-size: 12px; color: #999999; text-align: center; margin-bottom: 10px;">
             以上订阅选项均为自动续订订阅，订阅费用会在您确认购买或者试用期结束的时候通过你的苹果账户扣除。如果不需要续订，记得在订阅到期或免费试用到期之前至少24小时取消掉订阅，你可随时在自己的苹果账户的设置中可以找到订阅管理，若您在试用期未结束之前购买月度和年度订阅，则剩余未使用试用期时长自动作废。
           </div>
-          <button class="bottom-button">立即订阅</button>
+          <button class="bottom-button">免费试用</button>
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; border-top: 1px solid #F1F1F1; padding-top: 12px; padding-bottom: 12px;">
           <div style="display: flex; gap: 12px;">
@@ -3572,6 +3891,7 @@ function renderSubscriptionPage() {
     .subscription-cards {
       width: 100%;
       margin-top: 32px;
+      margin-bottom: 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -3650,6 +3970,35 @@ function renderSubscriptionPage() {
       border: none;
     }
     
+    .subscription-toggle {
+      width: 44px;
+      height: 24px;
+      background-color: #E2E2E2;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .subscription-toggle.toggle-active {
+      background-color: #FED11F;
+    }
+    
+    .toggle-thumb {
+      width: 20px;
+      height: 20px;
+      background-color: #FFFFFF;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s ease;
+    }
+    
+    .subscription-toggle.toggle-active .toggle-thumb {
+      transform: translateX(20px);
+    }
+    
     .best-value-badge {
       background-color: #FED11F;
       color: black;
@@ -3659,6 +4008,16 @@ function renderSubscriptionPage() {
       border-radius: 4px;
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+    
+    .free-trial-description {
+      font-size: 12px;
+      color: #888888;
+      text-align: center;
+      margin-top: -8px;
+      margin-bottom: 8px;
+      font-family: 'PingFang SC', 'SF Pro', sans-serif;
+      line-height: 1.4;
     }
 
     /* iPad specific styles */
@@ -3751,6 +4110,16 @@ function renderSubscriptionPage() {
     oldStyle.remove();
   }
   document.head.appendChild(style);
+  
+  // 初始化时确保Weekly和Yearly可见（开关默认关闭）
+  const weeklyPlan = document.getElementById('weekly-plan');
+  const yearlyPlan = document.getElementById('yearly-plan');
+  if (weeklyPlan) {
+    weeklyPlan.style.display = 'flex';
+  }
+  if (yearlyPlan) {
+    yearlyPlan.style.display = 'flex';
+  }
 }
 
 // 订阅计划选择
@@ -3780,6 +4149,42 @@ window.toggleSubscription = function(plan) {
     weeklyPlan.style.backgroundColor = '#F7F7F7';
     weeklyCheck.innerHTML = '';
     weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+  }
+};
+
+// 免费试用开关切换
+window.toggleFreeTrial = function() {
+  const toggle = document.getElementById('monthly-toggle');
+  const weeklyPlan = document.getElementById('weekly-plan');
+  const yearlyPlan = document.getElementById('yearly-plan');
+  const freeTrialDescription = document.getElementById('free-trial-description');
+  
+  if (toggle) {
+    toggle.classList.toggle('toggle-active');
+    
+    if (toggle.classList.contains('toggle-active')) {
+      // 开启状态：隐藏Weekly和Yearly，显示说明文案
+      if (weeklyPlan) {
+        weeklyPlan.style.display = 'none';
+      }
+      if (yearlyPlan) {
+        yearlyPlan.style.display = 'none';
+      }
+      if (freeTrialDescription) {
+        freeTrialDescription.style.display = 'block';
+      }
+    } else {
+      // 关闭状态：显示Weekly和Yearly，隐藏说明文案
+      if (weeklyPlan) {
+        weeklyPlan.style.display = 'flex';
+      }
+      if (yearlyPlan) {
+        yearlyPlan.style.display = 'flex';
+      }
+      if (freeTrialDescription) {
+        freeTrialDescription.style.display = 'none';
+      }
+    }
   }
 };
 

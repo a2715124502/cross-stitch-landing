@@ -426,12 +426,15 @@ function renderPage(animate = true) {
       renderOnboardingPage5();
       break;
     case 8:
+      renderTrialIntroPage();
+      break;
+    case 9:
       renderSubscriptionPage();
       break;
   }
   
-  // 只为引导页1-3添加过渡动画
-  if (animate && (currentPage === 0 || currentPage === 1 || currentPage === 2)) {
+  // 只为引导页1-3和介绍页添加过渡动画
+  if (animate && (currentPage === 0 || currentPage === 1 || currentPage === 2 || currentPage === 8)) {
     addPageEnterAnimation();
   }
 }
@@ -493,7 +496,7 @@ function renderOnboardingPage1() {
       </div>
       
       <div id="testimonialContainer" style="opacity: 0; position: absolute; text-align: center; width: 100%; max-width: 335px;">
-        <h1 style="font-size: 32px; white-space: normal; margin-bottom: 8px; line-height: 1.3;" class="title">"这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"</h1>
+        <h1 style="font-size: 24px; white-space: normal; margin-bottom: 8px; line-height: 1.3;" class="title">"这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"</h1>
         <p style="margin-top: 8px;" class="subtitle">Sarah, 资深用户</p>
       </div>
     </div>
@@ -1208,8 +1211,10 @@ function renderQuestionPage2() {
         <div class="options-list scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
           <!-- Option Card 1 -->
           <button class="option-card" onclick="selectOption('under14')">
-            <span class="option-icon">✏️</span>
-            <span class="option-text">18岁以下</span>
+            <div class="option-content">
+              <span class="option-icon">✏️</span>
+              <span class="option-text">18岁以下</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1218,8 +1223,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 2 -->
           <button class="option-card" onclick="selectOption('14-20')">
-            <span class="option-icon">🎓</span>
-            <span class="option-text">18-29岁</span>
+            <div class="option-content">
+              <span class="option-icon">🎓</span>
+              <span class="option-text">18-29岁</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1228,8 +1235,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 3 -->
           <button class="option-card" onclick="selectOption('20-25')">
-            <span class="option-icon">✒️</span>
-            <span class="option-text">30-39岁</span>
+            <div class="option-content">
+              <span class="option-icon">✒️</span>
+              <span class="option-text">30-39岁</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1238,8 +1247,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 4 -->
           <button class="option-card" onclick="selectOption('26-35')">
-            <span class="option-icon">💼</span>
-            <span class="option-text">40-49岁</span>
+            <div class="option-content">
+              <span class="option-icon">💼</span>
+              <span class="option-text">40-49岁</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1248,8 +1259,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 5 -->
           <button class="option-card" onclick="selectOption('36-50')">
-            <span class="option-icon">🌳</span>
-            <span class="option-text">50-59岁</span>
+            <div class="option-content">
+              <span class="option-icon">🌳</span>
+              <span class="option-text">50-59岁</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1258,8 +1271,10 @@ function renderQuestionPage2() {
           </button>
           <!-- Option Card 6 -->
           <button class="option-card" onclick="selectOption('50+')">
-            <span class="option-icon">💎</span>
-            <span class="option-text">60岁以上</span>
+            <div class="option-content">
+              <span class="option-icon">💎</span>
+              <span class="option-text">60岁以上</span>
+            </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1436,6 +1451,12 @@ function renderQuestionPage2() {
     .option-card.selected .checkbox svg {
       opacity: 1;
       transform: scale(1);
+    }
+
+    .option-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
 
     .option-icon {
@@ -1924,7 +1945,7 @@ function renderQuestionPage4() {
           <!-- Option: Relax -->
           <button class="option-item" onclick="selectOption('relax')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 20C2 32.1503 8 42 20 42C32 42 38 32.1503 38 20H2Z" fill="none" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 14V6" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 14V10" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 14V10" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M36.1904 30.6229C37.1802 28.039 37.764 25.1374 37.9417 22.0511C38.2868 22.0174 38.6402 22 39 22C42.866 22 46 24.0147 46 26.5C46 28.9853 42.866 31 39 31C38.0007 31 37.0504 30.8654 36.1904 30.6229Z" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="option-icon">☕️</span>
               <span class="option-text">放松自己</span>
             </div>
             <div class="option-checkbox">
@@ -1936,7 +1957,7 @@ function renderQuestionPage4() {
           <!-- Option: Have Fun -->
           <button class="option-item" onclick="selectOption('fun')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 18H16C9.37258 18 4 23.3726 4 30C4 36.6274 9.37258 42 16 42H32C38.6274 42 44 36.6274 44 30C44 23.3726 38.6274 18 32 18Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M16 26V34" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 30H20" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 16V9.71429H32V4" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 34C34.2091 34 36 32.2091 36 30C36 27.7909 34.2091 26 32 26C29.7909 26 28 27.7909 28 30C28 32.2091 29.7909 34 32 34Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/></svg>
+              <span class="option-icon">🎮</span>
               <span class="option-text">玩得开心</span>
             </div>
             <div class="option-checkbox">
@@ -1948,7 +1969,7 @@ function renderQuestionPage4() {
           <!-- Option: Express Creativity -->
           <button class="option-item" onclick="selectOption('creativity')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.036 44.0002C18.0561 40.8046 16.5778 38.4223 14.6011 36.8533C11.636 34.4998 6.92483 35.9625 5.18458 33.535C3.44433 31.1074 6.40382 26.6432 7.44234 24.0091C8.48086 21.3751 3.46179 20.4437 4.04776 19.6959C4.43842 19.1974 6.97471 17.7588 11.6567 15.3802C12.987 7.79356 17.9008 4.00024 26.3982 4.00024C39.1441 4.00024 44 14.8062 44 21.6791C44 28.5521 38.1201 35.9564 29.7441 37.5529C28.9951 38.6437 30.0754 40.7928 32.9848 44.0002" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M19.4997 14.5001C18.8464 17.0344 19.0408 18.8139 20.0829 19.8386C21.125 20.8634 22.9011 21.5335 25.4112 21.849C24.8417 25.1177 25.5361 26.6512 27.4942 26.4494C29.4524 26.2476 30.6289 25.434 31.0239 24.0084C34.0842 24.8685 35.7428 24.1487 35.9997 21.849C36.3852 18.3994 34.525 15.6476 33.7624 15.6476C32.9997 15.6476 31.0239 15.5548 31.0239 14.5001C31.0239 13.4453 28.7159 12.8494 26.6329 12.8494C24.5499 12.8494 25.8035 11.4453 22.9432 12.0001C21.0363 12.3699 19.8885 13.2032 19.4997 14.5001Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M30.5002 25.5002C29.4833 26.1313 28.0878 27.1805 27.5002 28.0002C26.0313 30.0497 24.8398 31.2976 24.5791 32.6083" stroke="#999" stroke-width="4" stroke-linecap="round"/></svg>
+              <span class="option-icon">🧠</span>
               <span class="option-text">表达我的创造力</span>
             </div>
             <div class="option-checkbox">
@@ -1960,8 +1981,8 @@ function renderQuestionPage4() {
           <!-- Option: Disconnect -->
           <button class="option-item" onclick="selectOption('disconnect')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M32 15H42C43.1046 15 44 15.8954 44 17V31C44 32.1046 43.1046 33 42 33H32" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 15H6C4.89543 15 4 15.8954 4 17V31C4 32.1046 4.89543 33 6 33H17" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 6V42" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 24H16" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M32 24H36" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span class="option-text">断开我的大脑</span>
+              <span class="option-icon">⛓️‍💥</span>
+              <span class="option-text">放空大脑</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1972,7 +1993,7 @@ function renderQuestionPage4() {
           <!-- Option: Develop Coloring Skills -->
           <button class="option-item" onclick="selectOption('skills')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44C29.9601 44 26.3359 35.136 30 31C33.1264 27.4709 44 29.0856 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M28 17C29.6569 17 31 15.6569 31 14C31 12.3431 29.6569 11 28 11C26.3431 11 25 12.3431 25 14C25 15.6569 26.3431 17 28 17Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M16 21C17.6569 21 19 19.6569 19 18C19 16.3431 17.6569 15 16 15C14.3431 15 13 16.3431 13 18C13 19.6569 14.3431 21 16 21Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/><path d="M17 34C18.6569 34 20 32.6569 20 31C20 29.3431 18.6569 28 17 28C15.3431 28 14 29.3431 14 31C14 32.6569 15.3431 34 17 34Z" fill="none" stroke="#999" stroke-width="4" stroke-linejoin="round"/></svg>
+              <span class="option-icon">🎨</span>
               <span class="option-text">发展我的着色技巧</span>
             </div>
             <div class="option-checkbox">
@@ -1984,7 +2005,7 @@ function renderQuestionPage4() {
           <!-- Option: Relieve Stress -->
           <button class="option-item" onclick="selectOption('stress')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.7778 7C13.7321 7 4.77783 15.9543 4.77783 27C4.77783 32.2301 6.49127 37.4362 9.77783 41H39.7778C43.0644 37.4362 44.7778 32.2301 44.7778 27C44.7778 15.9543 35.8235 7 24.7778 7Z" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.7778" cy="30" r="4" fill="none" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.7778 20V26" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.7778 12V14" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.77783 28H11.7778" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7778 18L15.192 19.4142" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M37.7778 28H39.7778" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M34.7778 19.4141L36.192 17.9998" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="option-icon">⏱️</span>
               <span class="option-text">缓解压力</span>
             </div>
             <div class="option-checkbox">
@@ -1996,7 +2017,7 @@ function renderQuestionPage4() {
           <!-- Option: Other -->
           <button class="option-item" onclick="selectOption('other')">
             <div class="option-content">
-              <svg class="option-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="34.5" cy="13.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="34.5" cy="34.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="13.5" cy="13.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/><circle cx="13.5" cy="34.5" r="6.5" fill="none" stroke="#999" stroke-width="4"/></svg>
+              <span class="option-icon">♾️</span>
               <span class="option-text">其他</span>
             </div>
             <div class="option-checkbox">
@@ -3362,6 +3383,306 @@ function renderOnboardingPage5() {
   }, 3000); // 初始3秒后开始
 }
 
+// 介绍页 - 免费试用3天
+function renderTrialIntroPage() {
+  const app = document.getElementById('app');
+  
+  // 计算3天后的日期
+  const today = new Date();
+  const futureDate = new Date(today);
+  futureDate.setDate(futureDate.getDate() + 3);
+  
+  const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+  const formattedDate = `${futureDate.getFullYear()}年${monthNames[futureDate.getMonth()]}${futureDate.getDate()}日`;
+  
+  app.innerHTML = `
+    <div class="trial-intro-page" style="font-family: 'PingFang SC', 'SF Pro', sans-serif; background-color: #FFFFFF; color: #000000; height: 100vh; height: 100dvh; display: flex; flex-direction: column;">
+      <!-- TopAppBar -->
+      <header style="position: fixed; top: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 56px; background-color: transparent; z-index: 50;">
+        <div style="width: 24px;"></div>
+      </header>
+      
+      <!-- Main Content -->
+      <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; overflow-y: auto;">
+        <!-- Hero Section -->
+        <div class="hero-section">
+          <img class="hero-image" src="./clip/pic/5c1b3e7f7cc193e24c84067d9ec3b7d8.jpg" alt="十字绣涂色艺术">
+          <div class="hero-gradient"></div>
+        </div>
+        
+        <!-- Content Container -->
+        <div class="trial-intro-content">
+          <h2 class="page-title">免费试用3天</h2>
+          
+          <!-- Timeline -->
+          <div class="timeline-container">
+            <!-- Timeline Line -->
+            <div class="timeline-line"></div>
+            
+            <!-- Item 1: Today -->
+            <div class="timeline-item">
+              <div class="timeline-icon">
+                <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="12" width="32" height="28" rx="4" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 20H40" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="18" cy="8" r="4" fill="#333333"/>
+                  <circle cx="30" cy="8" r="4" fill="#333333"/>
+                </svg>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">今天</h3>
+                <p class="timeline-description">无限访问所有分类和图片，无限制导入图片，无广告</p>
+              </div>
+            </div>
+            
+            <!-- Item 2: 2 Days Later -->
+            <div class="timeline-item">
+              <div class="timeline-icon">
+                <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M24 4V8" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M24 40V44" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M40 24H44" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 24H8" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="24" cy="24" r="16" stroke="#333333" stroke-width="4"/>
+                  <path d="M24 16V24L30 28" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">2天后</h3>
+                <p class="timeline-description">试用期结束前一天，您将收到提醒</p>
+              </div>
+            </div>
+            
+            <!-- Item 3: 3 Days Later -->
+            <div class="timeline-item" style="margin-top: 18px;">
+              <div class="timeline-icon" style="margin-top: 8px;">
+                <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="timeline-content">
+                <h3 class="timeline-title">3天后</h3>
+                <p class="timeline-description">${formattedDate}前无需付费。您可以提前取消</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Fixed Bottom CTA Section -->
+      <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
+        <div class="button-container" style="padding-top: 12px;">
+          <button class="bottom-button" onclick="goToSubscription()">免费试用</button>
+        </div>
+      </footer>
+    </div>
+  `;
+  
+  // 添加样式
+  const style = document.createElement('style');
+  style.id = 'trial-intro-page-styles';
+  style.textContent = `
+    .trial-intro-page .hero-section {
+      width: 100%;
+      position: relative;
+      min-height: 200px;
+      max-height: 40vh;
+      overflow: hidden;
+      background-color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trial-intro-page .hero-image {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 40vh;
+      object-fit: contain;
+      display: block;
+    }
+    
+    .trial-intro-page .hero-gradient {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 96px;
+      background: linear-gradient(to top, white 0%, transparent 100%);
+    }
+    
+    .trial-intro-page .trial-intro-content {
+      width: 100%;
+      max-width: 400px;
+      padding: 0 20px;
+      padding-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .trial-intro-page .page-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #000000;
+      line-height: 1.2;
+      text-align: center;
+      font-family: 'PingFang SC', sans-serif;
+      margin: 0;
+      margin-bottom: 32px;
+    }
+    
+    .trial-intro-page .timeline-container {
+      width: 100%;
+      position: relative;
+      padding-left: 48px;
+      padding-right: 0;
+    }
+    
+    .trial-intro-page .timeline-line {
+      position: absolute;
+      left: 15px;
+      top: 12px;
+      bottom: 12px;
+      width: 4px;
+      background-color: #FED11F;
+    }
+    
+    .trial-intro-page .timeline-item {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    
+    .trial-intro-page .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .trial-intro-page .timeline-icon {
+      position: absolute;
+      left: -48px;
+      width: 32px;
+      height: 32px;
+      background-color: #FED11F;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+    
+    .trial-intro-page .timeline-icon svg path,
+    .trial-intro-page .timeline-icon svg rect,
+    .trial-intro-page .timeline-icon svg circle {
+      stroke: #FFFFFF;
+      fill: none;
+    }
+    
+    .trial-intro-page .timeline-icon svg circle[fill] {
+      fill: none;
+    }
+    
+    .trial-intro-page .timeline-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .trial-intro-page .timeline-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #000000;
+      line-height: 1.2;
+      margin: 0;
+      font-family: 'PingFang SC', sans-serif;
+    }
+    
+    .trial-intro-page .timeline-description {
+      font-size: 14px;
+      color: #888888;
+      line-height: 1.4;
+      margin: 0;
+      font-family: 'PingFang SC', sans-serif;
+    }
+    
+    .trial-intro-page .bottom-button {
+      background-color: #FED11F;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .page-transition-enter {
+      animation: pageFadeIn 0.4s ease-out forwards;
+    }
+    
+    @keyframes pageFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(1.02);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .page-transition-exit {
+      animation: pageFadeOut 0.3s ease-in forwards;
+    }
+    
+    @keyframes pageFadeOut {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.98);
+      }
+    }
+  `;
+  
+  // 移除可能存在的旧样式
+  const oldStyle = document.getElementById('trial-intro-page-styles');
+  if (oldStyle) {
+    oldStyle.remove();
+  }
+  
+  document.head.appendChild(style);
+}
+
+// 跳转到订阅页
+window.goToSubscription = function() {
+  if (isTransitioning) return;
+  isTransitioning = true;
+  
+  const app = document.getElementById('app');
+  const firstChild = app.firstElementChild;
+  if (firstChild) {
+    firstChild.classList.add('page-transition-exit');
+  }
+  
+  setTimeout(() => {
+    currentPage = 9;
+    renderPage();
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 400);
+  }, 300);
+};
+
 // 订阅页
 function renderSubscriptionPage() {
   const app = document.getElementById('app');
@@ -3387,16 +3708,32 @@ function renderSubscriptionPage() {
         
         <!-- Content Canvas - 统一容器 -->
         <div class="subscription-content-container">
-          <h2>解锁你的专属内容</h2>
-          <p>无限制访问所有分类和图片，无限制导入图片</p>
+          <h2 class="subscription-title">解锁你的专属内容</h2>
+          <p class="subscription-description">无限制访问所有分类和图片，无限制导入图片</p>
           
           <!-- Subscription Cards Cluster -->
           <div class="subscription-cards">
+            <!-- Monthly Plan -->
+            <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
+              <span>启用三天免费试用</span>
+              <div class="subscription-card-right">
+                <span></span>
+                <div class="subscription-toggle" id="monthly-toggle" onclick="event.stopPropagation(); toggleFreeTrial();">
+                  <div class="toggle-thumb"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Free Trial Description -->
+            <div class="free-trial-description" id="free-trial-description" style="display: none;">
+              3天免费之后，$3.49每周。自动续费，随时取消
+            </div>
+
             <!-- Weekly Plan -->
             <div class="subscription-card" onclick="toggleSubscription('weekly')" id="weekly-plan">
-              <span>Weekly</span>
+              <span>Monthly</span>
               <div class="subscription-card-right">
-                <span>¥68.00</span>
+                <span>$9.99</span>
                 <div class="subscription-check" id="weekly-check"></div>
               </div>
             </div>
@@ -3408,7 +3745,7 @@ function renderSubscriptionPage() {
                 <span class="best-value-badge">Best Value</span>
               </div>
               <div class="subscription-card-right">
-                <span>¥408.00</span>
+                <span>$59.99</span>
                 <div class="subscription-check subscription-check-active" id="yearly-check">
                   <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
@@ -3424,7 +3761,7 @@ function renderSubscriptionPage() {
           <div style="font-size: 12px; color: #999999; text-align: center; margin-bottom: 10px;">
             以上订阅选项均为自动续订订阅，订阅费用会在您确认购买或者试用期结束的时候通过你的苹果账户扣除。如果不需要续订，记得在订阅到期或免费试用到期之前至少24小时取消掉订阅，你可随时在自己的苹果账户的设置中可以找到订阅管理，若您在试用期未结束之前购买月度和年度订阅，则剩余未使用试用期时长自动作废。
           </div>
-          <button class="bottom-button">立即订阅</button>
+          <button class="bottom-button">免费试用</button>
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; border-top: 1px solid #F1F1F1; padding-top: 12px; padding-bottom: 12px;">
           <div style="display: flex; gap: 12px;">
@@ -3554,6 +3891,7 @@ function renderSubscriptionPage() {
     .subscription-cards {
       width: 100%;
       margin-top: 32px;
+      margin-bottom: 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -3632,6 +3970,35 @@ function renderSubscriptionPage() {
       border: none;
     }
     
+    .subscription-toggle {
+      width: 44px;
+      height: 24px;
+      background-color: #E2E2E2;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .subscription-toggle.toggle-active {
+      background-color: #FED11F;
+    }
+    
+    .toggle-thumb {
+      width: 20px;
+      height: 20px;
+      background-color: #FFFFFF;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s ease;
+    }
+    
+    .subscription-toggle.toggle-active .toggle-thumb {
+      transform: translateX(20px);
+    }
+    
     .best-value-badge {
       background-color: #FED11F;
       color: black;
@@ -3641,6 +4008,16 @@ function renderSubscriptionPage() {
       border-radius: 4px;
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+    
+    .free-trial-description {
+      font-size: 12px;
+      color: #888888;
+      text-align: center;
+      margin-top: -8px;
+      margin-bottom: 8px;
+      font-family: 'PingFang SC', 'SF Pro', sans-serif;
+      line-height: 1.4;
     }
 
     /* iPad specific styles */
@@ -3733,6 +4110,16 @@ function renderSubscriptionPage() {
     oldStyle.remove();
   }
   document.head.appendChild(style);
+  
+  // 初始化时确保Weekly和Yearly可见（开关默认关闭）
+  const weeklyPlan = document.getElementById('weekly-plan');
+  const yearlyPlan = document.getElementById('yearly-plan');
+  if (weeklyPlan) {
+    weeklyPlan.style.display = 'flex';
+  }
+  if (yearlyPlan) {
+    yearlyPlan.style.display = 'flex';
+  }
 }
 
 // 订阅计划选择
@@ -3762,6 +4149,42 @@ window.toggleSubscription = function(plan) {
     weeklyPlan.style.backgroundColor = '#F7F7F7';
     weeklyCheck.innerHTML = '';
     weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+  }
+};
+
+// 免费试用开关切换
+window.toggleFreeTrial = function() {
+  const toggle = document.getElementById('monthly-toggle');
+  const weeklyPlan = document.getElementById('weekly-plan');
+  const yearlyPlan = document.getElementById('yearly-plan');
+  const freeTrialDescription = document.getElementById('free-trial-description');
+  
+  if (toggle) {
+    toggle.classList.toggle('toggle-active');
+    
+    if (toggle.classList.contains('toggle-active')) {
+      // 开启状态：隐藏Weekly和Yearly，显示说明文案
+      if (weeklyPlan) {
+        weeklyPlan.style.display = 'none';
+      }
+      if (yearlyPlan) {
+        yearlyPlan.style.display = 'none';
+      }
+      if (freeTrialDescription) {
+        freeTrialDescription.style.display = 'block';
+      }
+    } else {
+      // 关闭状态：显示Weekly和Yearly，隐藏说明文案
+      if (weeklyPlan) {
+        weeklyPlan.style.display = 'flex';
+      }
+      if (yearlyPlan) {
+        yearlyPlan.style.display = 'flex';
+      }
+      if (freeTrialDescription) {
+        freeTrialDescription.style.display = 'none';
+      }
+    }
   }
 };
 

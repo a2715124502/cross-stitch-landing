@@ -3713,13 +3713,22 @@ function renderSubscriptionPage() {
           
           <!-- Subscription Cards Cluster -->
           <div class="subscription-cards">
+            <!-- Weekly Plan -->
+            <div class="subscription-card" onclick="toggleSubscription('weekly')" id="weekly-plan">
+              <span>Weekly</span>
+              <div class="subscription-card-right">
+                <span>$9.99</span>
+                <div class="subscription-check" id="weekly-check"></div>
+              </div>
+            </div>
+
             <!-- Monthly Plan -->
             <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
-              <span>启用3天免费试用</span>
+              <span>Monthly</span>
               <div class="subscription-card-right">
                 <span></span>
-                <div class="subscription-toggle" id="monthly-toggle" onclick="event.stopPropagation(); toggleFreeTrial();">
-                  <div class="toggle-thumb"></div>
+                <div class="subscription-check subscription-check-active" id="monthly-check">
+                  <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
               </div>
             </div>
@@ -3727,15 +3736,6 @@ function renderSubscriptionPage() {
             <!-- Free Trial Description -->
             <div class="free-trial-description" id="free-trial-description" style="display: none;">
               3天免费之后，$3.49每周。自动续费，随时取消
-            </div>
-
-            <!-- Weekly Plan -->
-            <div class="subscription-card" onclick="toggleSubscription('weekly')" id="weekly-plan">
-              <span>Monthly</span>
-              <div class="subscription-card-right">
-                <span>$9.99</span>
-                <div class="subscription-check" id="weekly-check"></div>
-              </div>
             </div>
 
             <!-- Yearly Plan (Selected) -->

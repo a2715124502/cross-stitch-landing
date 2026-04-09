@@ -3713,9 +3713,18 @@ function renderSubscriptionPage() {
           
           <!-- Subscription Cards Cluster -->
           <div class="subscription-cards">
+            <!-- Weekly Plan -->
+            <div class="subscription-card" onclick="toggleSubscription('weekly')" id="weekly-plan">
+              <span>Weekly</span>
+              <div class="subscription-card-right">
+                <span>$9.99</span>
+                <div class="subscription-check" id="weekly-check"></div>
+              </div>
+            </div>
+
             <!-- Monthly Plan -->
             <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
-              <span>启用3天免费试用</span>
+              <span>Monthly</span>
               <div class="subscription-card-right">
                 <span></span>
                 <div class="subscription-toggle" id="monthly-toggle" onclick="event.stopPropagation(); toggleFreeTrial();">
@@ -3727,15 +3736,6 @@ function renderSubscriptionPage() {
             <!-- Free Trial Description -->
             <div class="free-trial-description" id="free-trial-description" style="display: none;">
               3天免费之后，$3.49每周。自动续费，随时取消
-            </div>
-
-            <!-- Weekly Plan -->
-            <div class="subscription-card" onclick="toggleSubscription('weekly')" id="weekly-plan">
-              <span>Monthly</span>
-              <div class="subscription-card-right">
-                <span>$9.99</span>
-                <div class="subscription-check" id="weekly-check"></div>
-              </div>
             </div>
 
             <!-- Yearly Plan (Selected) -->

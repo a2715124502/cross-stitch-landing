@@ -46,7 +46,7 @@ const STORAGE_KEY = 'crossstitch_locale';
 let currentLocale =
   typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
 if (!currentLocale || !LOCALE_CODES.includes(currentLocale)) {
-  currentLocale = 'zh-CN';
+  currentLocale = 'en';
 }
 
 let onLocaleChange = null;

@@ -113,7 +113,7 @@ const sharedStyles = `
     top: -20px;
     z-index: 10;
     background-color: #FFFFFF;
-    padding-top: 28px;
+    padding-top: 0;
   }
 
   .main-title {
@@ -136,6 +136,7 @@ const sharedStyles = `
     font-weight: 600 !important;
     letter-spacing: -0.01em;
   }
+
 
   .back-icon {
     width: 24px;
@@ -743,7 +744,7 @@ function renderOnboardingPage2() {
     <div class="onboarding-page-2">
       <!-- Fullscreen Background Image -->
       <main class="background-main">
-        <img alt="Background illustration" class="background-image" src="/images/Gemini_Generated_Image_w6zdxow6zdxow6zd.png">
+        <img alt="Background illustration" class="background-image" src="/images/Gemini_Generated_Image_x3xgxvx3xgxvx3xg 1-2.png">
         <!-- Gradient Overlay for smooth transition -->
         <div class="gradient-overlay"></div>
       </main>
@@ -845,7 +846,15 @@ function renderOnboardingPage2() {
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(to top, rgba(0,0,0,0.67) 0%, rgba(0,0,0,0.34) 50%, transparent 100%);
+      /* 黑色蒙版：按钮区深色，渐变从按钮上方开始 */
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.75) 0 180px,
+        rgba(0, 0, 0, 0.45) 240px,
+        rgba(0, 0, 0, 0.25) 330px,
+        rgba(0, 0, 0, 0.08) 450px,
+        rgba(0, 0, 0, 0) 610px
+      );
     }
     
     .text-center {
@@ -1041,7 +1050,15 @@ function renderOnboardingPage3() {
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 15%, rgba(255,255,255,0.7) 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+      /* 底部按钮区保持纯白，渐变从按钮上方开始向上过渡 */
+      background: linear-gradient(
+        to top,
+        #FFFFFF 0 190px,
+        rgba(255, 255, 255, 0.96) 250px,
+        rgba(255, 255, 255, 0.75) 340px,
+        rgba(255, 255, 255, 0.38) 460px,
+        rgba(255, 255, 255, 0) 620px
+      );
     }
     
     .text-center {
@@ -1145,7 +1162,7 @@ function renderQuestionPage1() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -1157,7 +1174,7 @@ function renderQuestionPage1() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -1169,7 +1186,7 @@ function renderQuestionPage1() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -1437,7 +1454,7 @@ function renderQuestionPage2() {
       <!-- Top Navigation Bar -->
       <nav class="top-nav">
         <div class="back-button" onclick="prevPage()">
-          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(2)}
         <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
@@ -1459,7 +1476,7 @@ function renderQuestionPage2() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -1471,7 +1488,7 @@ function renderQuestionPage2() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -1483,7 +1500,7 @@ function renderQuestionPage2() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -1495,7 +1512,7 @@ function renderQuestionPage2() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -1507,7 +1524,7 @@ function renderQuestionPage2() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -1519,7 +1536,7 @@ function renderQuestionPage2() {
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -1779,7 +1796,7 @@ function renderQuestionPage3() {
       <!-- Top Navigation Bar -->
       <nav class="top-nav">
         <div class="back-button" onclick="prevPage()">
-          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(3)}
         <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
@@ -1800,7 +1817,7 @@ function renderQuestionPage3() {
               <span class="label-text">${t('questions.page3.style.animals')}</span>
               <div class="check-icon">
                 <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -1813,7 +1830,7 @@ function renderQuestionPage3() {
               <span class="label-text">${t('questions.page3.style.comics')}</span>
               <div class="check-icon">
                 <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -1826,7 +1843,7 @@ function renderQuestionPage3() {
               <span class="label-text">${t('questions.page3.style.people')}</span>
               <div class="check-icon">
                 <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -1839,7 +1856,7 @@ function renderQuestionPage3() {
               <span class="label-text">${t('questions.page3.style.cute')}</span>
               <div class="check-icon">
                 <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -1852,7 +1869,7 @@ function renderQuestionPage3() {
               <span class="label-text">${t('questions.page3.style.food')}</span>
               <div class="check-icon">
                 <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -1865,7 +1882,7 @@ function renderQuestionPage3() {
               <span class="label-text">${t('questions.page3.style.mandala')}</span>
               <div class="check-icon">
                 <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -1878,7 +1895,7 @@ function renderQuestionPage3() {
               <span class="label-text">${t('questions.page3.style.flowers')}</span>
               <div class="check-icon">
                 <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -1891,7 +1908,7 @@ function renderQuestionPage3() {
               <span class="label-text">${t('questions.page3.style.simple')}</span>
               <div class="check-icon">
                 <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             </div>
@@ -2180,7 +2197,7 @@ function renderQuestionPage4() {
       <!-- Top Navigation Bar -->
       <nav class="top-nav">
         <div class="back-button" onclick="prevPage()">
-          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(4)}
         <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
@@ -2202,7 +2219,7 @@ function renderQuestionPage4() {
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -2214,7 +2231,7 @@ function renderQuestionPage4() {
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -2226,7 +2243,7 @@ function renderQuestionPage4() {
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -2238,7 +2255,7 @@ function renderQuestionPage4() {
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -2250,7 +2267,7 @@ function renderQuestionPage4() {
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -2262,7 +2279,7 @@ function renderQuestionPage4() {
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -2274,7 +2291,7 @@ function renderQuestionPage4() {
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </button>
@@ -2615,7 +2632,7 @@ function renderQuestionPage5() {
       <!-- Top Navigation Bar -->
       <nav class="top-nav">
         <div class="back-button" onclick="prevPage()">
-          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(5)}
         <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
@@ -2640,7 +2657,7 @@ function renderQuestionPage5() {
             <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.basic')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2657,7 +2674,7 @@ function renderQuestionPage5() {
             <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.skin')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2674,7 +2691,7 @@ function renderQuestionPage5() {
             <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.makeup')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2691,7 +2708,7 @@ function renderQuestionPage5() {
             <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.galaxy')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2708,7 +2725,7 @@ function renderQuestionPage5() {
             <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.fabric')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2725,7 +2742,7 @@ function renderQuestionPage5() {
             <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.lips')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2742,7 +2759,7 @@ function renderQuestionPage5() {
             <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.rainbow')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2759,7 +2776,7 @@ function renderQuestionPage5() {
             <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.sky')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2925,7 +2942,7 @@ function renderQuestionPage6() {
       <!-- Top Navigation Bar -->
       <nav class="top-nav">
         <div class="back-button" onclick="prevPage()">
-          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(6)}
         <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
@@ -2945,7 +2962,7 @@ function renderQuestionPage6() {
             <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.small')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2956,7 +2973,7 @@ function renderQuestionPage6() {
             <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.big')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2967,7 +2984,7 @@ function renderQuestionPage6() {
             <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.spray')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2978,7 +2995,7 @@ function renderQuestionPage6() {
             <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.watercolor')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -2989,7 +3006,7 @@ function renderQuestionPage6() {
             <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.ballpoint')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -3000,7 +3017,7 @@ function renderQuestionPage6() {
             <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.pencil')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -3011,7 +3028,7 @@ function renderQuestionPage6() {
             <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.pastel')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -3022,7 +3039,7 @@ function renderQuestionPage6() {
             <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.splash')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
           </div>
@@ -3656,10 +3673,10 @@ function renderTrialIntroPage() {
       </header>
       
       <!-- Main Content -->
-      <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; overflow-y: auto;">
+      <main style="flex: 1; padding-top: 0; display: flex; flex-direction: column; align-items: center; overflow-y: auto;">
         <!-- Hero Section -->
         <div class="hero-section">
-          <img class="hero-image" src="/images/unnamed-2.png" alt="${trialHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${trialImgFail}%3C/text%3E%3C/svg%3E';">
+          <img class="hero-image" src="/images/Frame 11-2_副本2.png" alt="${trialHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${trialImgFail}%3C/text%3E%3C/svg%3E';">
           <div class="hero-gradient"></div>
         </div>
         
@@ -3675,11 +3692,12 @@ function renderTrialIntroPage() {
             <!-- Item 1: Today -->
             <div class="timeline-item">
               <div class="timeline-icon">
-                <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="8" y="12" width="32" height="28" rx="4" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M8 20H40" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="18" cy="8" r="4" fill="#333333"/>
-                  <circle cx="30" cy="8" r="4" fill="#333333"/>
+                <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <!-- Schedule (outline) -->
+                  <rect x="8" y="10" width="32" height="30" rx="4" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 6V14" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                  <path d="M32 6V14" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                  <path d="M8 18H40" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
                 </svg>
               </div>
               <div class="timeline-content">
@@ -3743,16 +3761,17 @@ function renderTrialIntroPage() {
       overflow: hidden;
       background-color: #FFFFFF;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
     }
 
     .trial-intro-page .hero-image {
-      width: auto;
-      height: auto;
+      width: 100%;
+      height: 100%;
       max-width: 100%;
       max-height: 40vh;
-      object-fit: contain;
+      object-fit: cover;
+      object-position: top center;
       display: block;
     }
     
@@ -3828,8 +3847,10 @@ function renderTrialIntroPage() {
     
     .trial-intro-page .timeline-icon svg path,
     .trial-intro-page .timeline-icon svg rect,
-    .trial-intro-page .timeline-icon svg circle {
-      stroke: #FFFFFF;
+    .trial-intro-page .timeline-icon svg circle,
+    .trial-intro-page .timeline-icon svg line,
+    .trial-intro-page .timeline-icon svg polyline {
+      stroke: #724202;
       fill: none;
     }
     
@@ -3846,7 +3867,7 @@ function renderTrialIntroPage() {
     
     .trial-intro-page .timeline-title {
       font-size: 20px;
-      font-weight: bold;
+      font-weight: normal;
       color: #000000;
       line-height: 1.2;
       margin: 0;
@@ -3948,7 +3969,7 @@ function renderSubscriptionPage() {
       <!-- TopAppBar -->
       <header style="position: fixed; top: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 56px; background-color: transparent; z-index: 50; animation: fadeInUp 0.2s ease forwards; opacity: 0;">
         <div style="display: flex; align-items: center; transition: transform 0.2s ease; cursor: pointer;" onclick="prevPage()">
-          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 14L34 34" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34L34 14" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 14L34 34" stroke="rgba(255,255,255,0.8)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34L34 14" stroke="rgba(255,255,255,0.8)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h1 style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 18px; font-weight: bold; color: #000000;"></h1>
         <div class="language-switcher">
@@ -3961,72 +3982,78 @@ function renderSubscriptionPage() {
       </header>
       
       <!-- Main Content -->
-      <main style="flex: 1; padding-top: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 0; overflow-y: auto;">
+      <main style="flex: 1; padding-top: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-bottom: 0; overflow: hidden; position: relative; top: 0;">
         <!-- Hero Section -->
         <div class="hero-section">
-          <img class="hero-image" src="/images/unnamed-2.png" alt="${subHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${subImgFail}%3C/text%3E%3C/svg%3E';">
+          <img class="hero-image" src="/images/Frame 11-2_副本2.png" alt="${subHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${subImgFail}%3C/text%3E%3C/svg%3E';">
           <div class="hero-gradient"></div>
         </div>
-        
-        <!-- Content Canvas - 统一容器 -->
-        <div class="subscription-content-container">
-          <h2 class="subscription-title">${t('subscription.title')}</h2>
-          <p class="subscription-description">${t('subscription.description')}</p>
-          
-          <!-- Subscription Cards Cluster -->
-          <div class="subscription-cards">
-            <!-- Weekly Plan -->
-            <div class="subscription-card subscription-card-selected" onclick="toggleSubscription('weekly')" id="weekly-plan">
-              <div class="subscription-card-left">
-                <span>${t('subscription.weekly')}</span>
-                <span class="best-value-badge">${t('subscription.freeTrialBadge')}</span>
+
+        <!-- Body Area: 标题/正文/选项/说明/按钮同一区域 -->
+        <section class="subscription-body-area">
+          <!-- Content Canvas - 统一容器 -->
+          <div class="subscription-content-container">
+            <h2 class="subscription-title">${t('subscription.title')}</h2>
+            <p class="subscription-description">${t('subscription.description')}</p>
+
+            <!-- Subscription Cards Cluster -->
+            <div class="subscription-cards">
+              <!-- Weekly Plan -->
+              <div class="subscription-card subscription-card-selected" onclick="toggleSubscription('weekly')" id="weekly-plan">
+                <div class="subscription-card-left">
+                  <span>${t('subscription.weekly')}</span>
+                  <span class="best-value-badge">${t('subscription.freeTrialBadge')}</span>
+                </div>
+                <div class="subscription-card-right">
+                  <span>${t('subscription.weekly.price')}</span>
+                  <div class="subscription-check subscription-check-active" id="weekly-check">
+                    <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                </div>
               </div>
-              <div class="subscription-card-right">
-                <span>${t('subscription.weekly.price')}</span>
-                <div class="subscription-check subscription-check-active" id="weekly-check">
-                  <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+              <!-- Monthly Plan -->
+              <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
+                <div class="subscription-card-left">
+                  <span>${t('subscription.monthly')}</span>
+                </div>
+                <div class="subscription-card-right">
+                  <span>${t('subscription.monthly.price')}</span>
+                  <div class="subscription-check" id="monthly-check"></div>
+                </div>
+              </div>
+
+              <!-- Yearly Plan -->
+              <div class="subscription-card" onclick="toggleSubscription('yearly')" id="yearly-plan">
+                <div class="subscription-card-left">
+                  <span>${t('subscription.yearly')}</span>
+                </div>
+                <div class="subscription-card-right">
+                  <span>${t('subscription.yearly.price')}</span>
+                  <div class="subscription-check" id="yearly-check"></div>
                 </div>
               </div>
             </div>
-
-            <!-- Monthly Plan -->
-            <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
-              <span>${t('subscription.monthly')}</span>
-              <div class="subscription-card-right">
-                <span>${t('subscription.monthly.price')}</span>
-                <div class="subscription-check" id="monthly-check"></div>
-              </div>
-            </div>
-
-            <!-- Yearly Plan -->
-            <div class="subscription-card" onclick="toggleSubscription('yearly')" id="yearly-plan">
-              <span>${t('subscription.yearly')}</span>
-              <div class="subscription-card-right">
-                <span>${t('subscription.yearly.price')}</span>
-                <div class="subscription-check" id="yearly-check"></div>
-              </div>
-            </div>
           </div>
-        </div>
+
+          <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
+            <div class="button-container" style="padding-top: 12px;">
+              <button class="bottom-button" id="subscription-button">${t('subscription.button.freeTrial')}</button>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; border-top: 1px solid #F1F1F1; padding-top: 12px; padding-bottom: 12px;">
+              <div class="subscription-legal-text">
+                ${t('subscription.legalText')}
+              </div>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+                <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.termsOfService')}</a>
+                <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.privacyPolicy')}</a>
+                <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.restorePurchase')}</a>
+              </div>
+              <p style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888;">${t('common.copyright')}</p>
+            </div>
+          </footer>
+        </section>
       </main>
-
-      <!-- Fixed Bottom CTA Section -->
-      <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
-        <div class="button-container" style="padding-top: 12px;">
-          <div class="subscription-legal-text">
-            ${t('subscription.legalText')}
-          </div>
-          <button class="bottom-button" id="subscription-button">${t('subscription.button.freeTrial')}</button>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; border-top: 1px solid #F1F1F1; padding-top: 12px; padding-bottom: 12px;">
-          <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.termsOfService')}</a>
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.privacyPolicy')}</a>
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.restorePurchase')}</a>
-          </div>
-          <p style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888;">${t('common.copyright')}</p>
-        </div>
-      </footer>
     </div>
   `;
   
@@ -4045,14 +4072,41 @@ function renderSubscriptionPage() {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: flex-start;
       position: relative;
       top: 0;
+      overflow: hidden;
+    }
+
+    .subscription-page .hero-section {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 5;
+      flex-shrink: 0;
     }
 
     .subscription-page .subscription-content-container {
       flex-shrink: 0;
       margin-bottom: 0;
+    }
+
+    .subscription-body-area {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: transparent;
+      z-index: 20;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .subscription-page .button-container,
@@ -4154,40 +4208,52 @@ function renderSubscriptionPage() {
       opacity: 0;
       background-color: #FFFFFF;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
     }
 
     .hero-image {
-      width: auto;
-      height: auto;
+      width: 100%;
+      height: 100%;
       max-width: 100%;
       max-height: 40vh;
-      object-fit: contain;
+      object-fit: cover;
+      object-position: top center;
       display: block;
     }
     
-    .hero-gradient {
+    .subscription-page .hero-gradient {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 96px;
-      background: linear-gradient(to top, white 0%, transparent 100%);
+      /* 仅在图片下半部分做蒙版，避免遮挡顶部背景 */
+      height: 58%;
+      background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0.94) 0%,
+        rgba(255, 255, 255, 0.82) 35%,
+        rgba(255, 255, 255, 0.52) 62%,
+        rgba(255, 255, 255, 0.18) 82%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      pointer-events: none;
     }
     
     .subscription-content-container {
       width: 100%;
       max-width: 400px;
       padding: 8px 20px 0 20px;
+      margin-bottom: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      background: transparent;
     }
     
     .subscription-content-container h2.subscription-title {
-      font-size: 20px;
-      font-weight: bold;
+      font-size: 24px !important;
+      font-weight: 700 !important;
       color: #000000;
       line-height: 1.15;
       text-align: center;
@@ -4199,12 +4265,12 @@ function renderSubscriptionPage() {
     }
     
     .subscription-content-container p.subscription-description {
-      font-size: 14px;
+      font-size: 16px;
       color: #888888;
       font-weight: normal;
       line-height: 1.12;
       text-align: center;
-      margin-top: 4px;
+      margin-top: 8px;
       font-family: 'PingFang SC', sans-serif;
       animation: fadeInUp 0.2s ease forwards;
       animation-delay: 0.3s;
@@ -4214,7 +4280,7 @@ function renderSubscriptionPage() {
     .subscription-cards {
       width: 100%;
       margin-top: 22px;
-      margin-bottom: 20px;
+      margin-bottom: 0;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -4268,10 +4334,10 @@ function renderSubscriptionPage() {
     }
     
     .subscription-card-right > span {
-      font-size: 14px !important;
-      font-weight: 400;
+      font-size: 16px !important;
+      font-weight: bold;
       font-family: 'PingFang SC', sans-serif;
-      color: #999999;
+      color: #000000;
       min-width: 84px;
       text-align: right;
     }
@@ -4287,8 +4353,8 @@ function renderSubscriptionPage() {
     }
 
     .subscription-card-left > span:first-child {
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 500;
       font-family: 'PingFang SC', sans-serif;
     }
 
@@ -4362,7 +4428,7 @@ function renderSubscriptionPage() {
     
     .subscription-check-active {
       background-color: #FED11F;
-      border: none;
+      border: 1px solid #FED11F;
     }
     
     .subscription-toggle {
@@ -4408,7 +4474,7 @@ function renderSubscriptionPage() {
     /* iPad specific styles */
     @media only screen and (min-width: 768px) and (max-width: 1024px) {
       .subscription-page > main {
-        justify-content: center;
+        justify-content: flex-start;
         padding-bottom: 80px;
       }
 
@@ -4438,7 +4504,7 @@ function renderSubscriptionPage() {
     /* iPad Pro specific styles */
     @media only screen and (min-width: 1024px) and (max-width: 1366px) {
       .subscription-page > main {
-        justify-content: center;
+        justify-content: flex-start;
         padding-bottom: 80px;
       }
 
@@ -4510,24 +4576,24 @@ window.toggleSubscription = function(plan) {
 
   if (plan === 'weekly') {
     weeklyPlan.classList.add('subscription-card-selected');
-    weeklyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center;';
+    weeklyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center;';
 
     monthlyPlan.classList.remove('subscription-card-selected');
     monthlyCheck.innerHTML = '';
-    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
     yearlyPlan.classList.remove('subscription-card-selected');
     yearlyCheck.innerHTML = '';
-    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
     if (subscriptionButton) {
       subscriptionButton.textContent = t('subscription.button.freeTrial');
     }
   } else if (plan === 'monthly') {
     monthlyPlan.classList.add('subscription-card-selected');
-    monthlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    monthlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center;';
 
     weeklyPlan.classList.remove('subscription-card-selected');
     weeklyCheck.innerHTML = '';
@@ -4535,15 +4601,15 @@ window.toggleSubscription = function(plan) {
 
     yearlyPlan.classList.remove('subscription-card-selected');
     yearlyCheck.innerHTML = '';
-    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
     if (subscriptionButton) {
       subscriptionButton.textContent = t('subscription.button.subscribe');
     }
   } else if (plan === 'yearly') {
     yearlyPlan.classList.add('subscription-card-selected');
-    yearlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    yearlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center;';
 
     weeklyPlan.classList.remove('subscription-card-selected');
     weeklyCheck.innerHTML = '';
@@ -4551,7 +4617,7 @@ window.toggleSubscription = function(plan) {
 
     monthlyPlan.classList.remove('subscription-card-selected');
     monthlyCheck.innerHTML = '';
-    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
     if (subscriptionButton) {
       subscriptionButton.textContent = t('subscription.button.subscribe');

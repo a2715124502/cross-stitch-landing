@@ -3676,7 +3676,7 @@ function renderTrialIntroPage() {
       <main style="flex: 1; padding-top: 0; display: flex; flex-direction: column; align-items: center; overflow-y: auto;">
         <!-- Hero Section -->
         <div class="hero-section">
-          <img class="hero-image" src="/images/Frame 11-2_副本.png" alt="${trialHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${trialImgFail}%3C/text%3E%3C/svg%3E';">
+          <img class="hero-image" src="/images/Frame 11-2_副本2.png" alt="${trialHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${trialImgFail}%3C/text%3E%3C/svg%3E';">
           <div class="hero-gradient"></div>
         </div>
         
@@ -3982,76 +3982,78 @@ function renderSubscriptionPage() {
       </header>
       
       <!-- Main Content -->
-      <main style="flex: 1; padding-top: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 0; overflow-y: auto; position: relative; top: 0; -webkit-overflow-scrolling: touch;">
+      <main style="flex: 1; padding-top: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-bottom: 0; overflow: hidden; position: relative; top: 0;">
         <!-- Hero Section -->
         <div class="hero-section">
-          <img class="hero-image" src="/images/Frame 11-2_副本.png" alt="${subHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${subImgFail}%3C/text%3E%3C/svg%3E';">
+          <img class="hero-image" src="/images/Frame 11-2_副本2.png" alt="${subHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${subImgFail}%3C/text%3E%3C/svg%3E';">
           <div class="hero-gradient"></div>
         </div>
-        
-        <!-- Content Canvas - 统一容器 -->
-        <div class="subscription-content-container">
-          <h2 class="subscription-title">${t('subscription.title')}</h2>
-          <p class="subscription-description">${t('subscription.description')}</p>
-          
-          <!-- Subscription Cards Cluster -->
-          <div class="subscription-cards">
-            <!-- Weekly Plan -->
-            <div class="subscription-card subscription-card-selected" onclick="toggleSubscription('weekly')" id="weekly-plan">
-              <div class="subscription-card-left">
-                <span>${t('subscription.weekly')}</span>
-                <span class="best-value-badge">${t('subscription.freeTrialBadge')}</span>
+
+        <!-- Body Area: 标题/正文/选项/说明/按钮同一区域 -->
+        <section class="subscription-body-area">
+          <!-- Content Canvas - 统一容器 -->
+          <div class="subscription-content-container">
+            <h2 class="subscription-title">${t('subscription.title')}</h2>
+            <p class="subscription-description">${t('subscription.description')}</p>
+
+            <!-- Subscription Cards Cluster -->
+            <div class="subscription-cards">
+              <!-- Weekly Plan -->
+              <div class="subscription-card subscription-card-selected" onclick="toggleSubscription('weekly')" id="weekly-plan">
+                <div class="subscription-card-left">
+                  <span>${t('subscription.weekly')}</span>
+                  <span class="best-value-badge">${t('subscription.freeTrialBadge')}</span>
+                </div>
+                <div class="subscription-card-right">
+                  <span>${t('subscription.weekly.price')}</span>
+                  <div class="subscription-check subscription-check-active" id="weekly-check">
+                    <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                </div>
               </div>
-              <div class="subscription-card-right">
-                <span>${t('subscription.weekly.price')}</span>
-                <div class="subscription-check subscription-check-active" id="weekly-check">
-                  <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+              <!-- Monthly Plan -->
+              <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
+                <div class="subscription-card-left">
+                  <span>${t('subscription.monthly')}</span>
+                </div>
+                <div class="subscription-card-right">
+                  <span>${t('subscription.monthly.price')}</span>
+                  <div class="subscription-check" id="monthly-check"></div>
+                </div>
+              </div>
+
+              <!-- Yearly Plan -->
+              <div class="subscription-card" onclick="toggleSubscription('yearly')" id="yearly-plan">
+                <div class="subscription-card-left">
+                  <span>${t('subscription.yearly')}</span>
+                </div>
+                <div class="subscription-card-right">
+                  <span>${t('subscription.yearly.price')}</span>
+                  <div class="subscription-check" id="yearly-check"></div>
                 </div>
               </div>
             </div>
-
-            <!-- Monthly Plan -->
-            <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
-              <div class="subscription-card-left">
-                <span>${t('subscription.monthly')}</span>
-              </div>
-              <div class="subscription-card-right">
-                <span>${t('subscription.monthly.price')}</span>
-                <div class="subscription-check" id="monthly-check"></div>
-              </div>
-            </div>
-
-            <!-- Yearly Plan -->
-            <div class="subscription-card" onclick="toggleSubscription('yearly')" id="yearly-plan">
-              <div class="subscription-card-left">
-                <span>${t('subscription.yearly')}</span>
-              </div>
-              <div class="subscription-card-right">
-                <span>${t('subscription.yearly.price')}</span>
-                <div class="subscription-check" id="yearly-check"></div>
-              </div>
-            </div>
           </div>
-        </div>
+
+          <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
+            <div class="button-container" style="padding-top: 12px;">
+              <button class="bottom-button" id="subscription-button">${t('subscription.button.freeTrial')}</button>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; border-top: 1px solid #F1F1F1; padding-top: 12px; padding-bottom: 12px;">
+              <div class="subscription-legal-text">
+                ${t('subscription.legalText')}
+              </div>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+                <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.termsOfService')}</a>
+                <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.privacyPolicy')}</a>
+                <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.restorePurchase')}</a>
+              </div>
+              <p style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888;">${t('common.copyright')}</p>
+            </div>
+          </footer>
+        </section>
       </main>
-
-      <!-- Fixed Bottom CTA Section -->
-      <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
-        <div class="button-container" style="padding-top: 12px;">
-          <div class="subscription-legal-text">
-            ${t('subscription.legalText')}
-          </div>
-          <button class="bottom-button" id="subscription-button">${t('subscription.button.freeTrial')}</button>
-        </div>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; border-top: 1px solid #F1F1F1; padding-top: 12px; padding-bottom: 12px;">
-          <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.termsOfService')}</a>
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.privacyPolicy')}</a>
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.restorePurchase')}</a>
-          </div>
-          <p style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888;">${t('common.copyright')}</p>
-        </div>
-      </footer>
     </div>
   `;
   
@@ -4070,28 +4072,41 @@ function renderSubscriptionPage() {
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: flex-start;
       position: relative;
       top: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
     }
 
-    /* 移动端体验：允许滚动但不显示滚动条，避免挤压内容 */
-    .subscription-page > main {
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE/Edge legacy */
-    }
-
-    .subscription-page > main::-webkit-scrollbar {
-      display: none; /* Chrome/Safari */
-      width: 0;
-      height: 0;
+    .subscription-page .hero-section {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 5;
+      flex-shrink: 0;
     }
 
     .subscription-page .subscription-content-container {
       flex-shrink: 0;
       margin-bottom: 0;
+    }
+
+    .subscription-body-area {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: transparent;
+      z-index: 20;
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     .subscription-page .button-container,
@@ -4207,13 +4222,22 @@ function renderSubscriptionPage() {
       display: block;
     }
     
-    .hero-gradient {
+    .subscription-page .hero-gradient {
       position: absolute;
-      bottom: 0;
+      bottom: -20px;
       left: 0;
       width: 100%;
-      height: 96px;
-      background: linear-gradient(to top, white 0%, transparent 100%);
+      height: calc(100% + 20px);
+      background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0.98) 0%,
+        rgba(255, 255, 255, 0.94) 26%,
+        rgba(255, 255, 255, 0.78) 44%,
+        rgba(255, 255, 255, 0.48) 58%,
+        rgba(255, 255, 255, 0.16) 70%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      pointer-events: none;
     }
     
     .subscription-content-container {
@@ -4224,6 +4248,7 @@ function renderSubscriptionPage() {
       display: flex;
       flex-direction: column;
       align-items: center;
+      background: transparent;
     }
     
     .subscription-content-container h2.subscription-title {
@@ -4245,7 +4270,7 @@ function renderSubscriptionPage() {
       font-weight: normal;
       line-height: 1.12;
       text-align: center;
-      margin-top: 4px;
+      margin-top: 8px;
       font-family: 'PingFang SC', sans-serif;
       animation: fadeInUp 0.2s ease forwards;
       animation-delay: 0.3s;
@@ -4403,7 +4428,7 @@ function renderSubscriptionPage() {
     
     .subscription-check-active {
       background-color: #FED11F;
-      border: none;
+      border: 1px solid #FED11F;
     }
     
     .subscription-toggle {
@@ -4449,7 +4474,7 @@ function renderSubscriptionPage() {
     /* iPad specific styles */
     @media only screen and (min-width: 768px) and (max-width: 1024px) {
       .subscription-page > main {
-        justify-content: center;
+        justify-content: flex-start;
         padding-bottom: 80px;
       }
 
@@ -4479,7 +4504,7 @@ function renderSubscriptionPage() {
     /* iPad Pro specific styles */
     @media only screen and (min-width: 1024px) and (max-width: 1366px) {
       .subscription-page > main {
-        justify-content: center;
+        justify-content: flex-start;
         padding-bottom: 80px;
       }
 
@@ -4552,7 +4577,7 @@ window.toggleSubscription = function(plan) {
   if (plan === 'weekly') {
     weeklyPlan.classList.add('subscription-card-selected');
     weeklyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center;';
+    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center;';
 
     monthlyPlan.classList.remove('subscription-card-selected');
     monthlyCheck.innerHTML = '';
@@ -4568,7 +4593,7 @@ window.toggleSubscription = function(plan) {
   } else if (plan === 'monthly') {
     monthlyPlan.classList.add('subscription-card-selected');
     monthlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
 
     weeklyPlan.classList.remove('subscription-card-selected');
     weeklyCheck.innerHTML = '';
@@ -4584,7 +4609,7 @@ window.toggleSubscription = function(plan) {
   } else if (plan === 'yearly') {
     yearlyPlan.classList.add('subscription-card-selected');
     yearlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
 
     weeklyPlan.classList.remove('subscription-card-selected');
     weeklyCheck.innerHTML = '';

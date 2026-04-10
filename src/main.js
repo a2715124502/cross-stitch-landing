@@ -1,3 +1,15 @@
+import {
+  t,
+  applyLocaleMeta,
+  setLocaleChangeHandler,
+  attachI18nWindowHandlers,
+  initLanguageSwitcherUi,
+  splitStatTranslation,
+  styleListSeparator,
+  getLanguageMenuMarkup,
+  getCurrentLocale
+} from './i18n/index.js';
+
 // 页面状态管理
 let currentPage = 0;
 const totalPages = 9;
@@ -5,18 +17,6 @@ let isTransitioning = false;
 
 let completedQuestions = 0;
 const totalQuestions = 4;
-
-// 风格ID到中文标签的映射
-const styleLabelMap = {
-  'animals': '动物',
-  'comics': '艺术',
-  'people': '花朵',
-  'cute': '自然',
-  'food': '宠物',
-  'mandala': '庆祝',
-  'flowers': '食物',
-  'simple': '超级尺寸'
-};
 
 // 存储用户选择的风格
 let selectedStyles = [];
@@ -104,6 +104,18 @@ const sharedStyles = `
     margin-bottom: 24px;
   }
 
+  /*
+   * 问题页 1-4 的 main-content 自带 20px 顶部内边距。
+   * 让粘性标题头向上覆盖这段区域，避免滚动时从导航栏和标题之间的缝隙看到下方选项。
+   */
+  .question-sticky-header {
+    position: sticky;
+    top: -20px;
+    z-index: 10;
+    background-color: #FFFFFF;
+    padding-top: 28px;
+  }
+
   .main-title {
     font-size: 24px;
     font-weight: bold;
@@ -112,6 +124,17 @@ const sharedStyles = `
     color: #000000;
     white-space: nowrap;
     overflow: visible;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* 非中文/繁中：拉丁字母用系统/SF，字重略重于默认 bold，避免过粗 */
+  html:not([lang='zh-CN']):not([lang='zh-TW']) .bottom-button,
+  html:not([lang='zh-CN']):not([lang='zh-TW']) .next-button,
+  html:not([lang='zh-CN']):not([lang='zh-TW']) .continue-button {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
   }
 
   .back-icon {
@@ -204,6 +227,147 @@ const sharedStyles = `
     border-radius: 4px;
     transition: width 0.4s ease-in-out;
   }
+
+  /* 阿拉伯语：整体布局保持 LTR，避免返回箭头、进度条、勾选、卡片角标位置被镜像 */
+  html[dir='rtl'] .page-container,
+  html[dir='rtl'] .main-content,
+  html[dir='rtl'] .subscription-content-container,
+  html[dir='rtl'] .subscription-page,
+  html[dir='rtl'] .trial-intro-page,
+  html[dir='rtl'] .bottom-action {
+    direction: ltr;
+  }
+
+  html[dir='rtl'] .top-nav {
+    direction: ltr;
+  }
+
+  /* 引导页1 / 加载页等：根 .container 强制 LTR，避免第二屏统计行 flex 镜像导致两侧装饰 icon 对调 */
+  html[dir='rtl'] .container {
+    direction: ltr;
+  }
+
+  /* 统计行内阿拉伯说明仍按 RTL 排版，居中 */
+  html[dir='rtl'] #statContainer .subtitle {
+    direction: rtl;
+    unicode-bidi: isolate;
+    text-align: center;
+  }
+
+  /* 问题页：标题、副标题、选项文案右对齐 + 阿拉伯语排版 */
+  html[dir='rtl'] .question-page-1 .main-title,
+  html[dir='rtl'] .question-page-2 .main-title,
+  html[dir='rtl'] .question-page-3 .main-title,
+  html[dir='rtl'] .question-page-4 .main-title,
+  html[dir='rtl'] .question-page-5 .main-title,
+  html[dir='rtl'] .question-page-6 .main-title {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .question-page-1 .subtitle,
+  html[dir='rtl'] .question-page-2 .subtitle,
+  html[dir='rtl'] .question-page-3 .subtitle,
+  html[dir='rtl'] .question-page-4 .subtitle,
+  html[dir='rtl'] .question-page-5 .subtitle,
+  html[dir='rtl'] .question-page-6 .subtitle {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .option-text {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .label-text {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  /* 订阅页文案（价格列等布局仍为 LTR） */
+  html[dir='rtl'] .subscription-card > span:first-child,
+  html[dir='rtl'] .subscription-card-left,
+  html[dir='rtl'] .subscription-card-left > span,
+  html[dir='rtl'] .best-value-badge {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .subscription-card-left .best-value-badge {
+    text-align: center;
+  }
+
+  html[dir='rtl'] .subscription-card-right > span {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .subscription-content-container h2.subscription-title,
+  html[dir='rtl'] .subscription-content-container p.subscription-description,
+  html[dir='rtl'] .subscription-legal-text {
+    direction: rtl;
+    unicode-bidi: isolate;
+    text-align: center;
+  }
+
+  html[dir='rtl'] .trial-intro-page .page-title {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .trial-intro-page .timeline-title,
+  html[dir='rtl'] .trial-intro-page .timeline-description {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .language-menu-item {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .bottom-button,
+  html[dir='rtl'] .continue-button,
+  html[dir='rtl'] .next-button {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] #text1 .title,
+  html[dir='rtl'] #text1 .subtitle,
+  html[dir='rtl'] #testimonialContainer .title,
+  html[dir='rtl'] #testimonialContainer .subtitle {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .onboarding-page-2 .main-title,
+  html[dir='rtl'] .onboarding-page-2 .subtitle,
+  html[dir='rtl'] .onboarding-page-3 .main-title,
+  html[dir='rtl'] .onboarding-page-3 .subtitle {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] .onboarding-page-4 h1,
+  html[dir='rtl'] .onboarding-page-4 p {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  html[dir='rtl'] #loadingText1,
+  html[dir='rtl'] #loadingText2,
+  html[dir='rtl'] #loadingText3 {
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
 `;
 
 // 注入共享样式
@@ -251,7 +415,7 @@ function generateProgressBar(questionNumber, initialLoad = false) {
   const percentage = Math.round((completedQuestions / totalQuestions) * 100);
   
   return `
-    <div class="progress-bar-container" role="progressbar" aria-label="答题进度" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar-container" role="progressbar" aria-label="${t('common.quizProgress')}" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100">
       <div class="progress-bar-wrapper">
         <div class="progress-bar-fill" data-question="${questionNumber}" style="width: ${percentage}%"></div>
       </div>
@@ -437,6 +601,8 @@ function renderPage(animate = true) {
   if (animate && (currentPage === 0 || currentPage === 1 || currentPage === 2 || currentPage === 8)) {
     addPageEnterAnimation();
   }
+
+  applyLocaleMeta();
 }
 
 // 为页面容器添加进入动画
@@ -462,6 +628,9 @@ function renderOnboardingPage1() {
 
   const app = document.getElementById('app');
   
+  const statDl = splitStatTranslation(t('onboarding.page1.totalDownloads'));
+  const statHa = splitStatTranslation(t('onboarding.page1.happyArtists'));
+
   // 创建组件的辅助函数
   const createStatComponent = (value, subtitle) => `
     <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin: 0 auto;">
@@ -479,16 +648,16 @@ function renderOnboardingPage1() {
         id="text1"
         style="animation: fadeInUp 0.8s ease forwards; position: absolute; text-align: center; width: 100%; max-width: 335px;"
       >
-        <h1 style="font-size: 32px; white-space: nowrap; margin-bottom: 8px;" class="title">欢迎来到Cross Stitch</h1>
-        <p style="margin-top: 8px;" class="subtitle">每一次填色，都是创作</p>
+        <h1 style="font-size: 32px; white-space: normal; margin-bottom: 8px; display: block; width: 100%; text-align: center !important; overflow-wrap: anywhere; word-break: break-word;" class="title">${t('onboarding.page1.title')}</h1>
+        <p style="margin-top: 8px; text-align: center;" class="subtitle">${t('onboarding.page1.subtitle')}</p>
       </div>
       
       <div id="statContainer" style="opacity: 0; display: flex; flex-direction: column; align-items: center; gap: 72px; position: absolute; width: 100%; max-width: 335px;">
         <div id="stat1" style="opacity: 0; width: 100%;">
-          ${createStatComponent('5M+', '累计下载')}
+          ${createStatComponent(statDl.value, statDl.subtitle)}
         </div>
         <div id="stat2" style="opacity: 0; width: 100%;">
-          ${createStatComponent('1M+', '快乐的艺术家')}
+          ${createStatComponent(statHa.value, statHa.subtitle)}
         </div>
         <div id="stat3" style="opacity: 0; width: 100%;">
           ${createStatComponent('4.7+', 'Appstore')}
@@ -496,8 +665,8 @@ function renderOnboardingPage1() {
       </div>
       
       <div id="testimonialContainer" style="opacity: 0; position: absolute; text-align: center; width: 100%; max-width: 335px;">
-        <h1 style="font-size: 24px; white-space: normal; margin-bottom: 8px; line-height: 1.3;" class="title">"这是我每天放松的最佳方式，Cross Stitch让我的生活更加充实"</h1>
-        <p style="margin-top: 8px;" class="subtitle">Sarah, 资深用户</p>
+        <h1 style="font-size: 24px; white-space: normal; margin-bottom: 8px; line-height: 1.3;" class="title">${t('onboarding.page1.testimonial')}</h1>
+        <p style="margin-top: 8px;" class="subtitle">${t('onboarding.page1.author')}</p>
       </div>
     </div>
   `;
@@ -574,15 +743,15 @@ function renderOnboardingPage2() {
     <div class="onboarding-page-2">
       <!-- Fullscreen Background Image -->
       <main class="background-main">
-        <img alt="Background illustration" class="background-image" src="./images/Gemini_Generated_Image_w6zdxow6zdxow6zd 1.png">
+        <img alt="Background illustration" class="background-image" src="/images/Gemini_Generated_Image_w6zdxow6zdxow6zd.png">
         <!-- Gradient Overlay for smooth transition -->
         <div class="gradient-overlay"></div>
       </main>
       <!-- Fixed Bottom Action Area -->
       <footer class="bottom-action">
-        <div class="text-center space-y-2 mb-8">
-          <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; white-space: nowrap;" class="main-title">欢迎来到Cross Stitch</h1>
-          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px;" class="subtitle">创造、上色和享受乐趣</p>
+        <div class="text-center mb-8 onboarding-text-block">
+          <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; white-space: normal; width: 100%; display: block; text-align: center !important; overflow-wrap: anywhere; word-break: break-word;" class="main-title">${t('onboarding.page2.title')}</h1>
+          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px;" class="subtitle">${t('onboarding.page2.subtitle')}</p>
         </div>
         <div class="button-container">
           <button 
@@ -590,7 +759,7 @@ function renderOnboardingPage2() {
             class="bottom-button"
             onclick="nextPage()"
           >
-            开始吧
+            ${t('onboarding.page2.button')}
           </button>
         </div>
       </footer>
@@ -664,6 +833,12 @@ function renderOnboardingPage2() {
       object-fit: cover;
     }
     
+    .onboarding-page-3 .background-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
     .gradient-overlay {
       position: absolute;
       bottom: 0;
@@ -679,10 +854,22 @@ function renderOnboardingPage2() {
       padding: 0 20px;
       width: 100%;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    
-    .space-y-2 > * + * {
-      margin-top: 8px;
+
+    .onboarding-page-2 .text-center.onboarding-text-block {
+      gap: 8px;
+      padding-top: 20px;
+    }
+
+    .onboarding-page-2 .text-center.onboarding-text-block .main-title {
+      margin-bottom: 0;
+    }
+
+    .onboarding-page-2 .text-center.onboarding-text-block .subtitle {
+      margin-top: 0;
     }
     
     .mb-8 {
@@ -695,8 +882,27 @@ function renderOnboardingPage2() {
       color: #FFFFFF;
       line-height: 1.2;
       margin-bottom: 8px;
-      white-space: nowrap;
+      white-space: normal;
       overflow: visible;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      width: 100%;
+      text-align: center;
+    }
+
+    .onboarding-page-2 .main-title {
+      display: block;
+      width: 100%;
+      text-align: center !important;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* 英文等语言：PingFang 对拉丁字母字重差异不明显，改用系统/SF 字体才能看出加粗 */
+    html:not([lang='zh-CN']):not([lang='zh-TW']) .onboarding-page-2 .main-title {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', sans-serif !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.02em;
     }
     
     .subtitle {
@@ -739,15 +945,15 @@ function renderOnboardingPage3() {
     <div class="onboarding-page-3">
       <!-- Fullscreen Background Image -->
       <main class="background-main">
-        <img alt="Vibrant artistic collage" class="background-image" src="./images/33331.webp">
+        <img alt="Vibrant artistic collage" class="background-image" src="/images/Gemini_Generated_Image_ipgi7aipgi7aipgi.png" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
         <!-- Gradient Overlay for smooth transition to bottom content area -->
         <div class="gradient-overlay"></div>
       </main>
       <!-- Fixed Content at Bottom -->
       <footer class="bottom-action">
-        <div class="text-center space-y-2 mb-8">
-          <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; white-space: nowrap;" class="main-title">你的上色风格是什么？</h1>
-          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px;" class="subtitle">揭示你创造力优势的四个问题</p>
+        <div class="text-center mb-8 onboarding-text-block">
+          <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; white-space: normal; width: 100%; display: block; text-align: center !important; overflow-wrap: anywhere; word-break: break-word;" class="main-title">${t('onboarding.page3.title')}</h1>
+          <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px;" class="subtitle">${t('onboarding.page3.subtitle')}</p>
         </div>
         <div class="button-container">
           <button 
@@ -755,7 +961,7 @@ function renderOnboardingPage3() {
             class="bottom-button"
             onclick="nextPage()"
           >
-            继续
+            ${t('onboarding.page3.button')}
           </button>
         </div>
       </footer>
@@ -844,6 +1050,22 @@ function renderOnboardingPage3() {
       padding: 0 20px;
       width: 100%;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .onboarding-page-3 .text-center.onboarding-text-block {
+      gap: 8px;
+      padding-top: 20px;
+    }
+
+    .onboarding-page-3 .text-center.onboarding-text-block .main-title {
+      margin-bottom: 0;
+    }
+
+    .onboarding-page-3 .text-center.onboarding-text-block .subtitle {
+      margin-top: 0;
     }
     
     .main-title {
@@ -852,16 +1074,31 @@ function renderOnboardingPage3() {
       color: #000000;
       line-height: 1.2;
       margin-bottom: 8px;
+      width: 100%;
+      text-align: center;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .onboarding-page-3 .main-title {
+      display: block;
+      width: 100%;
+      text-align: center !important;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    html:not([lang='zh-CN']):not([lang='zh-TW']) .onboarding-page-3 .main-title {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', sans-serif !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.02em;
     }
 
     .subtitle {
       font-size: 14px;
       color: #888888;
       font-weight: normal;
-      margin-top: 8px;
-    }
-
-    .space-y-2 > * + * {
       margin-top: 8px;
     }
     
@@ -889,14 +1126,14 @@ function renderQuestionPage1() {
       <nav class="top-nav">
         <div class="placeholder" style="width: 24px;"></div>
         ${generateProgressBar(1)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
         <!-- Headline Section - Fixed -->
-        <div class="headline-section" style="animation: fadeInUp 0.6s ease forwards; position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
-          <h2 class="main-title">你的性别是什么？</h2>
-          <p class="subtitle">这帮助我们个性化您的体验。</p>
+        <div class="headline-section question-sticky-header" style="animation: fadeInUp 0.6s ease forwards;">
+          <h2 class="main-title">${t('questions.page1.title')}</h2>
+          <p class="subtitle">${t('questions.page1.subtitle')}</p>
         </div>
         <!-- Selection Cards - Scrollable -->
         <div class="selection-cards scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
@@ -904,7 +1141,7 @@ function renderQuestionPage1() {
           <div class="option-card" onclick="selectOption('female')">
             <div class="option-content">
               <span class="option-icon">👩</span>
-              <span class="option-text">女性</span>
+              <span class="option-text">${t('questions.page1.female')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -916,7 +1153,7 @@ function renderQuestionPage1() {
           <div class="option-card" onclick="selectOption('male')">
             <div class="option-content">
               <span class="option-icon">👨</span>
-              <span class="option-text">男性</span>
+              <span class="option-text">${t('questions.page1.male')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -928,7 +1165,7 @@ function renderQuestionPage1() {
           <div class="option-card" onclick="selectOption('other')">
             <div class="option-content">
               <span class="option-icon">🧒</span>
-              <span class="option-text">其他</span>
+              <span class="option-text">${t('questions.page1.other')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1040,6 +1277,7 @@ function renderQuestionPage1() {
       line-height: 1.2;
       margin-bottom: 8px;
       color: #000000;
+      text-align: left;
     }
     
     .subtitle {
@@ -1072,7 +1310,8 @@ function renderQuestionPage1() {
       position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: 4px;
       padding: 20px;
       background-color: #F9F9F9;
       border-radius: 12px;
@@ -1092,7 +1331,9 @@ function renderQuestionPage1() {
     .option-content {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
     }
 
     .option-icon {
@@ -1120,6 +1361,7 @@ function renderQuestionPage1() {
     }
     
     .checkbox {
+      flex-shrink: 0;
       width: 20px;
       height: 20px;
       border-radius: 50%;
@@ -1198,14 +1440,14 @@ function renderQuestionPage2() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(2)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
         <!-- Header Section - Fixed -->
-        <header class="header-section" style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
-          <h2 class="main-title">你的年龄组是什么？</h2>
-          <p class="subtitle">这帮助我们建议相关的风格。</p>
+        <header class="header-section question-sticky-header">
+          <h2 class="main-title">${t('questions.page2.title')}</h2>
+          <p class="subtitle">${t('questions.page2.subtitle')}</p>
         </header>
         <!-- Options List - Scrollable -->
         <div class="options-list scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
@@ -1213,7 +1455,7 @@ function renderQuestionPage2() {
           <button class="option-card" onclick="selectOption('under14')">
             <div class="option-content">
               <span class="option-icon">✏️</span>
-              <span class="option-text">18岁以下</span>
+              <span class="option-text">${t('questions.page2.under18')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1225,7 +1467,7 @@ function renderQuestionPage2() {
           <button class="option-card" onclick="selectOption('14-20')">
             <div class="option-content">
               <span class="option-icon">🎓</span>
-              <span class="option-text">18-29岁</span>
+              <span class="option-text">${t('questions.page2.18-29')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1237,7 +1479,7 @@ function renderQuestionPage2() {
           <button class="option-card" onclick="selectOption('20-25')">
             <div class="option-content">
               <span class="option-icon">✒️</span>
-              <span class="option-text">30-39岁</span>
+              <span class="option-text">${t('questions.page2.30-39')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1249,7 +1491,7 @@ function renderQuestionPage2() {
           <button class="option-card" onclick="selectOption('26-35')">
             <div class="option-content">
               <span class="option-icon">💼</span>
-              <span class="option-text">40-49岁</span>
+              <span class="option-text">${t('questions.page2.40-49')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1261,7 +1503,7 @@ function renderQuestionPage2() {
           <button class="option-card" onclick="selectOption('36-50')">
             <div class="option-content">
               <span class="option-icon">🌳</span>
-              <span class="option-text">50-59岁</span>
+              <span class="option-text">${t('questions.page2.50-59')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1273,7 +1515,7 @@ function renderQuestionPage2() {
           <button class="option-card" onclick="selectOption('50+')">
             <div class="option-content">
               <span class="option-icon">💎</span>
-              <span class="option-text">60岁以上</span>
+              <span class="option-text">${t('questions.page2.over60')}</span>
             </div>
             <div class="checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1409,6 +1651,8 @@ function renderQuestionPage2() {
       padding: 0 20px;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
       transition: all 0.2s ease;
       border: 2px solid transparent;
       cursor: pointer;
@@ -1424,7 +1668,6 @@ function renderQuestionPage2() {
     }
     
     .checkbox {
-      margin-left: auto;
       width: 20px;
       height: 20px;
       border-radius: 50%;
@@ -1456,7 +1699,9 @@ function renderQuestionPage2() {
     .option-content {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
     }
 
     .option-icon {
@@ -1537,118 +1782,118 @@ function renderQuestionPage3() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(3)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
         <!-- Headline - Fixed -->
-        <div style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
-          <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">哪种风格最能激励你？</h2>
+        <div class="question-sticky-header">
+          <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">${t('questions.page3.title')}</h2>
         </div>
         <!-- Style Selection Grid - Scrollable -->
         <div class="style-grid scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
           <!-- Card 1: Animals -->
           <div class="style-card" onclick="toggleOption('style', 'animals')">
-            <img class="card-image" src="./clip/图片/066e989deaf84f8049c78964200ddc54.webp" alt="动物" loading="lazy">
+            <img class="card-image" src="./clip/图片/066e989deaf84f8049c78964200ddc54.webp" alt="${t('questions.page3.style.animals')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23FED11F%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2216%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
             <div class="card-overlay"></div>
-            <div class="card-label">
-              <span class="label-text">动物</span>
-            </div>
-            <div class="check-icon">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="style-card-footer">
+              <span class="label-text">${t('questions.page3.style.animals')}</span>
+              <div class="check-icon">
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
           <!-- Card 2: Comic -->
           <div class="style-card" onclick="toggleOption('style', 'comics')">
-            <img class="card-image" src="./clip/图片/ac7ba83687f9c31480e70e23b4e504fb.webp" alt="艺术" loading="lazy">
+            <img class="card-image" src="./clip/图片/ac7ba83687f9c31480e70e23b4e504fb.webp" alt="${t('questions.page3.style.comics')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23FED11F%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2216%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
             <div class="card-overlay"></div>
-            <div class="card-label">
-              <span class="label-text">艺术</span>
-            </div>
-            <div class="check-icon">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="style-card-footer">
+              <span class="label-text">${t('questions.page3.style.comics')}</span>
+              <div class="check-icon">
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
           <!-- Card 3: People -->
           <div class="style-card" onclick="toggleOption('style', 'people')">
-            <img class="card-image" src="./clip/图片/4322aab16149485ce68b0468f48ea2a3.webp" alt="花朵" loading="lazy">
+            <img class="card-image" src="./clip/图片/4322aab16149485ce68b0468f48ea2a3.webp" alt="${t('questions.page3.style.people')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23FED11F%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2216%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
             <div class="card-overlay"></div>
-            <div class="card-label">
-              <span class="label-text">花朵</span>
-            </div>
-            <div class="check-icon">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="style-card-footer">
+              <span class="label-text">${t('questions.page3.style.people')}</span>
+              <div class="check-icon">
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
           <!-- Card 4: Cute -->
           <div class="style-card" onclick="toggleOption('style', 'cute')">
-            <img class="card-image" src="./clip/图片/883bb99b4fa272288c87760b52809443.webp" alt="自然" loading="lazy">
+            <img class="card-image" src="./clip/图片/883bb99b4fa272288c87760b52809443.webp" alt="${t('questions.page3.style.cute')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23FED11F%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2216%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
             <div class="card-overlay"></div>
-            <div class="card-label">
-              <span class="label-text">自然</span>
-            </div>
-            <div class="check-icon">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="style-card-footer">
+              <span class="label-text">${t('questions.page3.style.cute')}</span>
+              <div class="check-icon">
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
           <!-- Card 5: Food -->
           <div class="style-card" onclick="toggleOption('style', 'food')">
-            <img class="card-image" src="./clip/图片/572879658e58ccb130aa3a6b9501392b.webp" alt="宠物" loading="lazy">
+            <img class="card-image" src="./clip/图片/572879658e58ccb130aa3a6b9501392b.webp" alt="${t('questions.page3.style.food')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23FED11F%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2216%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
             <div class="card-overlay"></div>
-            <div class="card-label">
-              <span class="label-text">宠物</span>
-            </div>
-            <div class="check-icon">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="style-card-footer">
+              <span class="label-text">${t('questions.page3.style.food')}</span>
+              <div class="check-icon">
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
           <!-- Card 6: Mandala -->
           <div class="style-card" onclick="toggleOption('style', 'mandala')">
-            <img class="card-image" src="./clip/图片/163f774efff4493497edd2504b5d6224.webp" alt="庆祝" loading="lazy">
+            <img class="card-image" src="./clip/图片/163f774efff4493497edd2504b5d6224.webp" alt="${t('questions.page3.style.mandala')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23FED11F%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2216%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
             <div class="card-overlay"></div>
-            <div class="card-label">
-              <span class="label-text">庆祝</span>
-            </div>
-            <div class="check-icon">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="style-card-footer">
+              <span class="label-text">${t('questions.page3.style.mandala')}</span>
+              <div class="check-icon">
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
           <!-- Card 7: Flower -->
           <div class="style-card" onclick="toggleOption('style', 'flowers')">
-            <img class="card-image" src="./clip/图片/fefe89a79b554f068d18b994058ecbdf.webp" alt="食物" loading="lazy">
+            <img class="card-image" src="./clip/图片/fefe89a79b554f068d18b994058ecbdf.webp" alt="${t('questions.page3.style.flowers')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23FED11F%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2216%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
             <div class="card-overlay"></div>
-            <div class="card-label">
-              <span class="label-text">食物</span>
-            </div>
-            <div class="check-icon">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="style-card-footer">
+              <span class="label-text">${t('questions.page3.style.flowers')}</span>
+              <div class="check-icon">
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
           <!-- Card 8: Simple -->
           <div class="style-card" onclick="toggleOption('style', 'simple')">
-            <img class="card-image" src="./clip/图片/cf0c4dfd283c24ee59824136205f8c73.webp" alt="超级尺寸" loading="lazy">
+            <img class="card-image" src="./clip/图片/cf0c4dfd283c24ee59824136205f8c73.webp" alt="${t('questions.page3.style.simple')}" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22%3E%3Crect fill=%22%23FED11F%22 width=%22200%22 height=%22200%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2216%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E图片加载失败%3C/text%3E%3C/svg%3E';">
             <div class="card-overlay"></div>
-            <div class="card-label">
-              <span class="label-text">超级尺寸</span>
-            </div>
-            <div class="check-icon">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+            <div class="style-card-footer">
+              <span class="label-text">${t('questions.page3.style.simple')}</span>
+              <div class="check-icon">
+                <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -1657,7 +1902,7 @@ function renderQuestionPage3() {
       <footer class="bottom-action" id="style-bottom-action">
         <div class="button-container">
           <button class="next-button bottom-button" id="continueButton" disabled onclick="goToNextFromStylePage()" style="opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">
-            下一步
+            ${t('questions.page3.button')}
           </button>
         </div>
       </footer>
@@ -1747,6 +1992,9 @@ function renderQuestionPage3() {
       line-height: 1.2;
       margin-bottom: 8px;
       color: #000000;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     
     .scrollable-options {
@@ -1781,9 +2029,7 @@ function renderQuestionPage3() {
     }
     
     .check-icon {
-      position: absolute;
-      top: 8px;
-      right: 8px;
+      position: static;
       width: 20px;
       height: 20px;
       border-radius: 50%;
@@ -1795,6 +2041,7 @@ function renderQuestionPage3() {
       transform: scale(0);
       transition: all 0.2s ease;
       z-index: 20;
+      flex-shrink: 0;
     }
     
     .check-icon svg {
@@ -1825,16 +2072,21 @@ function renderQuestionPage3() {
       background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
     }
     
-    .card-label {
+    .style-card-footer {
       position: absolute;
       bottom: 16px;
       left: 16px;
+      right: 16px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: flex-start;
+      gap: 4px;
+      z-index: 15;
     }
-    
+
     .label-text {
+      flex: 1;
+      min-width: 0;
       color: white;
       font-size: 18px;
       font-weight: bold;
@@ -1931,14 +2183,14 @@ function renderQuestionPage4() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(4)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Main Content Canvas -->
       <main class="main-content">
         <!-- Header Titles - Fixed -->
-        <div class="header-section" style="position: sticky; top: 0; z-index: 10; background-color: #FFFFFF; padding-top: 8px;">
-          <h2 class="main-title">你的目标是什么？</h2>
-          <p class="subtitle">这帮助我们个性化您的体验。</p>
+        <div class="header-section question-sticky-header">
+          <h2 class="main-title">${t('questions.page4.title')}</h2>
+          <p class="subtitle">${t('questions.page4.subtitle')}</p>
         </div>
         <!-- Selection List - Scrollable -->
         <div class="options-list scrollable-options" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.4s; opacity: 0;">
@@ -1946,7 +2198,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('relax')">
             <div class="option-content">
               <span class="option-icon">☕️</span>
-              <span class="option-text">放松自己</span>
+              <span class="option-text">${t('questions.page4.relaxMyself')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1958,7 +2210,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('fun')">
             <div class="option-content">
               <span class="option-icon">🎮</span>
-              <span class="option-text">玩得开心</span>
+              <span class="option-text">${t('questions.page4.haveFun')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1970,7 +2222,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('creativity')">
             <div class="option-content">
               <span class="option-icon">🧠</span>
-              <span class="option-text">表达我的创造力</span>
+              <span class="option-text">${t('questions.page4.expressCreativity')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1982,7 +2234,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('disconnect')">
             <div class="option-content">
               <span class="option-icon">⛓️‍💥</span>
-              <span class="option-text">放空大脑</span>
+              <span class="option-text">${t('questions.page4.clearMind')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1994,7 +2246,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('skills')">
             <div class="option-content">
               <span class="option-icon">🎨</span>
-              <span class="option-text">发展我的着色技巧</span>
+              <span class="option-text">${t('questions.page4.developSkills')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2006,7 +2258,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('stress')">
             <div class="option-content">
               <span class="option-icon">⏱️</span>
-              <span class="option-text">缓解压力</span>
+              <span class="option-text">${t('questions.page4.relieveStress')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2018,7 +2270,7 @@ function renderQuestionPage4() {
           <button class="option-item" onclick="selectOption('other')">
             <div class="option-content">
               <span class="option-icon">♾️</span>
-              <span class="option-text">其他</span>
+              <span class="option-text">${t('questions.page4.other')}</span>
             </div>
             <div class="option-checkbox">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2150,8 +2402,9 @@ function renderQuestionPage4() {
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 20px;
+      justify-content: flex-start;
+      gap: 4px;
+      padding: 16px 20px;
       background-color: #F9F9F9;
       border-radius: 12px;
       border: 2px solid transparent;
@@ -2170,7 +2423,7 @@ function renderQuestionPage4() {
     .option-content {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 8px;
       flex: 1;
     }
 
@@ -2212,7 +2465,7 @@ function renderQuestionPage4() {
     }
     
     .option-checkbox {
-      margin-left: auto;
+      flex-shrink: 0;
       width: 20px;
       height: 20px;
       border: 2px solid #E2E2E2;
@@ -2337,15 +2590,15 @@ function renderOnboardingPage4() {
       <footer class="bottom-action">
         <div class="text-center space-y-2 mb-8">
           <h1 style="font-size: 32px; animation: fadeInUp 0.6s ease forwards; font-weight: bold; color: #000000; line-height: 1.2; text-align: center; font-family: 'PingFang SC', sans-serif;">
-            这全是关于颜色和<br>画笔的
+            ${t('onboarding.page4.title')}
           </h1>
           <p style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0; font-size: 16px; color: #888888; font-weight: normal; text-align: center; font-family: 'PingFang SC', sans-serif;">
-            找到你故事的工具
+            ${t('onboarding.page4.subtitle')}
           </p>
         </div>
         <div class="button-container">
           <button style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;" class="continue-button bottom-button" onclick="nextPage()">
-            继续
+            ${t('onboarding.page4.button')}
           </button>
         </div>
       </footer>
@@ -2365,12 +2618,12 @@ function renderQuestionPage5() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(5)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <main class="main-content">
         <!-- Headline -->
         <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">
-          哪些调色板最能引起你的共鸣？
+          ${t('questions.page5.title')}
         </h2>
         <!-- Palette Grid -->
         <div class="palette-grid" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
@@ -2384,7 +2637,7 @@ function renderQuestionPage5() {
               <div style="background-color: #BDBDBD;"></div>
               <div style="background-color: #F5F5F5;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">基础</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.basic')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2401,7 +2654,7 @@ function renderQuestionPage5() {
               <div style="background-color: #FFDBAC;"></div>
               <div style="background-color: #F1C27D;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">肤色</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.skin')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2418,7 +2671,7 @@ function renderQuestionPage5() {
               <div style="background-color: #FF80AB;"></div>
               <div style="background-color: #C2185B;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">化妆</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.makeup')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2435,7 +2688,7 @@ function renderQuestionPage5() {
               <div style="background-color: #000000;"></div>
               <div style="background-color: #303F9F;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">银河</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.galaxy')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2452,7 +2705,7 @@ function renderQuestionPage5() {
               <div style="background-color: #795548;"></div>
               <div style="background-color: #6D4C41;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">织物</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.fabric')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2469,7 +2722,7 @@ function renderQuestionPage5() {
               <div style="background-color: #C62828;"></div>
               <div style="background-color: #E53935;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">嘴唇</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.lips')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2486,7 +2739,7 @@ function renderQuestionPage5() {
               <div style="background-color: #9C27B0;"></div>
               <div style="background-color: #FF9800;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">彩虹</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.rainbow')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2503,7 +2756,7 @@ function renderQuestionPage5() {
               <div style="background-color: #29B6F6;"></div>
               <div style="background-color: #03A9F4;"></div>
             </div>
-            <span style="font-size: 14px; font-weight: 500; text-align: center;">天空</span>
+            <span style="font-size: 14px; font-weight: 500; text-align: center;">${t('questions.page5.palette.sky')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2516,7 +2769,7 @@ function renderQuestionPage5() {
       <footer class="bottom-action" id="palette-bottom-action" style="opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">
         <div class="button-container">
           <button class="bottom-button" onclick="nextPage()">
-            下一步
+            ${t('questions.page5.button')}
           </button>
         </div>
       </footer>
@@ -2675,13 +2928,13 @@ function renderQuestionPage6() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.79889 24H41.7989" stroke="#999999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17.7988 36L5.79883 24L17.7988 12" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         ${generateProgressBar(6)}
-        <div class="skip-button" onclick="skipCurrentQuestion()">跳过</div>
+        <div class="skip-button" onclick="skipCurrentQuestion()">${t('common.skip')}</div>
       </nav>
       <!-- Content Area -->
       <main class="main-content">
         <!-- Headline -->
         <h2 class="main-title" style="animation: fadeInUp 0.6s ease forwards;">
-          你最期待尝试哪些刷子？
+          ${t('questions.page6.title')}
         </h2>
         <!-- Grid Layout -->
         <div class="brush-grid" style="animation: fadeInUp 0.6s ease forwards; animation-delay: 0.2s; opacity: 0;">
@@ -2689,7 +2942,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('small')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="whimsical illustration of a tiny delicate paintbrush" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLZgvpduIoeZlsTYWY2YRoXatKKSJgNBT99vzMxj5onYKCUlok8_cbzlK_VdgS7UL3-HYM8MCNpVAZ-Lkr7viEB_aLktJ9k7p9BW2WJ3jTjdbAjnQ76KrwYHpNGRGIZNH1_lU-ezXCQxKHgFphyZmKYDyLAl2SNgzRcouNNI5Je2I_PSyT6NlTHfGz9ckb2gCBnn5MaaNg7648SJVLTDnRmgFXZ1jrc7Zw9lyiBcqo74eepHvV7yvglNzO7GOt-y8pMSd1LQMdyeAV">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">小刷子</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.small')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2700,7 +2953,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('big')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="bold wide painting brush" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB39-uoruVTB_-xVSgseibuhsoV5nHqr0JaHkzux4OyiGYsk1jK6piivYbbY-oBu5GcJcUNUj-K8cXLavr_KGa6ANruuuqRacHWssT40l7vKLF6x8OtQzDbcLWYfIuA2roGiDyX7dWqDSBQ01Mluj9PpjC_2l6SD_-1ZFHlat6iwnfD4HAmaDU5ImZecZ-nHVIlKqVTvYZYuiHrOq6u8X1yjn9i7Kej_GNuM9Zry-973H2WGgFfBrUK30QUdNnD8SwERq0Qblz0mr79">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">大刷子</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.big')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2711,7 +2964,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('spray')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="colorful spray paint can" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-QYiA69yqPcwAoDJGF4bU2yBIU2-tIvZkbqWEZXX_tTZW1MPKfskfV8o-I6GrQcyPze4_DXAjrvQzTTqsN8dUNkML_7mpXizNA9OOjXw2QkDbulrUZYvUVNhnWpWQdVnvrkKcJSHm3b6SeGPg7Ga3fV-EmheojDvarBbTUxoykaa_Yhl115QvEeMpiqa9lN-COkSZwQJ1DEHNbOzmDViDZOfWMA6l-atwSR58fMFdo8ATeZ9F-25OE0o5JD4WzoIrTZbwoHk5toDr">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">喷雾</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.spray')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2722,7 +2975,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('watercolor')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="dreamy watercolor brush effect" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbDW502n5WlTwsOJLV7f24Icv5BknmjSU74QeAPCtQnzEPYVADivp4JdQ3ePoueSHknI_U8RoAhBLp2OCp6ZFyz3xksN8KjM8t6zkJWThFbP-vddFmGIqXOqnJLBeYwdLmRrE9PAJ3cBPmrlCx3AHx-YKzeozOnYFVhg9OSlTKrLexw7bSy3oBUFqfMcJGi9POcmqUAaahkdI4JTj7tgwo-C-Sui8V3s1Afe-WBd34NZqB_4f6pUFSzomtGijojkcC6tqpLVGVtBQo">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">水彩画</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.watercolor')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2733,7 +2986,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('ballpoint')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="sleek blue ballpoint pen" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJwEHDaNVZdodf-lrbhSETEYX417n13bS01fHhgt-f5XvT1tZ2v3OrEzc-vHeW3SxEsGQPid5WND7x9qrdteud1GcEGDWvVMsAZS1QRKc-HoiQy673NBoAwTS8wK-Pia2Y_av5qrVT8EC2k2I5vzquo4HeCnHh0ew4BGqf51M47MCt23AUbAMUsBQms2eBcrnzwhvrZV_d8_7hauVl-LIWIpOLfq-sabKQuXdFNZ459J8lMKONf7uq-7cH-FjcdDeG_xXolbfHeeLf">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">圆珠笔</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.ballpoint')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2744,7 +2997,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('pencil')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="classic graphite pencil" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfimSDKKlRrGmnnOX1jjAkwkmrxamOFm4nqKpXBGhNYrE8beaODA8QvSGPPlhxW9jyJqDsyR0fQTQYb4TaR44M-zfaq3HNL4ZzXen8pEzuXDSrHhqXk7p1BXl8OBywq6WErd1F5dZ-WVFeT_G2iqqIZq256KeTN7MlczuDKskYznIp6RB5zOrkkeV_4H2zGxwapkElh-VK7KJxNsfaJmAjXsgmdKIGcnNDwx9bzBBIIgAuJk5w3hfT4MTl36C4A1Gtg7tFMl4GGB7n">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">铅笔</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.pencil')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2755,7 +3008,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('pastel')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="soft chalk pastel sticks" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIEh_uS1e9CTGz7ix2Kg_AJHByWaL-zTAl8J1IoAslz_gDdyNHY5xDa7649MP1YC3iXqMyfZAuIMAytPy0BeTDz3cNnpvtihxF8GHKx_FvKatz3mrNQzSvfWyZU_2EKnUEtUNqTW0cBuAnqiDK7i7FsKcOJUxmxQNWusb5HoVKZmOaP7QumoeyekSwJFcNHgZt51H1XJOzy-09Dw_fZge3m5qR_1hVs8hRv0YMtqP-qbQsMLmf_SoexTpLHjnZ9g1HlxvFzJ0HhOKI">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">粉彩</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.pastel')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2766,7 +3019,7 @@ function renderQuestionPage6() {
           <div class="brush-card" onclick="toggleBrushOption('splash')" style="position: relative; aspect-ratio: 1/0.8; background-color: #F3F3F4; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 2px solid transparent; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;">
             <img alt="dynamic ink splatter effect" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1chEn-9fp1MJr1bipTUflAqZq3GZeVQaNvZUJs3Ui8L1DB-Nl7xA33cqYoD7b_QLdfufQLG1Vi5t39LLeu7ps4zAX6DHcIQqFN76uRforMi46_Lcbh_oyHSNKJinBLOdT5VtBt_D6Vc17sPTOjz7nvT2zMtu9h0nSRB3NP2G8Y1NIPiNNAQn0ML6OE-WNtBUOYIxXZypVRkq9DF7_jgvA0EP5u8iFq9GTCql6jjHQOFgEpObdqobs2DjljWcfBnxwtVFuEA533Es8">
             <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); z-index: 10;"></div>
-            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">飞溅</span>
+            <span style="font-size: 18px; font-weight: bold; color: white; z-index: 20; position: absolute; bottom: 16px; left: 16px; font-family: 'PingFang SC', sans-serif;">${t('questions.page6.brush.splash')}</span>
             <div class="check-icon">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2779,7 +3032,7 @@ function renderQuestionPage6() {
       <footer class="bottom-action" id="brush-bottom-action" style="opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">
         <div class="button-container">
           <button class="bottom-button" onclick="nextPage()">
-            继续
+            ${t('questions.page6.button')}
           </button>
         </div>
       </footer>
@@ -2956,7 +3209,7 @@ function renderOnboardingPage5() {
           class="title" 
           id="loadingText1"
         >
-          正在分析你的风格偏好...
+          ${t('loading.analyzing')}
         </h1>
         
         <h1 
@@ -2971,7 +3224,7 @@ function renderOnboardingPage5() {
           class="title" 
           id="loadingText3"
         >
-          你的专属填色体验已就绪
+          ${t('loading.ready')}
         </h1>
       </div>
       
@@ -2983,7 +3236,7 @@ function renderOnboardingPage5() {
             id="tryButton"
             onclick="nextPage()"
           >
-            让我试试
+            ${t('loading.tryButton')}
           </button>
         </div>
       </footer>
@@ -3318,20 +3571,15 @@ function renderOnboardingPage5() {
   // 生成风格文案
   function generateStyleText() {
     if (selectedStyles.length === 0) {
-      return '已为你匹配专属图案';
+      return t('loading.matched.single');
     }
-    
-    // 转换为中文标签
-    const styleLabels = selectedStyles.map(id => styleLabelMap[id] || id);
-    
+    const sep = styleListSeparator();
+    const styleLabels = selectedStyles.map((id) => t(`styles.${id}`));
     if (styleLabels.length <= 3) {
-      // 1-3个风格：直接拼接
-      return `已为你匹配 ${styleLabels.join('、')} 风格专属图案`;
-    } else {
-      // 4个及以上风格：取前3个，后面加等X种
-      const firstThree = styleLabels.slice(0, 3);
-      return `已为你匹配 ${firstThree.join('、')} 等${styleLabels.length}种风格专属图案`;
+      return t('loading.matched.multi', { styles: styleLabels.join(sep) });
     }
+    const firstThree = styleLabels.slice(0, 3).join(sep);
+    return t('loading.matched.many', { firstThree, count: styleLabels.length });
   }
   
   // 模拟加载过程 - 三个阶段
@@ -3391,10 +3639,15 @@ function renderTrialIntroPage() {
   const today = new Date();
   const futureDate = new Date(today);
   futureDate.setDate(futureDate.getDate() + 3);
-  
-  const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-  const formattedDate = `${futureDate.getFullYear()}年${monthNames[futureDate.getMonth()]}${futureDate.getDate()}日`;
-  
+  const formattedDate = new Intl.DateTimeFormat(getCurrentLocale(), {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }).format(futureDate);
+
+  const trialHeroAlt = t('onboarding.page1.title');
+  const trialImgFail = encodeURIComponent(t('common.imageLoadFailed'));
+
   app.innerHTML = `
     <div class="trial-intro-page" style="font-family: 'PingFang SC', 'SF Pro', sans-serif; background-color: #FFFFFF; color: #000000; height: 100vh; height: 100dvh; display: flex; flex-direction: column;">
       <!-- TopAppBar -->
@@ -3406,13 +3659,13 @@ function renderTrialIntroPage() {
       <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; overflow-y: auto;">
         <!-- Hero Section -->
         <div class="hero-section">
-          <img class="hero-image" src="./clip/pic/5c1b3e7f7cc193e24c84067d9ec3b7d8.jpg" alt="十字绣涂色艺术">
+          <img class="hero-image" src="/images/unnamed-2.png" alt="${trialHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${trialImgFail}%3C/text%3E%3C/svg%3E';">
           <div class="hero-gradient"></div>
         </div>
         
         <!-- Content Container -->
         <div class="trial-intro-content">
-          <h2 class="page-title">免费试用3天</h2>
+          <h2 class="page-title">${t('trial.title')}</h2>
           
           <!-- Timeline -->
           <div class="timeline-container">
@@ -3430,8 +3683,8 @@ function renderTrialIntroPage() {
                 </svg>
               </div>
               <div class="timeline-content">
-                <h3 class="timeline-title">今天</h3>
-                <p class="timeline-description">无限访问所有分类和图片，无限制导入图片，无广告</p>
+                <h3 class="timeline-title">${t('trial.day0')}</h3>
+                <p class="timeline-description">${t('trial.day0.description')}</p>
               </div>
             </div>
             
@@ -3448,8 +3701,8 @@ function renderTrialIntroPage() {
                 </svg>
               </div>
               <div class="timeline-content">
-                <h3 class="timeline-title">2天后</h3>
-                <p class="timeline-description">试用期结束前一天，您将收到提醒</p>
+                <h3 class="timeline-title">${t('trial.day2')}</h3>
+                <p class="timeline-description">${t('trial.day2.description')}</p>
               </div>
             </div>
             
@@ -3461,8 +3714,8 @@ function renderTrialIntroPage() {
                 </svg>
               </div>
               <div class="timeline-content">
-                <h3 class="timeline-title">3天后</h3>
-                <p class="timeline-description">${formattedDate}前无需付费。您可以提前取消</p>
+                <h3 class="timeline-title">${t('trial.day3')}</h3>
+                <p class="timeline-description">${t('trial.day3.description', { date: formattedDate })}</p>
               </div>
             </div>
           </div>
@@ -3472,7 +3725,7 @@ function renderTrialIntroPage() {
       <!-- Fixed Bottom CTA Section -->
       <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
         <div class="button-container" style="padding-top: 12px;">
-          <button class="bottom-button" onclick="goToSubscription()">免费试用</button>
+          <button class="bottom-button" onclick="goToSubscription()">${t('trial.button')}</button>
         </div>
       </footer>
     </div>
@@ -3686,7 +3939,10 @@ window.goToSubscription = function() {
 // 订阅页
 function renderSubscriptionPage() {
   const app = document.getElementById('app');
-  
+
+  const subHeroAlt = t('onboarding.page1.title');
+  const subImgFail = encodeURIComponent(t('common.imageLoadFailed'));
+
   app.innerHTML = `
     <div class="subscription-page" style="font-family: 'PingFang SC', 'SF Pro', sans-serif; background-color: #FFFFFF; color: #000000; height: 100vh; height: 100dvh; display: flex; flex-direction: column;">
       <!-- TopAppBar -->
@@ -3695,60 +3951,59 @@ function renderSubscriptionPage() {
           <svg class="back-icon" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 14L34 34" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34L34 14" stroke="#999" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h1 style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 18px; font-weight: bold; color: #000000;"></h1>
-        <div style="width: 24px;"></div>
+        <div class="language-switcher">
+          <button type="button" id="lang-switch-btn" class="language-switch-btn" onclick="toggleLanguageMenu(event)">
+            <span aria-hidden="true">🌐</span>
+            <span id="current-language-label"></span>
+          </button>
+          <div id="lang-menu" class="language-menu hidden" role="menu">${getLanguageMenuMarkup()}</div>
+        </div>
       </header>
       
       <!-- Main Content -->
-      <main style="flex: 1; padding-top: 56px; display: flex; flex-direction: column; align-items: center; padding-bottom: 10px; overflow-y: auto;">
+      <main style="flex: 1; padding-top: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 0; overflow-y: auto;">
         <!-- Hero Section -->
         <div class="hero-section">
-          <img class="hero-image" src="./clip/pic/31013c4f30c499704b74a387b332a2ce.webp" alt="十字绣涂色艺术" onerror="this.onerror=null; this.src='./clip/pic/31013c4f30c499704b74a387b332a2ce.jpg'; this.classList.add('fallback-jpg');">
+          <img class="hero-image" src="/images/unnamed-2.png" alt="${subHeroAlt}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%23FED11F%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23000000%22 font-family=%22PingFang SC, SF Pro%22 font-size=%2220%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3E${subImgFail}%3C/text%3E%3C/svg%3E';">
           <div class="hero-gradient"></div>
         </div>
         
         <!-- Content Canvas - 统一容器 -->
         <div class="subscription-content-container">
-          <h2 class="subscription-title">解锁你的专属内容</h2>
-          <p class="subscription-description">无限制访问所有分类和图片，无限制导入图片</p>
+          <h2 class="subscription-title">${t('subscription.title')}</h2>
+          <p class="subscription-description">${t('subscription.description')}</p>
           
           <!-- Subscription Cards Cluster -->
           <div class="subscription-cards">
-            <!-- Monthly Plan -->
-            <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
-              <span>启用3天免费试用</span>
-              <div class="subscription-card-right">
-                <span></span>
-                <div class="subscription-toggle" id="monthly-toggle" onclick="event.stopPropagation(); toggleFreeTrial();">
-                  <div class="toggle-thumb"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Free Trial Description -->
-            <div class="free-trial-description" id="free-trial-description" style="display: none;">
-              3天免费之后，$3.49每周。自动续费，随时取消
-            </div>
-
             <!-- Weekly Plan -->
-            <div class="subscription-card" onclick="toggleSubscription('weekly')" id="weekly-plan">
-              <span>Monthly</span>
-              <div class="subscription-card-right">
-                <span>$9.99</span>
-                <div class="subscription-check" id="weekly-check"></div>
-              </div>
-            </div>
-
-            <!-- Yearly Plan (Selected) -->
-            <div class="subscription-card subscription-card-selected" onclick="toggleSubscription('yearly')" id="yearly-plan">
+            <div class="subscription-card subscription-card-selected" onclick="toggleSubscription('weekly')" id="weekly-plan">
               <div class="subscription-card-left">
-                <span>Yearly</span>
-                <span class="best-value-badge">Best Value</span>
+                <span>${t('subscription.weekly')}</span>
+                <span class="best-value-badge">${t('subscription.freeTrialBadge')}</span>
               </div>
               <div class="subscription-card-right">
-                <span>$59.99</span>
-                <div class="subscription-check subscription-check-active" id="yearly-check">
+                <span>${t('subscription.weekly.price')}</span>
+                <div class="subscription-check subscription-check-active" id="weekly-check">
                   <svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
+              </div>
+            </div>
+
+            <!-- Monthly Plan -->
+            <div class="subscription-card" onclick="toggleSubscription('monthly')" id="monthly-plan">
+              <span>${t('subscription.monthly')}</span>
+              <div class="subscription-card-right">
+                <span>${t('subscription.monthly.price')}</span>
+                <div class="subscription-check" id="monthly-check"></div>
+              </div>
+            </div>
+
+            <!-- Yearly Plan -->
+            <div class="subscription-card" onclick="toggleSubscription('yearly')" id="yearly-plan">
+              <span>${t('subscription.yearly')}</span>
+              <div class="subscription-card-right">
+                <span>${t('subscription.yearly.price')}</span>
+                <div class="subscription-check" id="yearly-check"></div>
               </div>
             </div>
           </div>
@@ -3758,18 +4013,18 @@ function renderSubscriptionPage() {
       <!-- Fixed Bottom CTA Section -->
       <footer class="bottom-action" style="z-index: 100; animation: fadeInUp 0.2s ease forwards; animation-delay: 0.5s; opacity: 0;">
         <div class="button-container" style="padding-top: 12px;">
-          <div style="font-size: 12px; color: #999999; text-align: center; margin-bottom: 10px;">
-            以上订阅选项均为自动续订订阅，订阅费用会在您确认购买或者试用期结束的时候通过你的苹果账户扣除。如果不需要续订，记得在订阅到期或免费试用到期之前至少24小时取消掉订阅，你可随时在自己的苹果账户的设置中可以找到订阅管理，若您在试用期未结束之前购买月度和年度订阅，则剩余未使用试用期时长自动作废。
+          <div class="subscription-legal-text">
+            ${t('subscription.legalText')}
           </div>
-          <button class="bottom-button">免费试用</button>
+          <button class="bottom-button" id="subscription-button">${t('subscription.button.freeTrial')}</button>
         </div>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; border-top: 1px solid #F1F1F1; padding-top: 12px; padding-bottom: 12px;">
-          <div style="display: flex; gap: 12px;">
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">Terms of Service</a>
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">Privacy Policy</a>
-            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">Restore Purchase</a>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.termsOfService')}</a>
+            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.privacyPolicy')}</a>
+            <a style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888; transition: color 0.2s ease; text-decoration: underline; cursor: pointer;" href="#">${t('common.restorePurchase')}</a>
           </div>
-          <p style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888;">© 2024 Cross Stitch. All rights reserved.</p>
+          <p style="font-family: 'PingFang SC', 'SF Pro', sans-serif; font-size: 12px; color: #888888;">${t('common.copyright')}</p>
         </div>
       </footer>
     </div>
@@ -3791,6 +4046,8 @@ function renderSubscriptionPage() {
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      position: relative;
+      top: 0;
     }
 
     .subscription-page .subscription-content-container {
@@ -3807,6 +4064,72 @@ function renderSubscriptionPage() {
       width: 100%;
       max-width: 400px;
       margin: 0 auto;
+    }
+
+    .subscription-page .subscription-legal-text {
+      font-size: 12px !important;
+      line-height: 1.1 !important;
+      color: #999999;
+      text-align: center;
+      margin-bottom: 10px;
+      font-family: 'PingFang SC', 'SF Pro', sans-serif;
+    }
+
+    .language-switcher {
+      position: relative;
+      min-width: 24px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .language-switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 28px;
+      border-radius: 14px;
+      border: 1px solid #E2E2E2;
+      background: #FFFFFF;
+      color: #333333;
+      padding: 0 8px;
+      font-size: 11px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .language-menu {
+      position: absolute;
+      top: 34px;
+      right: 0;
+      width: min(220px, 72vw);
+      max-height: 240px;
+      overflow-y: auto;
+      background: #FFFFFF;
+      border: 1px solid #E2E2E2;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      padding: 6px;
+      z-index: 120;
+    }
+
+    .language-menu.hidden {
+      display: none;
+    }
+
+    .language-menu-item {
+      display: block;
+      width: 100%;
+      text-align: start;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      padding: 8px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .language-menu-item:hover {
+      background: #F7F7F7;
     }
 
     @keyframes fadeInUp {
@@ -3856,18 +4179,17 @@ function renderSubscriptionPage() {
     .subscription-content-container {
       width: 100%;
       max-width: 400px;
-      padding: 0 20px;
-      padding-bottom: 32px;
+      padding: 8px 20px 0 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     
-    .subscription-content-container h2 {
-      font-size: 32px;
+    .subscription-content-container h2.subscription-title {
+      font-size: 20px;
       font-weight: bold;
       color: #000000;
-      line-height: 1.2;
+      line-height: 1.15;
       text-align: center;
       font-family: 'PingFang SC', sans-serif;
       animation: fadeInUp 0.2s ease forwards;
@@ -3876,12 +4198,13 @@ function renderSubscriptionPage() {
       margin: 0;
     }
     
-    .subscription-content-container p {
+    .subscription-content-container p.subscription-description {
       font-size: 14px;
       color: #888888;
       font-weight: normal;
+      line-height: 1.12;
       text-align: center;
-      margin-top: 8px;
+      margin-top: 4px;
       font-family: 'PingFang SC', sans-serif;
       animation: fadeInUp 0.2s ease forwards;
       animation-delay: 0.3s;
@@ -3890,11 +4213,11 @@ function renderSubscriptionPage() {
     
     .subscription-cards {
       width: 100%;
-      margin-top: 32px;
+      margin-top: 22px;
       margin-bottom: 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
       animation: fadeInUp 0.2s ease forwards;
       animation-delay: 0.4s;
       opacity: 0;
@@ -3903,13 +4226,15 @@ function renderSubscriptionPage() {
     .subscription-card {
       position: relative;
       width: 100%;
-      padding: 16px;
-      border: 1px solid #E2E2E2;
+      /* 与未选中 1px 视觉等效：16px pad + 1px 边 ≈ 15px pad + 2px 边，选中仅改边框色、不改变占位 */
+      padding: 15px;
+      border: 2px solid #E2E2E2;
       border-radius: 12px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      transition: all 0.2s ease;
+      justify-content: flex-start;
+      gap: 8px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
       background-color: #F7F7F7;
       cursor: pointer;
       box-sizing: border-box;
@@ -3920,11 +4245,13 @@ function renderSubscriptionPage() {
     }
     
     .subscription-card-selected {
-      border: 2px solid #FED11F;
+      border-color: #FED11F;
       background-color: #FFF9E6;
     }
     
     .subscription-card > span:first-child {
+      flex: 1;
+      min-width: 0;
       font-size: 18px;
       font-weight: bold;
       font-family: 'PingFang SC', sans-serif;
@@ -3933,19 +4260,30 @@ function renderSubscriptionPage() {
     .subscription-card-right {
       display: flex;
       align-items: center;
+      justify-content: flex-end;
       gap: 12px;
+      flex-shrink: 0;
+      flex-wrap: nowrap;
+      min-width: 0;
     }
     
     .subscription-card-right > span {
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 14px !important;
+      font-weight: 400;
       font-family: 'PingFang SC', sans-serif;
+      color: #999999;
+      min-width: 84px;
+      text-align: right;
     }
     
     .subscription-card-left {
+      flex: 1;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
       gap: 8px;
+      min-width: 0;
     }
 
     .subscription-card-left > span:first-child {
@@ -3953,10 +4291,67 @@ function renderSubscriptionPage() {
       font-weight: bold;
       font-family: 'PingFang SC', sans-serif;
     }
+
+    /* 周套餐：左侧标题+徽章在容器内换行，避免长语文溢出 */
+    #weekly-plan.subscription-card {
+      align-items: flex-start;
+    }
+
+    #weekly-plan .subscription-card-left {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    #weekly-plan .subscription-card-left > span:first-child {
+      max-width: 100%;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    #weekly-plan .best-value-badge {
+      display: block;
+      max-width: 100%;
+      box-sizing: border-box;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    /* 整列与卡片顶部对齐；价格与勾选顶对齐（避免勾选在多行价格旁垂直居中） */
+    #weekly-plan .subscription-card-right {
+      flex: 0 1 40%;
+      max-width: 148px;
+      min-width: 0;
+      align-items: center;
+      align-self: center;
+      flex-wrap: nowrap;
+    }
+
+    #weekly-plan .subscription-check {
+      margin-top: 0;
+    }
+
+    #weekly-plan .subscription-card-right > span {
+      flex: 1 1 auto;
+      min-width: 0 !important;
+      max-width: none;
+      white-space: normal;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      text-align: right;
+      line-height: 1.3;
+    }
     
     .subscription-check {
+      box-sizing: border-box;
+      flex: 0 0 20px;
       width: 20px;
       height: 20px;
+      min-width: 20px;
+      min-height: 20px;
+      flex-shrink: 0;
       border-radius: 50%;
       background-color: transparent;
       border: 1px solid #E2E2E2;
@@ -4008,16 +4403,6 @@ function renderSubscriptionPage() {
       border-radius: 4px;
       text-transform: uppercase;
       letter-spacing: 1px;
-    }
-    
-    .free-trial-description {
-      font-size: 12px;
-      color: #888888;
-      text-align: center;
-      margin-top: -8px;
-      margin-bottom: 8px;
-      font-family: 'PingFang SC', 'SF Pro', sans-serif;
-      line-height: 1.4;
     }
 
     /* iPad specific styles */
@@ -4110,88 +4495,66 @@ function renderSubscriptionPage() {
     oldStyle.remove();
   }
   document.head.appendChild(style);
-  
-  // 初始化时确保Monthly开启（开关默认开启）
-  const monthlyToggle = document.getElementById('monthly-toggle');
-  const weeklyPlan = document.getElementById('weekly-plan');
-  const yearlyPlan = document.getElementById('yearly-plan');
-  const freeTrialDescription = document.getElementById('free-trial-description');
-  if (monthlyToggle) {
-    monthlyToggle.classList.add('toggle-active');
-  }
-  if (weeklyPlan) {
-    weeklyPlan.style.display = 'none';
-  }
-  if (yearlyPlan) {
-    yearlyPlan.style.display = 'none';
-  }
-  if (freeTrialDescription) {
-    freeTrialDescription.style.display = 'block';
-  }
+  initLanguageSwitcherUi();
 }
 
 // 订阅计划选择
 window.toggleSubscription = function(plan) {
   const weeklyPlan = document.getElementById('weekly-plan');
+  const monthlyPlan = document.getElementById('monthly-plan');
   const yearlyPlan = document.getElementById('yearly-plan');
   const weeklyCheck = document.getElementById('weekly-check');
+  const monthlyCheck = document.getElementById('monthly-check');
   const yearlyCheck = document.getElementById('yearly-check');
+  const subscriptionButton = document.getElementById('subscription-button');
 
   if (plan === 'weekly') {
-    weeklyPlan.style.border = '2px solid #FED11F';
-    weeklyPlan.style.backgroundColor = '#FFF9E6';
+    weeklyPlan.classList.add('subscription-card-selected');
     weeklyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center;';
 
-    yearlyPlan.style.border = '1px solid #E2E2E2';
-    yearlyPlan.style.backgroundColor = '#F7F7F7';
+    monthlyPlan.classList.remove('subscription-card-selected');
+    monthlyCheck.innerHTML = '';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+
+    yearlyPlan.classList.remove('subscription-card-selected');
     yearlyCheck.innerHTML = '';
     yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+
+    if (subscriptionButton) {
+      subscriptionButton.textContent = t('subscription.button.freeTrial');
+    }
+  } else if (plan === 'monthly') {
+    monthlyPlan.classList.add('subscription-card-selected');
+    monthlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+
+    weeklyPlan.classList.remove('subscription-card-selected');
+    weeklyCheck.innerHTML = '';
+    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
+
+    yearlyPlan.classList.remove('subscription-card-selected');
+    yearlyCheck.innerHTML = '';
+    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+
+    if (subscriptionButton) {
+      subscriptionButton.textContent = t('subscription.button.subscribe');
+    }
   } else if (plan === 'yearly') {
-    yearlyPlan.style.border = '2px solid #FED11F';
-    yearlyPlan.style.backgroundColor = '#FFF9E6';
+    yearlyPlan.classList.add('subscription-card-selected');
     yearlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: none; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
 
-    weeklyPlan.style.border = '1px solid #E2E2E2';
-    weeklyPlan.style.backgroundColor = '#F7F7F7';
+    weeklyPlan.classList.remove('subscription-card-selected');
     weeklyCheck.innerHTML = '';
-    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
-  }
-};
+    weeklyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
-// 免费试用开关切换
-window.toggleFreeTrial = function() {
-  const toggle = document.getElementById('monthly-toggle');
-  const weeklyPlan = document.getElementById('weekly-plan');
-  const yearlyPlan = document.getElementById('yearly-plan');
-  const freeTrialDescription = document.getElementById('free-trial-description');
-  
-  if (toggle) {
-    toggle.classList.toggle('toggle-active');
-    
-    if (toggle.classList.contains('toggle-active')) {
-      // 开启状态：隐藏Weekly和Yearly，显示说明文案
-      if (weeklyPlan) {
-        weeklyPlan.style.display = 'none';
-      }
-      if (yearlyPlan) {
-        yearlyPlan.style.display = 'none';
-      }
-      if (freeTrialDescription) {
-        freeTrialDescription.style.display = 'block';
-      }
-    } else {
-      // 关闭状态：显示Weekly和Yearly，隐藏说明文案
-      if (weeklyPlan) {
-        weeklyPlan.style.display = 'flex';
-      }
-      if (yearlyPlan) {
-        yearlyPlan.style.display = 'flex';
-      }
-      if (freeTrialDescription) {
-        freeTrialDescription.style.display = 'none';
-      }
+    monthlyPlan.classList.remove('subscription-card-selected');
+    monthlyCheck.innerHTML = '';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+
+    if (subscriptionButton) {
+      subscriptionButton.textContent = t('subscription.button.subscribe');
     }
   }
 };
@@ -4294,5 +4657,9 @@ window.selectGridOption = function(value) {
   }, 300);
 };
 
-// 初始化
+// 初始化：语言菜单回调需先于首次渲染注册，切换语言后仅重绘文案（结构不变）
+attachI18nWindowHandlers();
+setLocaleChangeHandler(() => {
+  renderPage(false);
+});
 renderPage();

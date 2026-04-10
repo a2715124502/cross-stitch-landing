@@ -4224,17 +4224,17 @@ function renderSubscriptionPage() {
     
     .subscription-page .hero-gradient {
       position: absolute;
-      bottom: -20px;
+      bottom: 0;
       left: 0;
       width: 100%;
-      height: calc(100% + 20px);
+      /* 仅在图片下半部分做蒙版，避免遮挡顶部背景 */
+      height: 58%;
       background: linear-gradient(
         to top,
-        rgba(255, 255, 255, 0.98) 0%,
-        rgba(255, 255, 255, 0.94) 26%,
-        rgba(255, 255, 255, 0.78) 44%,
-        rgba(255, 255, 255, 0.48) 58%,
-        rgba(255, 255, 255, 0.16) 70%,
+        rgba(255, 255, 255, 0.94) 0%,
+        rgba(255, 255, 255, 0.82) 35%,
+        rgba(255, 255, 255, 0.52) 62%,
+        rgba(255, 255, 255, 0.18) 82%,
         rgba(255, 255, 255, 0) 100%
       );
       pointer-events: none;
@@ -4581,11 +4581,11 @@ window.toggleSubscription = function(plan) {
 
     monthlyPlan.classList.remove('subscription-card-selected');
     monthlyCheck.innerHTML = '';
-    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
     yearlyPlan.classList.remove('subscription-card-selected');
     yearlyCheck.innerHTML = '';
-    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
     if (subscriptionButton) {
       subscriptionButton.textContent = t('subscription.button.freeTrial');
@@ -4593,7 +4593,7 @@ window.toggleSubscription = function(plan) {
   } else if (plan === 'monthly') {
     monthlyPlan.classList.add('subscription-card-selected');
     monthlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center;';
 
     weeklyPlan.classList.remove('subscription-card-selected');
     weeklyCheck.innerHTML = '';
@@ -4601,7 +4601,7 @@ window.toggleSubscription = function(plan) {
 
     yearlyPlan.classList.remove('subscription-card-selected');
     yearlyCheck.innerHTML = '';
-    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
     if (subscriptionButton) {
       subscriptionButton.textContent = t('subscription.button.subscribe');
@@ -4609,7 +4609,7 @@ window.toggleSubscription = function(plan) {
   } else if (plan === 'yearly') {
     yearlyPlan.classList.add('subscription-card-selected');
     yearlyCheck.innerHTML = '<svg width="14" height="14" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 24L20 34L40 14" stroke="#724202" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    yearlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: #FED11F; border: 1px solid #FED11F; display: flex; align-items: center; justify-content: center;';
 
     weeklyPlan.classList.remove('subscription-card-selected');
     weeklyCheck.innerHTML = '';
@@ -4617,7 +4617,7 @@ window.toggleSubscription = function(plan) {
 
     monthlyPlan.classList.remove('subscription-card-selected');
     monthlyCheck.innerHTML = '';
-    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center; margin-top: 4px;';
+    monthlyCheck.style.cssText = 'width: 20px; height: 20px; border-radius: 50%; background-color: transparent; border: 1px solid #E2E2E2; display: flex; align-items: center; justify-content: center;';
 
     if (subscriptionButton) {
       subscriptionButton.textContent = t('subscription.button.subscribe');

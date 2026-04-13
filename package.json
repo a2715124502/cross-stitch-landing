@@ -8,12 +8,14 @@
     "dev": "vite",
     "i18n:build": "node scripts/parse-translations.mjs",
     "build": "npm run i18n:build && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "framer-motion": "^11.0.0"
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "vite": "^5.0.0",
     "vite-plugin-static-copy": "^1.0.0"
   }
